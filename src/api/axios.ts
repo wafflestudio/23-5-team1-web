@@ -13,7 +13,7 @@ const api = axios.create({
 
 api.interceptors.request.use(
 	(config) => {
-		const token = TokenService.getLocalAccessToken();
+		const token = TokenService.getAccessToken();
 		if (token) {
 			config.headers.Authorization = `Bearer ${token}`;
 		}
@@ -33,31 +33,26 @@ api.interceptors.response.use(
 			originalRequest._retry = true;
 
 			try {
-				// TODO : check whether BE has this feature; if they use refresh token in the first place
-				const response = await axios.post(
-					`${API_URL}/auth/refresh`,
-					{},
-					{
-						withCredentials: true,
-					},
-				);
-				// get new access token from response
-				const { newAccessToken } = response.data.accessToken;
-
+				const refreshToken = TokenService.getRefreshToken();
+				if (!refreshToken) throw new Error("No refresh token");
+				// TODO : make sure BE has this feature if they're actually gna use refreshtoken
+				const { data } = await axios.post(`${API_URL}/auth/refresh`, {
+					refreshToken,
+				});
 				// update storage
-				TokenService.updateLocalAccessToken(newAccessToken);
+				TokenService.setTokens(data.accessToken, data.refreshToken);
 
 				// update header
-				originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+				originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
 
 				// retry original request
 				return api(originalRequest);
-			} catch (refreshError) {
+			} catch (err) {
 				// refresh failed :
+				TokenService.clearTokens();
 				console.error("Session expired. Please sign in again");
-				sessionStorage.removeItem("accessToken");
 				// TODO : navigate back to login page
-				return Promise.reject(refreshError);
+				return Promise.reject(err);
 			}
 		}
 		return Promise.reject(error);

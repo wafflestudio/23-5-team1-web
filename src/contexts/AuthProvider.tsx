@@ -15,6 +15,7 @@ interface AuthContextType {
 	isLoading: boolean;
 	login: (email: string, password: string) => Promise<void>;
 	signup: (email: string, password: string, name: string) => Promise<void>;
+	socialLogin: (provider: string, token: string) => Promise<void>;
 	logout: () => Promise<void>;
 }
 
@@ -30,24 +31,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	 */
 	useEffect(() => {
 		const initAuth = async () => {
-			try {
-				// get new refreshToken using HttpOnly cookie
-				const response = await auth.checkAuth();
-				if (response.accessToken) {
-					TokenService.updateLocalAccessToken(response.accesstoken);
+			const token = TokenService.getAccessToken();
+			if (token) {
+				try {
 					const userData = await auth.getUser();
 					setUser(userData);
-					setIsAuthenticated(true);
+				} catch (e) {
+					console.error(e);
+					TokenService.clearTokens();
 				}
-			} catch (err) {
-				// logout on failure
-				console.error(err);
-				TokenService.removeLocalAccessToken();
-				setUser(null);
-				setIsAuthenticated(false);
-			} finally {
-				setIsLoading(false);
 			}
+			setIsLoading(false);
 		};
 		initAuth();
 	}, []);
@@ -66,6 +60,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 			console.error("Login failed:", err);
 			throw err;
 		}
+	};
+
+	const socialLogin = async (provider: string, token: string) => {
+		await auth.socialLogin(provider, token);
+		const userData = await auth.getUser();
+		setUser(userData);
 	};
 
 	/**
@@ -105,6 +105,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 				isLoading,
 				login,
 				signup,
+				socialLogin,
 				logout,
 			}}
 		>
