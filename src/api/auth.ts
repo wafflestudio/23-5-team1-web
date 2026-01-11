@@ -1,10 +1,10 @@
+import axios from "axios";
 import type { AuthTokens, User } from "../util/types";
-import api from "./axios";
+import api, { API_URL } from "./axios";
 import { TokenService } from "./tokenService";
 
 export const getUser = async () => {
 	const response = await api.get("/users/me");
-	// TODO : get other info such as bookmark, memos, category preference, etc.
 	return response.data as User;
 };
 
@@ -44,13 +44,32 @@ export const socialLogin = async (provider: string, idToken: string) => {
 
 export const logout = async () => {
 	// delete tokens
-	await api.post("/auth/logout");
-	TokenService.clearTokens();
+	try {
+		await api.post("/auth/logout");
+	} finally {
+		TokenService.clearTokens();
+	}
 };
 
-// TODO : make sure BE's using refresh token
+// Call on App mount!
 export const checkAuth = async () => {
-	const response = await api.post("/auth/refresh");
-	return response.data;
-	// TODO: make sure it returns accessToken
+	const refreshToken = TokenService.getRefreshToken();
+
+	if (!refreshToken) {
+		return null;
+	}
+
+	try {
+		const { data } = await axios.post(`${API_URL}/auth/refresh`, {
+			refreshToken,
+		});
+
+		TokenService.setTokens(data.accessToken, data.refreshToken);
+
+		const user = await getUser();
+		return user;
+	} catch (error) {
+		TokenService.clearTokens();
+		throw error;
+	}
 };
