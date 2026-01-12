@@ -9,8 +9,8 @@ export default function Onboarding() {
 	const [, setSearchParams] = useSearchParams();
 
 	const handleSubmit = () => {
-		selectedPreferences.forEach((preference) => {
-			addInterestCategory(preference.id);
+		selectedPreferences.forEach((preference, index) => {
+			addInterestCategory(preference.id, index);
 		})
 		setSearchParams((prev) => {
 			const next = new URLSearchParams(prev);
