@@ -1,10 +1,9 @@
 .calendarContainer {
-	height: 100vh;
-	padding: 1.5rem;
-	background-color: #ffffff;
-	font-family:
-		"Pretendard", -apple-system, BlinkMacSystemFont, system-ui, Roboto,
-		sans-serif;
+  height: 100vh;
+  padding: 1.5rem;
+  background-color: #ffffff;
+  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui,
+    Roboto, sans-serif;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -16,68 +15,68 @@
 /* 전체 그리드 선 색상 조정 */
 :global(.rbc-month-row),
 :global(.rbc-day-bg) {
-	border-color: #e5e7eb !important;
+  border-color: #e5e7eb !important;
 }
 
 /* 요일 헤더 (월, 화, 수...) */
 :global(.rbc-header) {
-	border-bottom: none !important;
-	font-size: 0.875rem;
-	font-weight: 500;
-	color: #6b7280;
-	padding: 0.75rem 0;
-	text-align: center;
+  border-bottom: none !important;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #6b7280;
+  padding: 0.75rem 0;
+  text-align: center;
 }
 
 /* 월별 뷰 셀 스타일 */
 :global(.rbc-month-view) {
-	border: none !important;
+  border: none !important;
 }
 
 /* '오늘' 날짜 배경색 제거 (커스텀 스타일 적용 위해) */
 :global(.rbc-today) {
-	background-color: transparent !important;
+  background-color: transparent !important;
 }
 
 /* 날짜 숫자 스타일 */
 :global(.rbc-date-cell) {
-	padding: 0.5rem;
-	font-size: 0.875rem;
-	font-weight: 500;
+  padding: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
 }
 
 /* '오늘' 날짜 숫자 강조 (검은 동그라미) */
 :global(.rbc-now .rbc-button-link) {
-	background-color: #1f2937; /* dark gray */
-	color: white;
-	width: 24px;
-	height: 24px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	border-radius: 50%;
-	margin-left: auto; /* 우측 정렬 유지 */
+  background-color: #1f2937; /* dark gray */
+  color: white;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin-left: auto; /* 우측 정렬 유지 */
 }
 
 /* 비활성 날짜 (이전/다음달) 배경 */
 :global(.rbc-off-range-bg) {
-	background-color: #f9fafb !important;
+  background-color: #f9fafb !important;
 }
 
 /* 이벤트 블록 기본 스타일 재정의 */
 :global(.rbc-event) {
-	border: none !important;
-	box-shadow: none !important;
-	margin: 1px 4px !important;
-	padding: 2px 6px !important;
-	min-height: 24px;
+  border: none !important;
+  box-shadow: none !important;
+  margin: 1px 4px !important;
+  padding: 2px 6px !important;
+  min-height: 24px;
 }
 
 /* '+2 more' 같은 더보기 링크 스타일 */
 :global(.rbc-show-more) {
-	background-color: transparent;
-	color: #6b7280;
-	font-size: 0.75rem;
-	font-weight: 600;
-	margin-left: 8px;
+  background-color: transparent;
+  color: #6b7280;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-left: 8px;
 }

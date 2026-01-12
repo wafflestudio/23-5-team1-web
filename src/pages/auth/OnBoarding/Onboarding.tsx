@@ -1,14 +1,8 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-<<<<<<< HEAD:src/pages/auth/OnBoarding/Onboarding.tsx
 import { getCategoryGroups, getOrganizations } from "../../../api/event";
 import { addInterestCategory } from "../../../api/user";
 import type { Category, CategoryGroup } from "../../../util/types";
-=======
-import { getCategoryGroups, getOrganizations } from "../../api/event";
-import { addInterestCategory } from "../../api/user";
-import type { Category, CategoryGroup } from "../../util/types";
->>>>>>> 625ff0b (chore: biome check . --write):src/auth/OnBoarding/Onboarding.tsx
 
 export default function Onboarding() {
 	const [, setSearchParams] = useSearchParams();
