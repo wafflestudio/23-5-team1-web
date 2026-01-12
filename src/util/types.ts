@@ -4,8 +4,9 @@ export interface AuthTokens {
 }
 
 export interface Category {
-	name: string;
+	id: number;
 	groupId: number;
+	name: string;
 	sort_order: number;
 }
 

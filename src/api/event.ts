@@ -1,4 +1,5 @@
 import type {
+	Category,
 	CategoryGroupWithCategories,
 	Event,
 	MonthViewParams,
@@ -26,3 +27,8 @@ export const getCategories = async () => {
 	const res = await api.get<CategoryGroupWithCategories[]>("/categoryGroups");
 	return res.data;
 };
+
+export const getOrganizations = async () => {
+	const res = await api.get<Category[]>("/categories/orgs");
+	return res.data;
+}
