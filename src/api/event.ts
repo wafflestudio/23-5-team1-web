@@ -93,7 +93,3 @@ export const getOrganizations = async () => {
 	return res.data;
 };
 
-export const getOrganizations = async () => {
-	const res = await api.get<Category[]>("/categories/orgs");
-	return res.data;
-};
