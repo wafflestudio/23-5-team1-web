@@ -1,7 +1,7 @@
 import axios from "axios";
 import { TokenService } from "./tokenService";
 
-const API_URL = "link";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 const api = axios.create({
 	baseURL: API_URL,
@@ -35,7 +35,7 @@ api.interceptors.response.use(
 			try {
 				const refreshToken = TokenService.getRefreshToken();
 				if (!refreshToken) throw new Error("No refresh token");
-				// TODO : make sure BE has this feature if they're actually gna use refreshtoken
+
 				const { data } = await axios.post(`${API_URL}/auth/refresh`, {
 					refreshToken,
 				});
@@ -47,16 +47,17 @@ api.interceptors.response.use(
 
 				// retry original request
 				return api(originalRequest);
-			} catch (err) {
+			} catch (refreshError) {
 				// refresh failed :
 				TokenService.clearTokens();
 				console.error("Session expired. Please sign in again");
 				// TODO : navigate back to login page
-				return Promise.reject(err);
+				return Promise.reject(refreshError);
 			}
 		}
 		return Promise.reject(error);
 	},
 );
 
+export { API_URL };
 export default api;

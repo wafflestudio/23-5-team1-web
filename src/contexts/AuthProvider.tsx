@@ -6,7 +6,6 @@ import {
 	useState,
 } from "react";
 import * as auth from "../api/auth";
-import { TokenService } from "../api/tokenService";
 import type { User } from "../util/types";
 
 interface AuthContextType {
@@ -31,17 +30,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	 */
 	useEffect(() => {
 		const initAuth = async () => {
-			const token = TokenService.getAccessToken();
-			if (token) {
-				try {
-					const userData = await auth.getUser();
-					setUser(userData);
-				} catch (e) {
-					console.error(e);
-					TokenService.clearTokens();
+			try {
+				const restoredUser = await auth.checkAuth();
+
+				if (restoredUser) {
+					setUser(restoredUser);
+					setIsAuthenticated(true);
 				}
+			} catch (e) {
+				console.error(e);
+				setUser(null);
+				setIsAuthenticated(false);
+			} finally {
+				setIsLoading(false);
 			}
-			setIsLoading(false);
 		};
 		initAuth();
 	}, []);
@@ -63,9 +65,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	};
 
 	const socialLogin = async (provider: string, token: string) => {
-		await auth.socialLogin(provider, token);
-		const userData = await auth.getUser();
-		setUser(userData);
+		try {
+			await auth.socialLogin(provider, token);
+			const userData = await auth.getUser();
+			setUser(userData);
+		} catch (err) {
+			console.error("Social Login failed:", err);
+			throw err;
+		}
 	};
 
 	/**
@@ -94,6 +101,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		} finally {
 			setUser(null);
 			setIsAuthenticated(false);
+			// logoout function already clears the TokenService
 		}
 	};
 
