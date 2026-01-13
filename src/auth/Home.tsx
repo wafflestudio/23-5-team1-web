@@ -1,14 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
+
 const {
-	VITE_KAKAO_REST_API_KEY, 
+	VITE_KAKAO_REST_API_KEY,
 	VITE_KAKAO_REDIRECT_URI,
 	VITE_GOOGLE_CLIENT_ID,
 	VITE_GOOGLE_REDIRECT_URI,
 	VITE_NAVER_CLIENT_ID,
-	VITE_NAVER_REDIRECT_URI
+	VITE_NAVER_REDIRECT_URI,
 } = import.meta.env;
-
 
 export default function Home() {
 	const navigate = useNavigate();
@@ -38,7 +38,9 @@ export default function Home() {
 	};
 
 	// 네이버 로그인
-	function generateState() { return crypto.randomUUID(); }
+	function generateState() {
+		return crypto.randomUUID();
+	}
 	const state = generateState();
 	sessionStorage.setItem("naver_oauth_state", state);
 	const naverURL = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${VITE_NAVER_CLIENT_ID}&state=${state}&redirect_uri=${VITE_NAVER_REDIRECT_URI}`;

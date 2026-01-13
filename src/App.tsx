@@ -6,11 +6,11 @@ import AppRoutes from "./router/AppRoutes";
 function App() {
 	return (
 		<AuthProvider>
-    		<EventProvider>
-		    	<UserDataProvider>
+			<EventProvider>
+				<UserDataProvider>
 					<AppRoutes />
-      			</UserDataProvider>
-      		</EventProvider>
+				</UserDataProvider>
+			</EventProvider>
 		</AuthProvider>
 	);
 }
