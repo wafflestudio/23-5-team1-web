@@ -25,7 +25,7 @@ const LoginHandler = ({provider}: LoginHandlerProps) => {
             navigate("/auth/login", { replace: true });
             return;
         }
-        const kakaoLogin = async () => {
+        const login = async () => {
             try {
                 const response = await axios.post(
                     `${VITE_REST_REQUEST_URL}/auth/oauth/${provider}`,
@@ -48,7 +48,7 @@ const LoginHandler = ({provider}: LoginHandlerProps) => {
             }
         };
 
-        kakaoLogin();
+        login();
 
     }, [provider, navigate]);
     return <div>로그인 처리 중...</div>;
