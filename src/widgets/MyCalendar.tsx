@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Calendar, type View, Views } from "react-big-calendar";
 import styles from "../styles/Calendar.module.css";
-import { localizer } from "../util/calendarLocalizer";
+import { localizer } from "../util/Calendar/calendarLocalizer";
 import type { Event } from "../util/types";
 import Toolbar from "./Toolbar";
 
