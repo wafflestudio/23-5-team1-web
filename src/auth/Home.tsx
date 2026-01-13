@@ -1,6 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
-const {VITE_KAKAO_REST_API_KEY, VITE_KAKAO_REDIRECT_URI} = import.meta.env;
+const {
+	VITE_KAKAO_REST_API_KEY, 
+	VITE_KAKAO_REDIRECT_URI,
+	VITE_GOOGLE_CLIENT_ID,
+	VITE_GOOGLE_REDIRECT_URI
+} = import.meta.env;
 
 
 export default function Home() {
@@ -19,7 +24,13 @@ export default function Home() {
 	};
 
 	// 구글 로그인
-	const googleURL = ``;
+	const googleURL = `https://accounts.google.com/o/oauth2/v2/auth?
+		scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile&
+		include_granted_scopes=true&
+		response_type=token&
+		state=state_parameter_passthrough_value&
+		redirect_uri=${VITE_GOOGLE_REDIRECT_URI}&
+		client_id=${VITE_GOOGLE_CLIENT_ID}`;
 	const handleGoogleLogin = () => {
 		window.location.href = googleURL;
 	};

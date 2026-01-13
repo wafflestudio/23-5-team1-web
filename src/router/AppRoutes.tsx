@@ -15,6 +15,8 @@ export default function AppRoutes() {
 
       {/* OAuth Redirect */}
       <Route path="/oauth/kakao" element={<LoginHandler provider="kakao" />} />
+      <Route path="/oauth/google" element={<LoginHandler provider="google" />} />
+      <Route path="/oauth/naver" element={<LoginHandler provider="naver" />} />
     </Routes>
   );
 }
