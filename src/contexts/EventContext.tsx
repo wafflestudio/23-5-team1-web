@@ -14,6 +14,8 @@ import {
 	getMonthEvents,
 	getOrganizations,
 } from "../api/event";
+import { formatDateToYYYYMMDD } from "../util/Calendar/dateFormatter";
+import { getMonthRange } from "../util/Calendar/getMonthRange";
 import type {
 	Category,
 	CategoryGroupWithCategories,
@@ -96,19 +98,45 @@ export const EventProvider: React.FC<{ children: ReactNode }> = ({
 	}, [refreshMetadata]);
 
 	/* ACTIONS */
-	const fetchMonthEvents = useCallback(async (params: MonthViewParams) => {
-		setIsLoadingMonth(true);
-		setError(null);
-		try {
-			const data = await getMonthEvents(params);
-			setMonthViewData(data);
-		} catch (err) {
-			console.error(err);
-			setError("failed fo fetch month events");
-		} finally {
-			setIsLoadingMonth(false);
-		}
-	}, []);
+	interface FetchMonthEventArgs {
+		start?: Date; // optional - default to today
+		statusId?: number;
+		eventTypeId?: number;
+		orgId?: number;
+	}
+
+	const fetchMonthEvents = useCallback(
+		async ({
+			start = new Date(),
+			statusId,
+			eventTypeId,
+			orgId,
+		}: FetchMonthEventArgs = {}) => {
+			// handle 'to' date
+			const { from, to } = getMonthRange(start.getFullYear(), start.getMonth());
+
+			const params: MonthViewParams = {
+				from: formatDateToYYYYMMDD(from),
+				to: formatDateToYYYYMMDD(to),
+				statusId,
+				eventTypeId,
+				orgId,
+			};
+
+			setIsLoadingMonth(true);
+			setError(null);
+			try {
+				const data = await getMonthEvents(params);
+				setMonthViewData(data);
+			} catch (err) {
+				console.error(err);
+				setError("failed fo fetch month events");
+			} finally {
+				setIsLoadingMonth(false);
+			}
+		},
+		[],
+	);
 
 	const fetchDayEvents = useCallback(async (params: DayViewParams) => {
 		setIsLoadingDay(true);
