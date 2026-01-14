@@ -77,3 +77,9 @@ export const checkAuth = async () => {
 		throw error;
 	}
 };
+
+// health check
+export const healthCheck = async () => {
+	const res = await api.get("/health");
+	console.log(res.data);
+};

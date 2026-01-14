@@ -5,6 +5,11 @@
 		"clientKind": "git",
 		"useIgnoreFile": true
 	},
+	"css": {
+		"parser": {
+			"cssModules": true
+		}
+	},
 	"files": {
 		"ignoreUnknown": false
 	},
@@ -16,7 +21,10 @@
 	"linter": {
 		"enabled": true,
 		"rules": {
-			"recommended": true
+			"recommended": true,
+			"complexity": {
+				"noImportantStyles": "off"
+			}
 		}
 	},
 	"javascript": {

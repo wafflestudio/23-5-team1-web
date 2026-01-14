@@ -1,4 +1,4 @@
-import type { Event, EventDTO } from "./types";
+import type { Event, EventDTO } from "../types";
 
 export const transformEvent = (dto: EventDTO): Event => {
 	return {

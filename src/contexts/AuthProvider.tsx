@@ -46,6 +46,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 			}
 		};
 		initAuth();
+		auth.healthCheck();
 	}, []);
 
 	/**

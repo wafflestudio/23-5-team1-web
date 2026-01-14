@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import defaultProfile from "../../assets/defaultProfile.png";
+import defaultProfile from "../../../assets/defaultProfile.png";
 
 export default function ProfileSetting() {
 	const name = useRef<HTMLInputElement>(null);
