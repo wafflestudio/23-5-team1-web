@@ -1,9 +1,8 @@
 import { Route, Routes } from "react-router-dom";
-
-import Home from "../auth/Home";
 import LoginHandler from "../auth/Login/ SocialLoginHandler";
 import Login from "../auth/Login/Login";
-import EmailSignUp from "../auth/Signup/EmailSignUp";
+import Home from "../pages/auth/Home";
+import EmailSignUp from "../pages/auth/Signup/EmailSignUp";
 
 export default function AppRoutes() {
 	return (
