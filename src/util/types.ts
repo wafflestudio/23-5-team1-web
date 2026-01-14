@@ -149,18 +149,18 @@ export interface MonthViewParams {
 	from: string; // YYYY-MM-DD
 	to: string;
 	// 아래 : 필터링
-	statusId?: number; // 모집 상태
-	eventTypeId?: number; // 카테고리
-	orgId?: number; // 주체 기관
+	statusId?: number[]; // 모집 상태
+	eventTypeId?: number[]; // 카테고리
+	orgId?: number[]; // 주체 기관
 }
 
 export interface DayViewParams {
 	date: string;
 	page?: number;
 	size?: number;
-	statusId?: number;
-	eventTypeId?: number;
-	orgId?: number;
+	statusId?: number[];
+	eventTypeId?: number[];
+	orgId?: number[];
 }
 
 export interface DayViewResponse {

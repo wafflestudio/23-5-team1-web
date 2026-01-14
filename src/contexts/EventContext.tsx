@@ -28,6 +28,21 @@ import type {
 	SearchResult,
 } from "../util/types";
 
+interface FetchMonthEventArgs {
+	start?: Date; // optional - default to today
+	statusId?: number[];
+	eventTypeId?: number[];
+	orgId?: number[];
+}
+interface FetchDayEventArgs {
+	date?: Date;
+	page?: number;
+	size?: number;
+	statusId?: number[];
+	eventTypeId?: number[];
+	orgId?: number[];
+}
+
 interface EventContextType {
 	monthViewData: MonthViewResponse | null;
 	dayViewEvents: Event[];
@@ -42,8 +57,8 @@ interface EventContextType {
 	isLoadingMeta: boolean;
 	error: string | null;
 
-	fetchMonthEvents: (params: MonthViewParams) => Promise<void>;
-	fetchDayEvents: (params: DayViewParams) => Promise<void>;
+	fetchMonthEvents: (params: FetchMonthEventArgs) => Promise<void>;
+	fetchDayEvents: (params: FetchDayEventArgs) => Promise<void>;
 	searchEvents: (params: SearchParams) => Promise<void>;
 	clearSearch: () => void;
 
@@ -98,13 +113,6 @@ export const EventProvider: React.FC<{ children: ReactNode }> = ({
 	}, [refreshMetadata]);
 
 	/* ACTIONS */
-	interface FetchMonthEventArgs {
-		start?: Date; // optional - default to today
-		statusId?: number;
-		eventTypeId?: number;
-		orgId?: number;
-	}
-
 	const fetchMonthEvents = useCallback(
 		async ({
 			start = new Date(),
@@ -138,19 +146,38 @@ export const EventProvider: React.FC<{ children: ReactNode }> = ({
 		[],
 	);
 
-	const fetchDayEvents = useCallback(async (params: DayViewParams) => {
-		setIsLoadingDay(true);
-		setError(null);
-		try {
-			const data = await getDayEvents(params);
-			setDayViewEvents(data);
-		} catch (err) {
-			console.error(err);
-			setError("failed to fetch day events.");
-		} finally {
-			setIsLoadingDay(false);
-		}
-	}, []);
+	const fetchDayEvents = useCallback(
+		async ({
+			date = new Date(),
+			page,
+			size,
+			statusId,
+			eventTypeId,
+			orgId,
+		}: FetchDayEventArgs = {}) => {
+			const params: DayViewParams = {
+				date: formatDateToYYYYMMDD(date),
+				page,
+				size,
+				statusId,
+				eventTypeId,
+				orgId,
+			};
+
+			setIsLoadingDay(true);
+			setError(null);
+			try {
+				const data = await getDayEvents(params);
+				setDayViewEvents(data);
+			} catch (err) {
+				console.error(err);
+				setError("failed to fetch day events.");
+			} finally {
+				setIsLoadingDay(false);
+			}
+		},
+		[],
+	);
 
 	const searchEvents = useCallback(async (params: SearchParams) => {
 		setIsLoadingSearch(true);
