@@ -1,3 +1,5 @@
+import type { NumberLiteralType } from "typescript";
+
 export interface AuthTokens {
 	accessToken: string;
 	refreshToken: string | null;
@@ -93,19 +95,42 @@ export interface Memo {
 	tags: string[];
 }
 
+// 시간표 전체
+
 type Semester = "SPRING" | "SUMMER" | "FALL" | "WINTER";
 
 export interface Course {
 	year: number;
 	semester: Semester;
+	id: number;
 	courseNumber: string;
 	lectureNumber: string;
 	courseTitle: string;
-	startAt: number;
-	endAt: number;
+	// 시간 데이터 정의 수정 필요
+	slot: TimeSlot[];
+	// startAt: number;
+	// endAt: number;
 	credit: number;
-	instructor: string;
+	instructor?: string;
 }
+
+export type Day = 0 | 1 | 2 | 3 | 4 | 5 | 6; // 0: 일요일, 1: 월요일, ..., 6: 토요일
+
+export type TimeSlot = {
+	day: Day;
+	startMin: number;
+	endMin: number;
+};
+
+export const DAY_LABELS_KO: Record<Day, string> = {
+	0: "일",
+	1: "월",
+	2: "화",
+	3: "수",
+	4: "목",
+	5: "금",
+	6: "토",
+};
 
 export interface Timetable {
 	name: string;
