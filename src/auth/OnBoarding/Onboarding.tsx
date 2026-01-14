@@ -1,26 +1,27 @@
 import { useEffect, useState } from "react";
-import { getCategoryGroups, getOrganizations } from "../../api/event";
-import type { Category, CategoryGroup } from "../../util/types";
-import { addInterestCategory} from "../../api/user";
 import { useSearchParams } from "react-router-dom";
-
+import { getCategoryGroups, getOrganizations } from "../../api/event";
+import { addInterestCategory } from "../../api/user";
+import type { Category, CategoryGroup } from "../../util/types";
 
 export default function Onboarding() {
 	const [, setSearchParams] = useSearchParams();
 
 	const handleSubmit = () => {
-		selectedPreferences.forEach((preference) => {
-			addInterestCategory(preference.id);
-		})
+		selectedPreferences.forEach((preference, index) => {
+			addInterestCategory(preference.id, index);
+		});
 		setSearchParams((prev) => {
 			const next = new URLSearchParams(prev);
 			next.set("step", "complete");
 			return next;
 		});
-    };
+	};
 
 	const [categories, setCategories] = useState<CategoryGroup[]>([]);
-	const [selectedPreferences, setSelectedPreferences] = useState<CategoryGroup[]>([]);
+	const [selectedPreferences, setSelectedPreferences] = useState<
+		CategoryGroup[]
+	>([]);
 	const [organizations, setOrganizations] = useState<Category[] | null>(null);
 
 	useEffect(() => {
@@ -105,7 +106,9 @@ export default function Onboarding() {
 					?? <div>로딩 중..</div>
 				</div>
 			</section>
-			<button type="button" onClick={handleSubmit}>완료</button>
+			<button type="button" onClick={handleSubmit}>
+				완료
+			</button>
 		</div>
 	);
 }

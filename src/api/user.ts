@@ -23,10 +23,17 @@ export const getInterestCategories = async () => {
 	return res.data;
 };
 
-export const addInterestCategory = async (categoryId: number) => {
-	await api.post("/users/me/interestCategories", { categoryId });
+export const addInterestCategory = async (
+	categoryId: number,
+	sortOrder: number,
+) => {
+	await api.post("/users/me/interestCategories", { categoryId, sortOrder });
 };
 
 export const removeInterestCategory = async (categoryId: number) => {
 	await api.delete(`/users/me/interestCategories/${categoryId}`);
+};
+
+export const addMemo = async (eventId: number, content: string) => {
+	await api.post(`/users/me/memos`, { eventId, content });
 };
