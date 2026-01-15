@@ -26,12 +26,16 @@ export default function Onboarding() {
 
 	useEffect(() => {
 		getCategoryGroups().then((categoryGroups) => {
-			const groupsOnly = categoryGroups.map((item) => item.group);
-			setCategories(groupsOnly);
+			const categoryOnly = categoryGroups
+				.flatMap((item) => item.categories)
+				.filter((category) => category.groupId === 3);
+			setCategories(categoryOnly);
 		});
 	}, []);
 	useEffect(() => {
-		getOrganizations().then(setOrganizations);
+		getOrganizations().then((categories) => {
+			setOrganizations(categories);
+		});
 	}, []);
 
 	const MAX_PREFERENCE = 3;
@@ -102,8 +106,8 @@ export default function Onboarding() {
 								<label htmlFor={id}>{org.name}</label>
 							</div>
 						);
-					})}{" "}
-					?? <div>로딩 중..</div>
+					})}
+					{!organizations && <div>로딩 중..</div>}
 				</div>
 			</section>
 			<button type="button" onClick={handleSubmit}>

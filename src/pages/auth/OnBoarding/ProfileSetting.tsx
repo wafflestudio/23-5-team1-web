@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import {updateUser} from "../../../api/auth";
 import defaultProfile from "../../../assets/defaultProfile.png";
 
 export default function ProfileSetting() {
@@ -19,12 +20,13 @@ export default function ProfileSetting() {
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
+		updateUser(name.current?.value, previewUrl);
+
 		setSearchParams((prev) => {
 			const next = new URLSearchParams(prev);
 			next.set("step", "onboarding");
 			return next;
 		});
-		//시용자 이름 저장 로직 추가
 	};
 	return (
 		<div>
