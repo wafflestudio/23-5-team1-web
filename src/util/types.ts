@@ -26,7 +26,7 @@ export interface EventBase {
 	orgId: number; // 주체기관 id - FE에서는 사용 X
 	organization: string; // 주체기관 id
 
-	tags: string[]; // TODO: 백엔드 측에게 필요하다고 연락
+	tags: string[];
 
 	applyLink: string; // 지원 url
 
@@ -98,14 +98,35 @@ type Semester = "SPRING" | "SUMMER" | "FALL" | "WINTER";
 export interface Course {
 	year: number;
 	semester: Semester;
+	id: number;
 	courseNumber: string;
 	lectureNumber: string;
 	courseTitle: string;
-	startAt: number;
-	endAt: number;
+	// 시간 데이터 정의 수정 필요
+	slot: TimeSlot[];
+	// startAt: number;
+	// endAt: number;
 	credit: number;
-	instructor: string;
+	instructor?: string;
 }
+
+export type Day = 0 | 1 | 2 | 3 | 4 | 5 | 6; // 0: 일요일, 1: 월요일, ..., 6: 토요일
+
+export type TimeSlot = {
+	day: Day;
+	startMin: number;
+	endMin: number;
+};
+
+export const DAY_LABELS_KO: Record<Day, string> = {
+	0: "일",
+	1: "월",
+	2: "화",
+	3: "수",
+	4: "목",
+	5: "금",
+	6: "토",
+};
 
 export interface Timetable {
 	name: string;

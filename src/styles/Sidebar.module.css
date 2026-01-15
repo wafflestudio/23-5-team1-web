@@ -1,0 +1,193 @@
+/* Sidebar.module.css */
+
+.sidebarContainer {
+	width: 280px; /* Adjust based on your layout needs */
+	height: 100vh;
+	background-color: #f9f9f9; /* Light grey background */
+	padding: 30px 20px;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	border-right: 1px solid #eee;
+	font-family:
+		-apple-system, BlinkMacSystemFont, "Pretendard", "Apple SD Gothic Neo",
+		sans-serif;
+}
+
+/* --- Header --- */
+.headerRow {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 30px;
+}
+
+.headerTitle {
+	font-size: 1.2rem;
+	font-weight: 800;
+	color: #000;
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 0;
+	text-align: left;
+}
+
+.collapseBtn {
+	background: none;
+	border: none;
+	color: #bbb;
+	font-size: 1.2rem;
+	cursor: pointer;
+	font-weight: 300;
+}
+
+/* --- Section Titles --- */
+.sectionTitle {
+	font-size: 1rem;
+	font-weight: 700;
+	color: #111;
+	margin-bottom: 15px;
+}
+
+/* --- Filter Groups --- */
+.filterGroup {
+	margin-bottom: 20px;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.labelRow {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding-left: 4px;
+}
+
+.icon {
+	width: 18px;
+	height: 18px;
+	opacity: 0.6; /* Slight transparency for grey icon look */
+}
+
+.labelText {
+	font-size: 0.95rem;
+	font-weight: 600;
+	color: #333;
+}
+
+/* --- Dropdown Styling --- */
+.selectWrapper {
+	position: relative;
+	width: 100%;
+}
+
+/* Customizing the select box */
+.dropdown {
+	width: 100%;
+	appearance: none; /* Remove default arrow */
+	-webkit-appearance: none;
+	background-color: #ffffff;
+	border: none; /* No border as per neumorphic/clean look */
+	border-radius: 20px; /* Highly rounded corners */
+	padding: 10px 15px;
+	font-size: 0.95rem;
+	color: #444;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03); /* Soft shadow */
+	cursor: pointer;
+	outline: none;
+}
+
+/* Custom Arrow using a pseudo-element on wrapper isn't possible with just the select tag easily, 
+   so we use a background image on the select itself */
+.dropdown {
+	background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23CCC%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+	background-repeat: no-repeat;
+	background-position: right 15px center;
+	background-size: 12px;
+}
+
+.dropdown:focus {
+	box-shadow: 0 0 0 2px #ddd;
+}
+
+/* --- Exclude Section --- */
+.inputContainer {
+	display: flex;
+	background-color: #ffffff;
+	border-radius: 20px;
+	padding: 5px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+	align-items: center;
+}
+
+.excludeInput {
+	border: none;
+	background: transparent;
+	flex-grow: 1;
+	padding: 5px 10px;
+	outline: none;
+	font-size: 0.9rem;
+}
+
+.applyBtn {
+	background: none;
+	border: none;
+	font-weight: 600;
+	color: #555;
+	cursor: pointer;
+	padding: 5px 10px;
+	font-size: 0.9rem;
+}
+
+.tagContainer {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-top: 5px;
+}
+
+.tag {
+	background-color: #ccc; /* Darker grey for tag background */
+	color: #555;
+	font-size: 0.8rem;
+	padding: 4px 10px;
+	border-radius: 12px;
+	display: flex;
+	align-items: center;
+	gap: 5px;
+}
+
+.tagClose {
+	background: none;
+	border: none;
+	color: #555;
+	cursor: pointer;
+	padding: 0;
+	font-size: 1rem;
+	line-height: 1;
+}
+
+/* --- Page Links --- */
+.pageLink {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 8px 0;
+	cursor: pointer;
+	color: #111;
+	font-weight: 600;
+}
+
+.pageLink:hover {
+	opacity: 0.7;
+}
+
+/* Placeholder for Page Icons (Grey square/flag) */
+.iconBox {
+	width: 20px;
+	height: 20px;
+	background-color: #999;
+	/* Replace background-color with generic mask or use img tag inside */
+}
