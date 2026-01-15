@@ -1,4 +1,3 @@
-import type { NumberLiteralType } from "typescript";
 
 export interface AuthTokens {
 	accessToken: string;
@@ -103,14 +102,14 @@ export interface Course {
 	year: number;
 	semester: Semester;
 	id: number;
-	courseNumber: string;
-	lectureNumber: string;
+	courseNumber?: string;
+	lectureNumber?: string;
 	courseTitle: string;
 	// 시간 데이터 정의 수정 필요
 	slot: TimeSlot[];
 	// startAt: number;
 	// endAt: number;
-	credit: number;
+	credit?: number;
 	instructor?: string;
 }
 
