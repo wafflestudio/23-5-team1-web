@@ -37,7 +37,7 @@ export function flattenToBlocks(
 ): PositionedBlock[] {
 	const blocks: PositionedBlock[] = [];
 	for (const course of courses) {
-		course.slot.forEach((slot: TimeSlot, idx) => {
+		course.slot.forEach((slot: TimeSlot) => {
 			blocks.push({
 				id: course.id,
 				courseNumber: course.courseNumber,

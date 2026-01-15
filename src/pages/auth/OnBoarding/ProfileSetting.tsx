@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import {updateUser} from "../../../api/auth";
+import { updateUser } from "../../../api/auth";
 import defaultProfile from "../../../assets/defaultProfile.png";
 
 export default function ProfileSetting() {
