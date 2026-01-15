@@ -1,6 +1,8 @@
 import { AuthProvider } from "./contexts/AuthProvider";
 import { EventProvider } from "./contexts/EventContext";
+import { FilterContextProvider } from "./contexts/FilterContext";
 import { UserDataProvider } from "./contexts/UserDataContext";
+
 import AppRoutes from "./router/AppRoutes";
 
 function App() {
@@ -8,7 +10,9 @@ function App() {
 		<AuthProvider>
 			<EventProvider>
 				<UserDataProvider>
-					<AppRoutes />
+					<FilterContextProvider>
+						<AppRoutes />
+					</FilterContextProvider>
 				</UserDataProvider>
 			</EventProvider>
 		</AuthProvider>

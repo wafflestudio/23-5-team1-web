@@ -28,8 +28,6 @@ export interface EventBase {
 	orgId: number; // 주체기관 id - FE에서는 사용 X
 	organization: string; // 주체기관 id
 
-	tags: string[]; // TODO: 백엔드 측에게 필요하다고 연락
-
 	applyLink: string; // 지원 url
 
 	// following properties are only on BlockEvents
@@ -43,6 +41,11 @@ export interface EventBase {
 }
 
 export interface EventDTO extends EventBase {
+	tags: {
+		id: number;
+		name: string;
+	}[];
+
 	applyStart: string; //  지원 시작 날짜
 	applyEnd: string; // 지원 마감 날짜
 	eventStart: string; // 활동 시작 날짜일시
@@ -50,6 +53,8 @@ export interface EventDTO extends EventBase {
 }
 
 export interface Event extends EventBase {
+	tags: string[];
+
 	applyStart: Date; //  지원 시작 날짜
 	applyEnd: Date; // 지원 마감 날짜
 	eventStart: Date; // 활동 시작 날짜일시
@@ -63,6 +68,18 @@ export interface EventDetailExtras {
 
 export interface EventDetailDTO extends EventDTO, EventDetailExtras {}
 export interface EventDetail extends Event, EventDetailExtras {}
+
+export interface CalendarEvent {
+	start: Date;
+	end: Date;
+	title: string;
+	// 'block' event( 행사) : allDay===true
+	allDay: boolean;
+	resource: {
+		event: Event;
+		isPeriodEvent: boolean;
+	};
+}
 
 export interface Category {
 	id: number;

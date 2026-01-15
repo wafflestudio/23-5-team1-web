@@ -3,6 +3,7 @@ import LoginHandler from "../auth/Login/ SocialLoginHandler";
 import Login from "../auth/Login/Login";
 import Home from "../pages/auth/Home";
 import EmailSignUp from "../pages/auth/Signup/EmailSignUp";
+import CalendarView from "../pages/CalendarView";
 
 export default function AppRoutes() {
 	return (
@@ -18,6 +19,9 @@ export default function AppRoutes() {
 				element={<LoginHandler provider="google" />}
 			/>
 			<Route path="/oauth/naver" element={<LoginHandler provider="naver" />} />
+
+			{/* Main Feature page */}
+			<Route path="/main" element={<CalendarView />} />
 		</Routes>
 	);
 }
