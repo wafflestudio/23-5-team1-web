@@ -1,9 +1,9 @@
 import { Route, Routes } from "react-router-dom";
-import LoginHandler from "../auth/Login/ SocialLoginHandler";
-import Login from "../auth/Login/Login";
 import Home from "../pages/auth/Home";
+import Login from "../pages/auth/Login/Login";
+import LoginHandler from "../pages/auth/Login/SocialLoginHandler";
 import EmailSignUp from "../pages/auth/Signup/EmailSignUp";
-import TimetablePage from "../pages/timetable/TimetablePage";
+import CalendarView from "../pages/CalendarView";
 
 export default function AppRoutes() {
 	return (
@@ -20,7 +20,8 @@ export default function AppRoutes() {
 			/>
 			<Route path="/oauth/naver" element={<LoginHandler provider="naver" />} />
 
-			<Route path="/timetable" element={<TimetablePage />} />
+			{/* Main Feature page */}
+			<Route path="/main" element={<CalendarView />} />
 		</Routes>
 	);
 }

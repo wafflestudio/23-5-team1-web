@@ -1,30 +1,10 @@
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Calendar, type View, Views } from "react-big-calendar";
 import styles from "../styles/Calendar.module.css";
 import { localizer } from "../util/Calendar/calendarLocalizer";
-import type { Event } from "../util/types";
+import { CATEGORY_COLORS } from "../util/constants";
+import type { CalendarEvent, Event } from "../util/types";
 import Toolbar from "./Toolbar";
-
-interface CalendarEvent {
-	start: Date;
-	end: Date;
-	title: string;
-	// 'block' event( 행사) : allDay===true
-	allDay: boolean;
-	resource: {
-		event: Event;
-		isPeriodEvent: boolean;
-	};
-}
-
-const categoryColors: Record<number, string> = {
-	1: "rgba(208, 183, 82, 0.6)",
-	2: "rgba(11, 206, 132, 0.6)",
-	3: "rgba(11, 206, 132, 0.6)",
-	4: "rgba(0, 136, 255, 0.6)",
-	5: "rgba(162, 90, 255, 0.6)",
-	999: "rgba(255, 45, 85, 0.6)",
-};
 
 const eventPropGetter = () => {
 	return {
@@ -34,7 +14,7 @@ const eventPropGetter = () => {
 
 const CustomEvent = ({ event: calendarEvent }: { event: CalendarEvent }) => {
 	const { isPeriodEvent, event } = calendarEvent.resource;
-	const color = categoryColors[event.eventTypeId] || categoryColors[999];
+	const color = CATEGORY_COLORS[event.eventTypeId] || CATEGORY_COLORS[999];
 
 	// 기간제 행사 : 화살표
 	if (isPeriodEvent) {
@@ -61,8 +41,23 @@ const CustomEvent = ({ event: calendarEvent }: { event: CalendarEvent }) => {
 	);
 };
 
-export const MyCalendar = ({ events }: { events: Event[] }) => {
+interface MyCalendarProps {
+	events: Event[];
+	onShowMoreClick: (date: Date, view: string) => void;
+	onSelectEvent: (event: CalendarEvent) => void;
+}
+
+export const MyCalendar = ({
+	events,
+	onShowMoreClick,
+	onSelectEvent,
+}: MyCalendarProps) => {
+	const [date, setDate] = useState(new Date());
 	const [currentView, setCurrentView] = useState<View>(Views.MONTH);
+
+	const onNavigate = useCallback((newDate: Date) => {
+		setDate(newDate);
+	}, []);
 
 	const CALENDER_EVENTS = useMemo(() => {
 		return events.map((event: Event) => {
@@ -88,6 +83,39 @@ export const MyCalendar = ({ events }: { events: Event[] }) => {
 		});
 	}, [events, currentView]);
 
+	const formats = useMemo(
+		() => ({
+			monthHeaderFormat: "yyyy년 M월",
+			dayHeaderFormat: "M월 d일 EEE",
+			weekdayFormat: (date: Date) => {
+				const days = ["일", "월", "화", "수", "목", "금", "토"];
+				return days[date.getDay()];
+			},
+			dayRangeHeaderFormat: ({ start, end }: { start: Date; end: Date }) => {
+				const startDate = start.toLocaleDateString("ko-KR", {
+					month: "long",
+					day: "numeric",
+				});
+				const endDate = end.toLocaleDateString("ko-KR", {
+					month: "long",
+					day: "numeric",
+				});
+				return `${startDate} – ${endDate}`;
+			},
+			timeGutterFormat: "a h:mm",
+			eventTimeRangeFormat: ({ start, end }: { start: Date; end: Date }) => {
+				return `${start.toLocaleTimeString("ko-KR", {
+					hour: "numeric",
+					minute: "2-digit",
+				})} – ${end.toLocaleTimeString("ko-KR", {
+					hour: "numeric",
+					minute: "2-digit",
+				})}`;
+			},
+		}),
+		[],
+	);
+
 	return (
 		<div className={styles.calendarContainer}>
 			<Calendar
@@ -95,7 +123,7 @@ export const MyCalendar = ({ events }: { events: Event[] }) => {
 				events={CALENDER_EVENTS}
 				startAccessor="start"
 				endAccessor="end"
-				style={{ height: 800 }}
+				style={{ height: "100%" }}
 				// custom toolbar
 				components={{
 					toolbar: Toolbar,
@@ -103,15 +131,20 @@ export const MyCalendar = ({ events }: { events: Event[] }) => {
 				}}
 				// style function
 				eventPropGetter={eventPropGetter}
+				date={date}
 				// view setup
 				view={currentView}
 				onView={(view) => setCurrentView(view)}
 				views={[Views.MONTH, Views.WEEK, Views.DAY]}
+				onNavigate={onNavigate}
 				defaultView={Views.MONTH}
 				// 한국어 형식
-				formats={{
-					monthHeaderFormat: "yyyy년 M월",
-				}}
+				formats={formats}
+				// 더보기 눌렀을 때 popup 나타나기 X, 사이드뷰 나타남
+				popup={false}
+				onDrillDown={onShowMoreClick}
+				// 행사 눌렀을 때 상세 뷰 나타나게 하기 :
+				onSelectEvent={onSelectEvent}
 			/>
 		</div>
 	);

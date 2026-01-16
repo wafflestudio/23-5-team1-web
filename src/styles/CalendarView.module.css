@@ -1,0 +1,70 @@
+body {
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #ffffff;
+  padding: 0;
+}
+
+.calendarContainer {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.calendarWrapper {
+  flex: 1;
+  height: 100%;
+  padding: 0 20px 0 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  transition: flex-basis 0.3s ease;
+  min-width: 0;
+  padding-bottom: 140px;
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.calendarWrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.sidePanel {
+  width: 400px;
+  height: 100%;
+  border-left: 1px solid #e0e0e0;
+  background-color: #ffffff;
+  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.05);
+  z-index: 20;
+  overflow-y: auto;
+  flex-shrink: 0;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+@media (max-width: 1024px) {
+  .sidePanel {
+    width: 340px; /* Slightly smaller on laptops */
+  }
+}

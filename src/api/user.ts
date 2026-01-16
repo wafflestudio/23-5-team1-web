@@ -1,12 +1,16 @@
-import type { Category, Event } from "../util/types";
+import { transformEvent } from "../util/Calendar/transformEvent";
+import type { Category, EventDTO } from "../util/types";
 import api from "./axios";
 
 // --- Bookmarks ---
-export const getBookmarks = async (page = 1) => {
-	const res = await api.get<{ items: Event[] }>("/users/me/bookmarks", {
-		params: { page },
+export const getBookmarks = async (page = 1, size = 20) => {
+	const res = await api.get<{ items: EventDTO[] }>("/users/me/bookmarks", {
+		params: { page, size },
 	});
-	return res.data;
+
+	const result = res.data.items.map(transformEvent);
+
+	return result;
 };
 
 export const addBookmark = async (eventId: number) => {

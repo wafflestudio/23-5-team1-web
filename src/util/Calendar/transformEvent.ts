@@ -7,6 +7,6 @@ export const transformEvent = (dto: EventDTO): Event => {
 		applyEnd: new Date(dto.applyEnd),
 		eventStart: new Date(dto.eventStart),
 		eventEnd: new Date(dto.eventEnd),
-		tags: dto.tags || [],
+		tags: dto.tags.map((t) => t.name) || [],
 	};
 };
