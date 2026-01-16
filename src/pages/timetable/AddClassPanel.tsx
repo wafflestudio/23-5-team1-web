@@ -1,7 +1,9 @@
-import { useMemo, useState } from "react";
+import { useState, useMemo } from "react";
 import type { Course, Day, TimeSlot } from "../../util/types";
 import { DAY_LABELS_KO } from "../../util/types";
-import { buildTimeOptions, STEP_MIN, snapToStep } from "./time";
+import { buildTimeOptions, STEP_MIN } from "./time";
+import { TiDelete } from "react-icons/ti";
+import "./timetable.css";
 
 type Props = {
 	onAdd: (item: Course) => void;
@@ -55,6 +57,7 @@ export function AddClassPanel({ onAdd }: Props) {
 		//reset
 		setTitle("");
 		setProfessor("");
+		setSlot([emptyRow()]);
 	};
 
 	return (
@@ -79,20 +82,26 @@ export function AddClassPanel({ onAdd }: Props) {
 			</label>
 
 			<div>
-				<div>시간 (필수)</div>
+				<div>
+					<div>시간 (필수)</div>
+				</div>
 				{slot.map((t) => (
-					<div key={t.rowId}><div>
-						{DAYS.map((d) => (
-							<button
-								key={d}
-								type="button"
-								className={`tt-dayBtn ${t.day === d ? "is-active" : ""}`}
-								onClick={() => updateRow(t.rowId, {day: d})}
-							>
-								{DAY_LABELS_KO[d]}
-							</button>
-						))}
-					</div>
+					<div key={t.rowId}>
+						<div className="timeslot-delete">
+								<TiDelete onClick={() => (removeRow(t.rowId))}/>
+						</div>
+						<div>
+							{DAYS.map((d) => (
+								<button
+									key={d}
+									type="button"
+									className={`tt-dayBtn ${t.day === d ? "is-active" : ""}`}
+									onClick={() => updateRow(t.rowId, {day: d})}
+								>
+									{DAY_LABELS_KO[d]}
+								</button>
+							))}
+						</div>
 
 					<div>
 						<select
