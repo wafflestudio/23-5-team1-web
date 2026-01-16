@@ -80,7 +80,7 @@ export default function TimetablePage() {
 				</div>
 			</main>
 			{ !isClicked &&  <button type="button" className="tt-addButton" onClick={() => setIsClicked(true)}>  <SlArrowLeft /> 수업 추가</button>}
-			{ isClicked && <AddClassPanel onAdd={addCourse} year={year} semester={semester}/> }
+			{ isClicked && <AddClassPanel onAdd={addCourse} year={year} semester={semester} setIsClicked={setIsClicked}/> }
 		</div>
 	);
 }

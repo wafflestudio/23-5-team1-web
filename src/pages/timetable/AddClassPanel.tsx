@@ -3,17 +3,19 @@ import type { Course, Day, Semester, TimeSlot, SlotRow } from "../../util/types"
 import { DAY_LABELS_KO } from "../../util/types";
 import { buildTimeOptions, STEP_MIN } from "./time";
 import { TiDelete } from "react-icons/ti";
+import { SlArrowRight } from "react-icons/sl";
 import "./timetable.css";
 
 type Props = {
 	onAdd: (item: Course) => void;
 	year: number;
 	semester: Semester;
+	setIsClicked: (isClicked: boolean) => void;
 };
 
 const DAYS: Day[] = [0, 1, 2, 3, 4, 5, 6];
 
-export function AddClassPanel({ onAdd, year, semester }: Props) {
+export function AddClassPanel({ onAdd, year, semester, setIsClicked }: Props) {
 	const timeOptions = useMemo(() => buildTimeOptions(STEP_MIN), []);
 	const [title, setTitle] = useState("");
 	const [professor, setProfessor] = useState("");
@@ -62,6 +64,7 @@ export function AddClassPanel({ onAdd, year, semester }: Props) {
 
 	return (
 		<aside className="tt-panel">
+			<SlArrowRight onClick={() => setIsClicked(false)} />
 			<h2>새 수업 추가</h2>
 			<label>
 				<div>과목명 (필수)</div>
