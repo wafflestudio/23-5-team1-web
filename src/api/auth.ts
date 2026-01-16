@@ -19,12 +19,10 @@ export const updateUser = async (name?: string, profileImageUrl?: string) => {
 export const signup = async (
 	email: string,
 	password: string,
-	name: string | null,
 ) => {
-	const response = await api.post<AuthTokens>("/auth/signup", {
+	const response = await api.post<AuthTokens>("/auth/register", {
 		email,
 		password,
-		name,
 	});
 
 	TokenService.setTokens(response.data.accessToken, response.data.refreshToken);

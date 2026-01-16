@@ -58,7 +58,7 @@ export default function EmailSignUp() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (error.length === 0 && password.length > 0 && password === confirmPassword) {
-      signup(emailRef.current?.value || "", password, null).catch((err) => {
+      signup(emailRef.current?.value || "", password).catch((err) => {
         console.error("Signup failed:", err);
       });
       setSearchParams((prev) => {
