@@ -1,6 +1,6 @@
 import { useMemo } from "react";
-import type { Course, Day } from "../util/types";
-import { DAY_LABELS_KO } from "../util/types";
+import type { Course, Day } from "../../util/types";
+import { DAY_LABELS_KO } from "../../util/types";
 import { flattenToBlocks, type GridConfig } from "./layout";
 import { formatAmPmFromMinutes } from "./time";
 import "./timetable.css";
@@ -72,13 +72,11 @@ export function WeekGrid({ courses, config, onSelectClass }: Props) {
 }
 
 function DayColumn({
-	//day,
 	height,
 	blocks,
 	config,
 	onSelectClass,
 }: {
-	//day: Day;
 	height: number;
 	blocks: ReturnType<typeof flattenToBlocks>;
 	config: GridConfig;
@@ -108,11 +106,11 @@ function DayColumn({
 
 function GridLines({ height, cfg }: { height: number; cfg: GridConfig }) {
 	const stepPx = cfg.ppm * 30;
-	const count = Math.floor((height / stepPx) * 2);
+	const count = Math.floor(height/stepPx);
 	return (
 		<div className="tt-lines">
 			{Array.from({ length: count }).map((_, i) => (
-				<div key={i * stepPx} className="tt-line" style={{ top: i * 60 }} />
+				<div key={i * stepPx} className="tt-line" style={{ top: i * 30 * cfg.ppm }} />
 			))}
 		</div>
 	);

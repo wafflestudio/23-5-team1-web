@@ -3,6 +3,7 @@ import LoginHandler from "../auth/Login/ SocialLoginHandler";
 import Login from "../auth/Login/Login";
 import Home from "../pages/auth/Home";
 import EmailSignUp from "../pages/auth/Signup/EmailSignUp";
+import TimetablePage from "../pages/timetable/TimetablePage";
 
 export default function AppRoutes() {
 	return (
@@ -18,6 +19,8 @@ export default function AppRoutes() {
 				element={<LoginHandler provider="google" />}
 			/>
 			<Route path="/oauth/naver" element={<LoginHandler provider="naver" />} />
+
+			<Route path="/timetable" element={<TimetablePage />} />
 		</Routes>
 	);
 }

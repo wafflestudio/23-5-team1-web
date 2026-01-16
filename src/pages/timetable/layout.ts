@@ -1,4 +1,4 @@
-import type { Course, Day, TimeSlot } from "../util/types";
+import type { Course, Day, TimeSlot } from "../../util/types";
 
 export type GridConfig = {
 	startHour: number; // 화면 시작 시간

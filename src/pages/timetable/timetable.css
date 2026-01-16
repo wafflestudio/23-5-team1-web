@@ -1,9 +1,39 @@
 .tt-page {
 	display: grid;
-	grid-template-columns: 260px 1fr 360px;
+	position: relative;
 	height: 100vh;
 	background: #fff;
 }
+
+.tt-page--closed {
+	grid-template-columns: 260px 1fr;
+}
+
+.tt-page--open {
+	grid-template-columns: 260px 1fr 360px;
+}
+
+.tt-addButton {
+	position: fixed;
+	right: 100px;
+	top: 250px;
+	z-index: 1000;
+
+	font-weight: 500;
+	color: #e6e6e6;
+
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+
+	padding: 10px 12px;
+	border: none;
+	border-radius: 10px;
+	cursor: pointer;
+
+	background: #FF0031;
+	box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+	}
 
 .tt-leftSidebar {
 	border-right: 1px solid #eee;
@@ -33,9 +63,9 @@
 }
 
 .tt-title {
-	margin: 0;
+	margin: 0px 0px 0px 80px;
 	font-size: 24px;
-	font-weight: 700;
+	font-weight: 500;
 }
 
 .tt-content {
@@ -114,6 +144,11 @@
 	padding: 0;
 }
 
+.timeslot-delete {
+	display: flex;
+	justify-content: flex-end;
+}
+
 .tt-error {
 	margin-top: 8px;
 	font-size: 12px;
@@ -186,6 +221,7 @@
 .tt-days {
 	display: grid;
 	grid-template-columns: repeat(7, 1fr);
+	position: relative;
 }
 
 .tt-dayCol {
@@ -209,13 +245,13 @@
 
 .tt-block {
 	position: absolute;
-	left: 6px;
-	right: 6px;
+	display: grid;
+	grid-template-columns:  1fr;
+	padding: 8px;
 	border: none;
 	border-radius: 10px;
 	background: #d9d9d9;
 	color: #111;
-	padding: 8px;
 	text-align: left;
 	cursor: pointer;
 	overflow: hidden;
