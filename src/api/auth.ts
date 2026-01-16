@@ -8,9 +8,9 @@ export const getUser = async () => {
 	return response.data as User;
 };
 
-export const updateUser = async (name?: string, profileImageUrl?: string) => {
+export const updateUser = async (username?: string, profileImageUrl?: string) => {
 	const response = await api.patch("/users/me", {
-		name,
+		username,
 		profileImageUrl,
 	});
 	return response.data as User;

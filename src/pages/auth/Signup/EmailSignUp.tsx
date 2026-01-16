@@ -2,6 +2,7 @@ import axios from "axios";
 import type React from "react";
 import { useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+// 이후 AuthProvider 에서 useAuth로 수정해야 함 
 import { signup } from "../../../api/auth";
 import CompleteSignUp from "../OnBoarding/CompleteSignUp";
 import Onboarding from "../OnBoarding/Onboarding";
