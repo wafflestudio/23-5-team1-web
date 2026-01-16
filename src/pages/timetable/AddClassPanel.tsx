@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
 import type { Course, Day, Semester, TimeSlot, SlotRow } from "../../util/types";
 import { DAY_LABELS_KO } from "../../util/types";
 import { buildTimeOptions, STEP_MIN } from "./time";
@@ -41,20 +41,22 @@ export function AddClassPanel({ onAdd, year, semester, setIsClicked }: Props) {
 
 	const timeValid = (arr: boolean[]) => (arr.every((x) => x))
 
-	const nextId = 0;
+	const nextIdRef = useRef(0);
 
 	const handleSave = () => {
 		if (!valid) return;
 
 		const item: Course = {
-			id: nextId,
+			id: nextIdRef.current,
 			courseTitle: title.trim(),
 			instructor: professor.trim() || undefined,
-			year: year,
-			semester: semester,
-			slot: slot,
+			year,
+			semester,
+			slot,
 		};
+
 		onAdd(item);
+		nextIdRef.current += 1;
 
 		//reset
 		setTitle("");
@@ -66,7 +68,7 @@ export function AddClassPanel({ onAdd, year, semester, setIsClicked }: Props) {
 		<aside className="tt-panel">
 			<SlArrowRight onClick={() => setIsClicked(false)} />
 			<h2>새 수업 추가</h2>
-			<label>
+			<label className="tt-field input">
 				<div>과목명 (필수)</div>
 				<input
 					value={title}
@@ -75,7 +77,7 @@ export function AddClassPanel({ onAdd, year, semester, setIsClicked }: Props) {
 				/>
 			</label>
 
-			<label>
+			<label className="tt-field input">
 				<div>교수명 (선택)</div>
 				<input
 					value={professor}
@@ -93,7 +95,7 @@ export function AddClassPanel({ onAdd, year, semester, setIsClicked }: Props) {
 						<div className="timeslot-delete">
 								<TiDelete onClick={() => (removeRow(t.rowId))}/>
 						</div>
-						<div>
+						<div className="tt-dayButtons">
 							{DAYS.map((d) => (
 								<button
 									key={d}
@@ -106,30 +108,31 @@ export function AddClassPanel({ onAdd, year, semester, setIsClicked }: Props) {
 							))}
 						</div>
 
-					<div>
-						<select
-							value={t.startMin}
-							onChange={(e) => updateRow(t.rowId, {startMin: Number(e.target.value)})}
-						>
-							{timeOptions.map((o) => (
-								<option key={o.value} value={o.value}>
-									{o.label}
-								</option>
-							))}
-						</select>
-						<span className="tt-tilde">~</span>
+						<div className="tt-timeRange">
+							<select
+								value={t.startMin}
+								onChange={(e) => updateRow(t.rowId, {startMin: Number(e.target.value)})}
+							>
+								{timeOptions.map((o) => (
+									<option key={o.value} value={o.value}>
+										{o.label}
+									</option>
+								))}
+							</select>
+							<span className="tt-tilde">~</span>
 
-						<select
-							value={t.endMin}
-							onChange={(e) => updateRow(t.rowId, {endMin: Number(e.target.value)})}
-						>
-							{timeOptions.map((o) => (
-								<option key={o.value} value={o.value}>
-									{o.label}
-								</option>
-							))}
-						</select>
-					</div></div>
+							<select
+								value={t.endMin}
+								onChange={(e) => updateRow(t.rowId, {endMin: Number(e.target.value)})}
+							>
+								{timeOptions.map((o) => (
+									<option key={o.value} value={o.value}>
+										{o.label}
+									</option>
+								))}
+							</select>
+						</div>
+					</div>
 				))}
 
 				<button

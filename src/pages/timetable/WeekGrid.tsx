@@ -3,23 +3,25 @@ import type { Course, Day } from "../../util/types";
 import { DAY_LABELS_KO } from "../../util/types";
 import { flattenToBlocks, type GridConfig } from "./layout";
 import { formatAmPmFromMinutes } from "./time";
+import { MdCancel } from "react-icons/md";
 import "./timetable.css";
 
 type Props = {
 	courses: Course[];
 	config: GridConfig;
 	onSelectClass?: (id: number) => void;
+	removeCourse: (id: number) => void;
 };
 
 const Days: Day[] = [0, 1, 2, 3, 4, 5, 6];
 
-export function WeekGrid({ courses, config, onSelectClass }: Props) {
+export function WeekGrid({ courses, config, onSelectClass, removeCourse }: Props) {
 	const blocks = useMemo(
 		() => flattenToBlocks(courses, config),
 		[courses, config],
 	);
 	const totalHeight =
-		(config.endHour * 60 - config.startHour * 60) * config.ppm;
+		(config.endHour * 60 * config.ppm);
 
 	// 시간 라벨링(1시간 단위)
 	const hourMarks = useMemo(() => {
@@ -63,6 +65,7 @@ export function WeekGrid({ courses, config, onSelectClass }: Props) {
 							blocks={blocks.filter((b) => b.day === d)}
 							config={config}
 							onSelectClass={onSelectClass}
+							removeCourse={removeCourse}
 						/>
 					))}
 				</div>
@@ -76,11 +79,13 @@ function DayColumn({
 	blocks,
 	config,
 	onSelectClass,
+	removeCourse,
 }: {
 	height: number;
 	blocks: ReturnType<typeof flattenToBlocks>;
 	config: GridConfig;
 	onSelectClass?: (classId: number) => void;
+	removeCourse:  (id: number) => void;
 }) {
 	return (
 		<div>
@@ -93,6 +98,7 @@ function DayColumn({
 					onClick={() => onSelectClass?.(b.id)}
 					type="button"
 				>
+					<MdCancel className="tt-blockRemove" onClick={() => removeCourse(b.id)}/>
 					<div className="tt-blockTitle">{b.title}</div>
 					<div className="tt-blockTime">
 						{formatAmPmFromMinutes(b.startMin)} -{" "}

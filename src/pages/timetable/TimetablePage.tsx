@@ -23,8 +23,8 @@ export default function TimetablePage() {
 
 	const config: GridConfig = useMemo(
 		() => ({
-			startHour: 8,
-			endHour: 25,
+			startHour: 0,
+			endHour: 24,
 			ppm: 0.9,
 		}),
 		[],
@@ -46,6 +46,15 @@ export default function TimetablePage() {
 			[key]: [...(prev[key] ?? []), item],
 		}));
 		};
+
+	const removeCourse = (courseId: number) => {
+		setTables((prev) => ({
+			...prev,
+			[key]: (prev[key] ?? []).filter(
+				(course) => course.id !== courseId
+			),
+		}));
+	};
 
 	const [isClicked, setIsClicked] = useState(false);
 
@@ -76,7 +85,7 @@ export default function TimetablePage() {
 				</div>
 
 				<div>
-					<WeekGrid courses={courses} config={config} />
+					<WeekGrid courses={courses} config={config} removeCourse={removeCourse}/>
 				</div>
 			</main>
 			{ !isClicked &&  <button type="button" className="tt-addButton" onClick={() => setIsClicked(true)}>  <SlArrowLeft /> 수업 추가</button>}
