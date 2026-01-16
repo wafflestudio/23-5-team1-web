@@ -4,7 +4,7 @@ import { AddClassPanel } from "./AddClassPanel";
 import { type GridConfig, hasOverlap } from "./layout";
 import { WeekGrid } from "./WeekGrid";
 import "./timetable.css";
-import { Sidebar } from "../../util/Sidebar";
+import { Sidebar } from "../../widgets/Sidebar";
 import { SlArrowLeft } from "react-icons/sl";
 // import Toolbar from "../widgets/Toolbar";
 

@@ -139,6 +139,10 @@ export const Sidebar = () => {
 		}
 	};
 
+	const handleTimetableClick = () => {
+		navigate("/timetable");
+	}
+
 	if (isHidden) {
 		return (
 			<div className={styles.hiddenSidebar}>
@@ -293,14 +297,14 @@ export const Sidebar = () => {
 				/>
 				<span>찜한 행사</span>
 			</div>
-			<div className={styles.pageLink}>
+			<button type="button" className={styles.pageLink} onClick={() => handleTimetableClick()}>
 				<img
 					className={styles.icon}
 					src="/assets/timetable.svg"
 					alt="timetable icon"
 				/>
 				<span>시간표</span>
-			</div>
+			</button>
 		</div>
 	);
 };

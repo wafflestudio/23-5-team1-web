@@ -4,6 +4,7 @@ import Login from "../pages/auth/Login/Login";
 import LoginHandler from "../pages/auth/Login/SocialLoginHandler";
 import EmailSignUp from "../pages/auth/Signup/EmailSignUp";
 import CalendarView from "../pages/CalendarView";
+import TimetablePage from "../pages/timetable/TimetablePage";
 
 export default function AppRoutes() {
 	return (
@@ -22,6 +23,9 @@ export default function AppRoutes() {
 
 			{/* Main Feature page */}
 			<Route path="/main" element={<CalendarView />} />
+
+			{/* Timetable paage */}
+			<Route path="/timetable" element={<TimetablePage />} />
 		</Routes>
 	);
 }
