@@ -9,13 +9,13 @@ import {
 import type { Category } from "../util/types";
 
 interface FilterContextType {
-	globalStatus: Category | null;
-	globalOrg: Category | null;
-	globalCategory: Category | null;
+	globalStatus: Category[];
+	globalOrg: Category[];
+	globalCategory: Category[];
 
-	setGlobalStatus: Dispatch<SetStateAction<Category | null>>;
-	setGlobalOrg: Dispatch<SetStateAction<Category | null>>;
-	setGlobalCategory: Dispatch<SetStateAction<Category | null>>;
+	setGlobalStatus: Dispatch<SetStateAction<Category[]>>;
+	setGlobalOrg: Dispatch<SetStateAction<Category[]>>;
+	setGlobalCategory: Dispatch<SetStateAction<Category[]>>;
 }
 
 const FilterContext = createContext<FilterContextType | undefined>(undefined);
@@ -25,9 +25,9 @@ export const FilterContextProvider = ({
 }: {
 	children: ReactNode;
 }) => {
-	const [globalStatus, setGlobalStatus] = useState<Category | null>(null);
-	const [globalOrg, setGlobalOrg] = useState<Category | null>(null);
-	const [globalCategory, setGlobalCategory] = useState<Category | null>(null);
+	const [globalStatus, setGlobalStatus] = useState<Category[]>([]);
+	const [globalOrg, setGlobalOrg] = useState<Category[]>([]);
+	const [globalCategory, setGlobalCategory] = useState<Category[]>([]);
 
 	return (
 		<FilterContext.Provider

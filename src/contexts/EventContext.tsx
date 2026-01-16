@@ -22,26 +22,13 @@ import type {
 	DayViewParams,
 	Event,
 	EventDetail,
+	FetchDayEventArgs,
+	FetchMonthEventArgs,
 	MonthViewParams,
 	MonthViewResponse,
 	SearchParams,
 	SearchResult,
 } from "../util/types";
-
-interface FetchMonthEventArgs {
-	start?: Date; // optional - default to today
-	statusId?: number[];
-	eventTypeId?: number[];
-	orgId?: number[];
-}
-interface FetchDayEventArgs {
-	date?: Date;
-	page?: number;
-	size?: number;
-	statusId?: number[];
-	eventTypeId?: number[];
-	orgId?: number[];
-}
 
 interface EventContextType {
 	monthViewData: MonthViewResponse | null;
@@ -65,7 +52,6 @@ interface EventContextType {
 	fetchEventById: (id: number) => Promise<EventDetail | null>;
 	refreshMetadata: () => Promise<void>;
 }
-
 const EventContext = createContext<EventContextType | undefined>(undefined);
 
 export const EventProvider: React.FC<{ children: ReactNode }> = ({
@@ -93,6 +79,7 @@ export const EventProvider: React.FC<{ children: ReactNode }> = ({
 	const refreshMetadata = useCallback(async () => {
 		setIsLoadingMeta(true);
 		try {
+			console.log("🔵 3. API 요청 직전");
 			const [groupsData, orgsData] = await Promise.all([
 				getCategoryGroups(),
 				getOrganizations(),

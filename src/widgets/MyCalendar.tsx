@@ -78,6 +78,39 @@ export const MyCalendar = ({
 		});
 	}, [events, currentView]);
 
+	const formats = useMemo(
+		() => ({
+			monthHeaderFormat: "yyyy년 M월",
+			dayHeaderFormat: "M월 d일 EEE",
+			weekdayFormat: (date: Date) => {
+				const days = ["일", "월", "화", "수", "목", "금", "토"];
+				return days[date.getDay()];
+			},
+			dayRangeHeaderFormat: ({ start, end }: { start: Date; end: Date }) => {
+				const startDate = start.toLocaleDateString("ko-KR", {
+					month: "long",
+					day: "numeric",
+				});
+				const endDate = end.toLocaleDateString("ko-KR", {
+					month: "long",
+					day: "numeric",
+				});
+				return `${startDate} – ${endDate}`;
+			},
+			timeGutterFormat: "a h:mm",
+			eventTimeRangeFormat: ({ start, end }: { start: Date; end: Date }) => {
+				return `${start.toLocaleTimeString("ko-KR", {
+					hour: "numeric",
+					minute: "2-digit",
+				})} – ${end.toLocaleTimeString("ko-KR", {
+					hour: "numeric",
+					minute: "2-digit",
+				})}`;
+			},
+		}),
+		[],
+	);
+
 	return (
 		<div className={styles.calendarContainer}>
 			<Calendar
@@ -85,7 +118,7 @@ export const MyCalendar = ({
 				events={CALENDER_EVENTS}
 				startAccessor="start"
 				endAccessor="end"
-				style={{ height: 800 }}
+				style={{ height: "100%" }}
 				// custom toolbar
 				components={{
 					toolbar: Toolbar,
@@ -99,9 +132,7 @@ export const MyCalendar = ({
 				views={[Views.MONTH, Views.WEEK, Views.DAY]}
 				defaultView={Views.MONTH}
 				// 한국어 형식
-				formats={{
-					monthHeaderFormat: "yyyy년 M월",
-				}}
+				formats={formats}
 				// 더보기 눌렀을 때 popup 나타나기 X, 사이드뷰 나타남
 				popup={false}
 				onDrillDown={onShowMoreClick}

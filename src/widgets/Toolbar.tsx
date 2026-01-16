@@ -33,7 +33,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
 					<button
 						type="button"
 						onClick={() => onView(Views.WEEK)}
-						className={`${styles.toggleBtn} ${view === Views.MONTH ? styles.toggleBtnActive : ""}`}
+						className={`${styles.toggleBtn} ${view === Views.WEEK ? styles.toggleBtnActive : ""}`}
 					>
 						주
 					</button>
@@ -64,24 +64,24 @@ const Toolbar: React.FC<ToolbarProps> = ({
 							className={styles.navIconBtn}
 							onClick={() => onNavigate("PREV")}
 						>
-							&lt; {/* < */}
+							&lt;
 						</button>
 						<button
 							type="button"
 							className={styles.navIconBtn}
 							onClick={() => onNavigate("NEXT")}
 						>
-							&gt; {/* > */}
+							&gt;
 						</button>
 					</div>
 				</div>
 
 				<div className={styles.rightGroup}>
-					<IoIosSearch color="rgba(130, 130, 130, 1)" />
+					<IoIosSearch size={20} color="rgba(130, 130, 130, 1)" />
 					<button type="button" className={styles.profileButton}>
 						<img
 							alt="user profile"
-							src={user?.profileImageUrl || "../assets/defaultProfile.png"}
+							src={user?.profileImageUrl || "/assets/defaultProfile.png"}
 						/>
 					</button>
 				</div>

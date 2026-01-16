@@ -85,6 +85,7 @@ export const getCategoryGroups = async () => {
 	const res = await api.get<CategoryGroupWithCategories[]>(
 		"/category-groups/with-categories",
 	);
+
 	return res.data;
 };
 
