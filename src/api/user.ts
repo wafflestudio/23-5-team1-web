@@ -23,19 +23,18 @@ export const removeBookmark = async (eventId: number) => {
 
 // --- Interests ---
 export const getInterestCategories = async () => {
-	const res = await api.get<Category[]>("/users/me/interestCategories");
+	const res = await api.get<Category[]>("/users/me/interest-categories");
 	return res.data;
 };
 
-export const addInterestCategory = async (
-	categoryId: number,
-	sortOrder: number,
+export const addInterestCategories = async (
+  items: { categoryId: number; priority: number }[],
 ) => {
-	await api.post("/users/me/interestCategories", { categoryId, sortOrder });
+  return api.put("/users/me/interest-categories", { items });
 };
 
 export const removeInterestCategory = async (categoryId: number) => {
-	await api.delete(`/users/me/interestCategories/${categoryId}`);
+	await api.delete(`/users/me/interest-categories/${categoryId}`);
 };
 
 export const addMemo = async (eventId: number, content: string) => {

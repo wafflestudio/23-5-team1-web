@@ -6,6 +6,8 @@ import CompleteSignUp from "../OnBoarding/CompleteSignUp";
 import Onboarding from "../OnBoarding/Onboarding";
 import ProfileSetting from "../OnBoarding/ProfileSetting";
 import styles from "./EmailSignUp.module.css";
+import axios from "axios";
+
 
 export default function EmailSignUp() {
   const errorStatements = [
@@ -54,22 +56,56 @@ export default function EmailSignUp() {
     if (password !== value) setPwConfirmError("비밀번호가 일치하지 않습니다.");
     else setPwConfirmError("");
   };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (error.length === 0 && password.length > 0 && password === confirmPassword) {
-      signup(emailRef.current?.value || "", password).catch((err) => {
-        console.error("Signup failed:", err);
-      });
+
+    if (error.length > 0 || password.length === 0 || password !== confirmPassword) {
+      alert("입력한 정보를 다시 확인해주세요.");
+      return;
+    }
+
+    try {
+      await signup(emailRef.current?.value || "", password);
+
       setSearchParams((prev) => {
         const next = new URLSearchParams(prev);
         next.set("step", "profile");
         return next;
       });
-    } else {
-      alert("입력한 정보를 다시 확인해주세요.");
+
+    } catch (err: unknown) {
+      console.error("Signup failed:", err);
+
+      if (axios.isAxiosError(err)) {
+        const status = err.response?.status;
+        const message = err.response?.data?.message;
+
+        switch (status) {
+          case 400:
+            alert(message ?? "입력 형식이 올바르지 않습니다.");
+            break;
+
+          case 409:
+            alert("이미 가입된 이메일입니다.");
+            break;
+
+          case 422:
+            alert("비밀번호 조건을 확인해주세요.");
+            break;
+
+          case 500:
+            alert("서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+            break;
+
+          default:
+            alert("회원가입에 실패했습니다.");
+        }
+      } else {
+        alert("네트워크 오류가 발생했습니다.");
+      }
     }
   };
+
 
   const pwHasError = error.length > 0;
   const pwConfirmHasError = !!pwConfirmError;

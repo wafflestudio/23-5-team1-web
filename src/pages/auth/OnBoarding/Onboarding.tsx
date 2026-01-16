@@ -1,28 +1,30 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { getCategoryGroups, getOrganizations } from "../../../api/event";
-import { addInterestCategory } from "../../../api/user";
+import { addInterestCategories } from "../../../api/user";
 import type { Category, CategoryGroup } from "../../../util/types";
 
 export default function Onboarding() {
 	const [, setSearchParams] = useSearchParams();
 
 	const handleSubmit = async () => {
-		try {
-			await Promise.all(
-				selectedPreferences.map((preference, index) => 
-					addInterestCategory(preference.id, index + 1)
-				)
-			);
-			setSearchParams((prev) => {
-				const next = new URLSearchParams(prev);
-				next.set("step", "complete");
-				return next;
-			});
-		} catch (e) {
-			console.error(e);
-			alert("저장에 실패했습니다. 잠시 후 다시 시도해주세요.");
-		}
+	try {
+		const items = selectedPreferences.map((p, index) => ({
+		categoryId: p.id,
+		priority: index + 1,
+		}));
+
+		await addInterestCategories(items);
+
+		setSearchParams((prev) => {
+		const next = new URLSearchParams(prev);
+		next.set("step", "complete");
+		return next;
+		});
+	} catch (e) {
+		console.error(e);
+		alert("저장에 실패했습니다. 잠시 후 다시 시도해주세요.");
+	}
 	};
 
 	const [categories, setCategories] = useState<Category[]>([]);

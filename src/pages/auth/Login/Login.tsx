@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
 import { login } from "../../../api/auth";
 import "./Login.css";
 
@@ -7,6 +7,8 @@ export default function Login() {
 	const [email, setEmail] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
 	const [check, setCheck] = useState<boolean>(true);
+
+	const navigate = useNavigate();
 
 	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
@@ -16,6 +18,7 @@ export default function Login() {
 			alert("비밀번호를 입력하세요");
 		} else {
 			login(email, password).catch(() => setCheck(false));
+			navigate("/auth/complete");
 		}
 	};
 
