@@ -269,7 +269,7 @@
 	left: 0;
 	right: 0;
 	height: 1px;
-	background: #f2f2f2;
+	background: rgba(242, 242, 242, 0.2);
 }
 
 .tt-block {
