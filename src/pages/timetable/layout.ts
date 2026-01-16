@@ -18,12 +18,12 @@ export type PositionedBlock = {
 	endMin: number;
 };
 
-export function minutesToTop(min: number, cfg: GridConfig) {
+function minutesToTop(min: number, cfg: GridConfig) {
 	const startMin = cfg.startHour * 60;
 	return (min - startMin) * cfg.ppm;
 }
 
-export function durationToHeight(
+function durationToHeight(
 	startMin: number,
 	endMin: number,
 	cfg: GridConfig,

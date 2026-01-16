@@ -1,24 +1,24 @@
 export const STEP_MIN = 5;
 
-export function clamp(n: number, min: number, max: number) {
-	return Math.max(min, Math.min(n, max));
-}
+// function clamp(n: number, min: number, max: number) {
+// 	return Math.max(min, Math.min(n, max));
+// }
 
-export function snapToStep(min: number, step = STEP_MIN) {
-	return Math.round(min / step) * step;
-}
+// function snapToStep(min: number, step = STEP_MIN) {
+// 	return Math.round(min / step) * step;
+// }
 
-export function hhmmToMinutes(hh: number, mm: number) {
-	return hh * 60 + mm;
-}
+// function hhmmToMinutes(hh: number, mm: number) {
+// 	return hh * 60 + mm;
+// }
 
-export function minutesToHHMM(min: number) {
+function minutesToHHMM(min: number) {
 	const hh = Math.floor(min / 60);
 	const mm = min % 60;
 	return { hh, mm };
 }
 
-export function pad2(n: number) {
+function pad2(n: number) {
 	// 두 자리 문자열로 변환
 	return String(n).padStart(2, "0");
 }
