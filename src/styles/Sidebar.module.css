@@ -1,7 +1,14 @@
+.body {
+  height: 100vh;
+}
+
 .sidebarContainer {
   width: 256px;
   height: 100vh;
   overflow-y: auto;
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 
   display: flex;
   flex-direction: column;
@@ -12,6 +19,14 @@
   border-right: 1px solid #eee;
   font-family: -apple-system, BlinkMacSystemFont, "Pretendard",
     "Apple SD Gothic Neo", sans-serif;
+}
+
+.sidebarContainer::-webkit-scrollbar {
+  display: none;
+}
+
+body::-webkit-scrollbar {
+  display: none;
 }
 
 /* -- for hidden state -- */
@@ -219,12 +234,12 @@
   padding: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
   align-items: center;
+  justify-content: center;
 }
 
 .excludeInput {
   border: none;
   background: transparent;
-  flex-grow: 1;
   padding: 5px 10px;
   outline: none;
   font-size: 0.9rem;
@@ -236,8 +251,8 @@
   font-weight: 600;
   color: #555;
   cursor: pointer;
-  padding: 5px 10px;
   font-size: 0.9rem;
+  min-width: 50px;
 }
 
 .tagContainer {
