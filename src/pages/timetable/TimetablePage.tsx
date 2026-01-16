@@ -1,7 +1,5 @@
-// 시간 정보 -> UTC 시간으로 변환. Date 객체 활용
-
 import { useMemo, useState } from "react";
-import type { Course, TimeSlot } from "../../util/types";
+import type { Course, Semester } from "../../util/types";
 import { AddClassPanel } from "./AddClassPanel";
 import { type GridConfig, hasOverlap } from "./layout";
 import { WeekGrid } from "./WeekGrid";
@@ -10,8 +8,18 @@ import { Sidebar } from "../../util/Sidebar";
 import { SlArrowLeft } from "react-icons/sl";
 // import Toolbar from "../widgets/Toolbar";
 
+type TTKey = `${number}-${Semester}`;
+type Tables = Partial<Record<TTKey, Course[]>>;
+
 export default function TimetablePage() {
-	const [course, setCourse] = useState<Course[]>([]);
+
+	const now = new Date();
+	const years =  Array.from({ length: 10 }, (_, i) => now.getFullYear() - i);
+	const semesters : {id: Semester, label: string}[] = [{id : "SPRING", label: "1학기"}, {id:"SUMMER", label: "여름 학기"}, {id: "FALL", label: "2학기"}, {id: "WINTER", label: "겨울 계절"}];
+
+	const [year, setYear] = useState<number>(now.getFullYear());
+	const [semester, setSemester] = useState<Semester>("SPRING");
+	const [tables, setTables] = useState<Tables>({});
 
 	const config: GridConfig = useMemo(
 		() => ({
@@ -22,25 +30,24 @@ export default function TimetablePage() {
 		[],
 	);
 
-	const allSlots: TimeSlot[] = useMemo(
-		() => course.flatMap((c) => c.slot),
-		[course],
-	);
+	// 추후 백엔드 연결 필요
+	const key = `${year}-${semester}` as TTKey;
+	const courses = tables[key] ?? [];
+	const allSlots = courses.flatMap((c) => c.slot)
 
 	const addCourse = (item: Course) => {
-		item.slot.forEach((time) => {
-			if (hasOverlap(allSlots, time)) {
-				alert("겹치는 수업은 추가할 수 없습니다. ");
-				return;
-			}
-			setCourse((prev) => [...prev, item]);
-		});
-	};
+		if (item.slot.some((t) => hasOverlap(allSlots, t))) {
+			alert("겹치는 수업은 추가할 수 없습니다.");
+			return;
+		}
+
+		setTables((prev) => ({
+			...prev,
+			[key]: [...(prev[key] ?? []), item],
+		}));
+		};
 
 	const [isClicked, setIsClicked] = useState(false);
-
-	// 시간 설정 관련 논의 필요
-	const now = new Date();
 
 	return (
 		<div className={`tt-page ${isClicked ? "tt-page--open" : "tt-page--closed"}`}>
@@ -51,15 +58,29 @@ export default function TimetablePage() {
 					<h1>
 						{now.getFullYear()}년 {now.getMonth() + 1}월 {now.getDate()}일
 					</h1>
+					<select value={year} onChange={(e) => setYear(Number(e.target.value))}>
+						{years.map((y) => (
+							<option key={y} value={y}>
+								{y}
+							</option>
+						))}
+					</select>
+					<select value={semester} onChange={(e) => setSemester(e.target.value as Semester)}>
+						{semesters.map((s) => (
+							<option key={s.id} value={s.id}>
+								{s.label}
+							</option>
+						))}
+					</select>
 					{/* < Toolbar/> */}
 				</div>
 
 				<div>
-					<WeekGrid courses={course} config={config} />
+					<WeekGrid courses={courses} config={config} />
 				</div>
 			</main>
 			{ !isClicked &&  <button type="button" className="tt-addButton" onClick={() => setIsClicked(true)}>  <SlArrowLeft /> 수업 추가</button>}
-			{ isClicked && <AddClassPanel onAdd={addCourse} existingSlots={allSlots} /> }
+			{ isClicked && <AddClassPanel onAdd={addCourse} year={year} semester={semester}/> }
 		</div>
 	);
 }

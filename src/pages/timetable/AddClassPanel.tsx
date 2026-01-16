@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import type { Course, Day, TimeSlot } from "../../util/types";
+import type { Course, Day, Semester, TimeSlot, SlotRow } from "../../util/types";
 import { DAY_LABELS_KO } from "../../util/types";
 import { buildTimeOptions, STEP_MIN } from "./time";
 import { TiDelete } from "react-icons/ti";
@@ -7,13 +7,13 @@ import "./timetable.css";
 
 type Props = {
 	onAdd: (item: Course) => void;
-	existingSlots: TimeSlot[];
+	year: number;
+	semester: Semester;
 };
-type SlotRow =TimeSlot & {rowId: string};
 
 const DAYS: Day[] = [0, 1, 2, 3, 4, 5, 6];
 
-export function AddClassPanel({ onAdd }: Props) {
+export function AddClassPanel({ onAdd, year, semester }: Props) {
 	const timeOptions = useMemo(() => buildTimeOptions(STEP_MIN), []);
 	const [title, setTitle] = useState("");
 	const [professor, setProfessor] = useState("");
@@ -48,8 +48,8 @@ export function AddClassPanel({ onAdd }: Props) {
 			id: nextId,
 			courseTitle: title.trim(),
 			instructor: professor.trim() || undefined,
-			year: 2025, // 현재 시간으로 동기화 필요
-			semester: "SPRING", // 현재 학기로 동기화 필요
+			year: year,
+			semester: semester,
 			slot: slot,
 		};
 		onAdd(item);

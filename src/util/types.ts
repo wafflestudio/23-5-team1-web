@@ -95,7 +95,7 @@ export interface Memo {
 
 // 시간표 전체
 
-type Semester = "SPRING" | "SUMMER" | "FALL" | "WINTER";
+export type Semester = "SPRING" | "SUMMER" | "FALL" | "WINTER";
 
 export interface Course {
 	year: number;
@@ -111,6 +111,8 @@ export interface Course {
 	credit?: number;
 	instructor?: string;
 }
+
+export type SlotRow =TimeSlot & {rowId: string};
 
 export type Day = 0 | 1 | 2 | 3 | 4 | 5 | 6; // 0: 일요일, 1: 월요일, ..., 6: 토요일
 
