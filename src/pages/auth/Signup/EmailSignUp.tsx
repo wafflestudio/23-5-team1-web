@@ -5,108 +5,127 @@ import { signup } from "../../../api/auth";
 import CompleteSignUp from "../OnBoarding/CompleteSignUp";
 import Onboarding from "../OnBoarding/Onboarding";
 import ProfileSetting from "../OnBoarding/ProfileSetting";
+import styles from "./EmailSignUp.module.css";
 
 export default function EmailSignUp() {
-	const errorStatements = [
-		"비밀번호는 8자 이상이어야 합니다.",
-		"영문, 숫자, 특수문자를 포함해 주세요.",
-		"비밀번호에 공백을 사용할 수 없습니다.",
-	];
+  const errorStatements = [
+    "비밀번호는 8자 이상이어야 합니다.",
+    "영문, 숫자, 특수문자를 포함해 주세요.",
+    "비밀번호에 공백을 사용할 수 없습니다.",
+  ];
 
-	const [password, setPassword] = useState("");
-	const [confirmPassword, setConfirmPassword] = useState("");
-	const emailRef = useRef<HTMLInputElement>(null);
-	const [error, setError] = useState<string[]>([]);
-	const [pwConfirmError, setPwConfirmError] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const emailRef = useRef<HTMLInputElement>(null);
+  const [error, setError] = useState<string[]>([]);
+  const [pwConfirmError, setPwConfirmError] = useState("");
 
-	const [searchParams, setSearchParams] = useSearchParams();
-	const step = (searchParams.get("step") as string) ?? "email";
+  const [searchParams, setSearchParams] = useSearchParams();
+  const step = (searchParams.get("step") as string) ?? "email";
 
-	switch (step) {
-		case "profile":
-			return <ProfileSetting />;
-		case "onboarding":
-			return <Onboarding />;
-		case "complete":
-			return <CompleteSignUp />;
-	}
+  switch (step) {
+    case "profile":
+      return <ProfileSetting />;
+    case "onboarding":
+      return <Onboarding />;
+    case "complete":
+      return <CompleteSignUp />;
+  }
 
-	const handlePwError = (value: string) => {
-		const nextErrors: string[] = [];
+  const handlePwError = (value: string) => {
+    const nextErrors: string[] = [];
 
-		const hasLetter = /[A-Za-z]/.test(value);
-		const hasNumber = /[0-9]/.test(value);
-		const hasSpecial = /[^A-Za-z0-9\s]/.test(value);
+    const hasLetter = /[A-Za-z]/.test(value);
+    const hasNumber = /[0-9]/.test(value);
+    const hasSpecial = /[^A-Za-z0-9\s]/.test(value);
 
-		if (value.length < 8) nextErrors.push(errorStatements[0]);
-		if (!hasLetter || !hasNumber || !hasSpecial)
-			nextErrors.push(errorStatements[1]);
-		if (/\s/.test(value)) nextErrors.push(errorStatements[2]);
+    if (value.length < 8) nextErrors.push(errorStatements[0]);
+    if (!hasLetter || !hasNumber || !hasSpecial) nextErrors.push(errorStatements[1]);
+    if (/\s/.test(value)) nextErrors.push(errorStatements[2]);
 
-		setError(nextErrors);
-		setPassword(value);
-		setConfirmPassword("");
-		setPwConfirmError("");
-	};
+    setError(nextErrors);
+    setPassword(value);
+    setConfirmPassword("");
+    setPwConfirmError("");
+  };
 
-	const handlePwConfirmChange = (value: string) => {
-		setConfirmPassword(value);
-		if (password !== value) setPwConfirmError("비밀번호가 일치하지 않습니다.");
-		else setPwConfirmError("");
-	};
+  const handlePwConfirmChange = (value: string) => {
+    setConfirmPassword(value);
+    if (password !== value) setPwConfirmError("비밀번호가 일치하지 않습니다.");
+    else setPwConfirmError("");
+  };
 
-	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-		if (
-			error.length === 0 &&
-			password.length > 0 &&
-			password === confirmPassword
-		) {
-			signup(emailRef.current?.value || "", password, null).catch((err) => {
-				console.error("Signup failed:", err);
-			});
-			setSearchParams((prev) => {
-				const next = new URLSearchParams(prev);
-				next.set("step", "profile");
-				return next;
-			});
-		} else {
-			alert("입력한 정보를 다시 확인해주세요.");
-		}
-	};
-	return (
-		<>
-			<div>
-				<h2>계정 생성</h2>
-				<p>이메일과 비밀번호를 설정해주세요.</p>
-			</div>
-			<form onSubmit={handleSubmit}>
-				<input
-					type="email"
-					required
-					placeholder="email.snu.ac.kr"
-					ref={emailRef}
-				></input>
-				<input
-					type="password"
-					required
-					placeholder="비밀번호"
-					value={password}
-					onChange={(e) => handlePwError(e.target.value)}
-				></input>
-				{error?.map((err) => (
-					<p key={err}>{err}</p>
-				))}
-				<input
-					type="password"
-					required
-					placeholder="비밀번호 확인"
-					value={confirmPassword}
-					onChange={(e) => handlePwConfirmChange(e.target.value)}
-				></input>
-				{pwConfirmError && <p>{pwConfirmError}</p>}
-				<button type="submit">계정 생성</button>
-			</form>
-		</>
-	);
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (error.length === 0 && password.length > 0 && password === confirmPassword) {
+      signup(emailRef.current?.value || "", password, null).catch((err) => {
+        console.error("Signup failed:", err);
+      });
+      setSearchParams((prev) => {
+        const next = new URLSearchParams(prev);
+        next.set("step", "profile");
+        return next;
+      });
+    } else {
+      alert("입력한 정보를 다시 확인해주세요.");
+    }
+  };
+
+  const pwHasError = error.length > 0;
+  const pwConfirmHasError = !!pwConfirmError;
+
+  return (
+    <div className={styles.page}>
+      <div className={styles.box}>
+        <div className={styles.header}>
+          <h2 className={styles.title}>계정 생성</h2>
+          <p className={styles.subtitle}>이메일과 비밀번호를 설정해주세요</p>
+        </div>
+
+        <form className={styles.form} onSubmit={handleSubmit}>
+          <input
+            className={styles.input}
+            type="email"
+            required
+            placeholder="email@snu.ac.kr"
+            ref={emailRef}
+          />
+
+          <input
+            className={`${styles.input} ${pwHasError ? styles.inputError : ""}`}
+            type="password"
+            required
+            placeholder="비밀번호"
+            value={password}
+            onChange={(e) => handlePwError(e.target.value)}
+          />
+
+          {error?.map((err) => (
+            <div key={err} className={styles.errorPill} role="alert">
+              {err}
+            </div>
+          ))}
+
+          <input
+            className={`${styles.input} ${pwConfirmHasError ? styles.inputError : ""}`}
+            type="password"
+            required
+            placeholder="비밀번호 확인"
+            value={confirmPassword}
+            onChange={(e) => handlePwConfirmChange(e.target.value)}
+          />
+
+          {pwConfirmError && (
+            <div className={styles.errorPill} role="alert">
+              {pwConfirmError}
+            </div>
+          )}
+
+          <button className={styles.submit} type="submit">
+            계정 생성
+          </button>
+        </form>
+      </div>
+    </div>
+  );
 }
