@@ -1,13 +1,19 @@
-import { type View, Views } from "react-big-calendar";
+import {
+	Navigate,
+	type NavigateAction,
+	type View,
+	Views,
+} from "react-big-calendar";
 import { IoIosSearch } from "react-icons/io";
 import { useAuth } from "../contexts/AuthProvider";
 import styles from "../styles/Toolbar.module.css";
 
 interface ToolbarProps {
 	view: View;
-	onNavigate: (action: "PREV" | "NEXT" | "TODAY") => void;
+	onNavigate: (action: NavigateAction) => void;
 	onView: (view: View) => void;
 	label: string;
+	date: Date;
 }
 
 const Toolbar: React.FC<ToolbarProps> = ({
@@ -55,21 +61,21 @@ const Toolbar: React.FC<ToolbarProps> = ({
 						<button
 							type="button"
 							className={styles.todayBtn}
-							onClick={() => onNavigate("TODAY")}
+							onClick={() => onNavigate(Navigate.TODAY)}
 						>
 							오늘
 						</button>
 						<button
 							type="button"
 							className={styles.navIconBtn}
-							onClick={() => onNavigate("PREV")}
+							onClick={() => onNavigate(Navigate.PREVIOUS)}
 						>
 							&lt;
 						</button>
 						<button
 							type="button"
 							className={styles.navIconBtn}
-							onClick={() => onNavigate("NEXT")}
+							onClick={() => onNavigate(Navigate.NEXT)}
 						>
 							&gt;
 						</button>

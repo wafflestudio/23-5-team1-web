@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
-import LoginHandler from "../auth/Login/ SocialLoginHandler";
-import Login from "../auth/Login/Login";
 import Home from "../pages/auth/Home";
+import Login from "../pages/auth/Login/Login";
+import LoginHandler from "../pages/auth/Login/SocialLoginHandler";
 import EmailSignUp from "../pages/auth/Signup/EmailSignUp";
 import CalendarView from "../pages/CalendarView";
 

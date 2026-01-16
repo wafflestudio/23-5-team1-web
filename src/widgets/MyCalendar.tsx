@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Calendar, type View, Views } from "react-big-calendar";
 import styles from "../styles/Calendar.module.css";
 import { localizer } from "../util/Calendar/calendarLocalizer";
@@ -52,7 +52,12 @@ export const MyCalendar = ({
 	onShowMoreClick,
 	onSelectEvent,
 }: MyCalendarProps) => {
+	const [date, setDate] = useState(new Date());
 	const [currentView, setCurrentView] = useState<View>(Views.MONTH);
+
+	const onNavigate = useCallback((newDate: Date) => {
+		setDate(newDate);
+	}, []);
 
 	const CALENDER_EVENTS = useMemo(() => {
 		return events.map((event: Event) => {
@@ -126,10 +131,12 @@ export const MyCalendar = ({
 				}}
 				// style function
 				eventPropGetter={eventPropGetter}
+				date={date}
 				// view setup
 				view={currentView}
 				onView={(view) => setCurrentView(view)}
 				views={[Views.MONTH, Views.WEEK, Views.DAY]}
+				onNavigate={onNavigate}
 				defaultView={Views.MONTH}
 				// 한국어 형식
 				formats={formats}
