@@ -41,7 +41,11 @@ export default function ProfileSetting() {
 				<form className={styles.form} onSubmit={handleSubmit}>
 					{/* 이미지 클릭하면 파일 선택 */}
 					<label className={styles.avatarWrap} htmlFor="profile-image">
-						<img className={styles.avatar} src={previewUrl} alt="프로필 사진 미리보기" />
+						<img
+							className={styles.avatar}
+							src={previewUrl}
+							alt="프로필 사진 미리보기"
+						/>
 					</label>
 
 					<input
@@ -52,7 +56,12 @@ export default function ProfileSetting() {
 						onChange={handleImageChange}
 					/>
 
-					<input className={styles.input} type="text" placeholder="푱푱한 토끼" ref={name} />
+					<input
+						className={styles.input}
+						type="text"
+						placeholder="푱푱한 토끼"
+						ref={name}
+					/>
 
 					<button className={styles.submit} type="submit">
 						닉네임 설정하기

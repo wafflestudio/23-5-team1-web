@@ -8,27 +8,29 @@ export default function Onboarding() {
 	const [, setSearchParams] = useSearchParams();
 
 	const handleSubmit = async () => {
-	try {
-		const items = selectedPreferences.map((p, index) => ({
-		categoryId: p.id,
-		priority: index + 1,
-		}));
+		try {
+			const items = selectedPreferences.map((p, index) => ({
+				categoryId: p.id,
+				priority: index + 1,
+			}));
 
-		await addInterestCategories(items);
+			await addInterestCategories(items);
 
-		setSearchParams((prev) => {
-		const next = new URLSearchParams(prev);
-		next.set("step", "complete");
-		return next;
-		});
-	} catch (e) {
-		console.error(e);
-		alert("저장에 실패했습니다. 잠시 후 다시 시도해주세요.");
-	}
+			setSearchParams((prev) => {
+				const next = new URLSearchParams(prev);
+				next.set("step", "complete");
+				return next;
+			});
+		} catch (e) {
+			console.error(e);
+			alert("저장에 실패했습니다. 잠시 후 다시 시도해주세요.");
+		}
 	};
 
 	const [categories, setCategories] = useState<Category[]>([]);
-	const [selectedPreferences, setSelectedPreferences] = useState<CategoryGroup[]>([]);
+	const [selectedPreferences, setSelectedPreferences] = useState<
+		CategoryGroup[]
+	>([]);
 	const [organizations, setOrganizations] = useState<Category[] | null>(null);
 
 	useEffect(() => {
@@ -79,7 +81,9 @@ export default function Onboarding() {
 				<h2>카테고리</h2>
 				<div>
 					{categories.map((category) => {
-						const checked = selectedPreferences.some((p) => p.id === category.id);
+						const checked = selectedPreferences.some(
+							(p) => p.id === category.id,
+						);
 						const id = `category-${category.id}`;
 
 						return (

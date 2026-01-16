@@ -23,11 +23,7 @@ function minutesToTop(min: number, cfg: GridConfig) {
 	return (min - startMin) * cfg.ppm;
 }
 
-function durationToHeight(
-	startMin: number,
-	endMin: number,
-	cfg: GridConfig,
-) {
+function durationToHeight(startMin: number, endMin: number, cfg: GridConfig) {
 	return (endMin - startMin) * cfg.ppm;
 }
 

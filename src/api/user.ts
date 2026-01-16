@@ -28,9 +28,9 @@ export const getInterestCategories = async () => {
 };
 
 export const addInterestCategories = async (
-  items: { categoryId: number; priority: number }[],
+	items: { categoryId: number; priority: number }[],
 ) => {
-  return api.put("/users/me/interest-categories", { items });
+	return api.put("/users/me/interest-categories", { items });
 };
 
 export const removeInterestCategory = async (categoryId: number) => {

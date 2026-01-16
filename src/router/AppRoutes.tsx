@@ -2,10 +2,10 @@ import { Route, Routes } from "react-router-dom";
 import Home from "../pages/auth/Home";
 import Login from "../pages/auth/Login/Login";
 import LoginHandler from "../pages/auth/Login/SocialLoginHandler";
+import CompleteSignUp from "../pages/auth/OnBoarding/CompleteSignUp";
 import EmailSignUp from "../pages/auth/Signup/EmailSignUp";
 import CalendarView from "../pages/CalendarView";
 import TimetablePage from "../pages/timetable/TimetablePage";
-import CompleteSignUp from "../pages/auth/OnBoarding/CompleteSignUp";
 
 export default function AppRoutes() {
 	return (

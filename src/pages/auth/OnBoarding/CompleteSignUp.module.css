@@ -1,67 +1,62 @@
 .page {
-  min-height: 100vh;
-  position: relative;
-  overflow: hidden;
+	min-height: 100vh;
+	position: relative;
+	overflow: hidden;
 
-  background:
-    radial-gradient(
-      1200px 700px at 50% 95%,
-      #ffffff 0%,
-      rgba(255, 255, 255, 0.3) 35%,
-      rgba(255, 255, 255, 0) 55%
-    ),
-    linear-gradient(
-      180deg,
-      #92e6ff 0%,
-      #c9f4ff 45%,
-      #ffffff 100%
-    );
+	background:
+		radial-gradient(
+			1200px 700px at 50% 95%,
+			#ffffff 0%,
+			rgba(255, 255, 255, 0.3) 35%,
+			rgba(255, 255, 255, 0) 55%
+		),
+		linear-gradient(180deg, #92e6ff 0%, #c9f4ff 45%, #ffffff 100%);
 }
 
 .starLayer {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	z-index: 0;
 }
 
 .star {
-  position: absolute;
-  user-select: none;
+	position: absolute;
+	user-select: none;
 }
 
 .center {
-  position: relative;
-  z-index: 1;
+	position: relative;
+	z-index: 1;
 
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 24px;
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 24px;
 }
 
 .title {
-  font-size: 36px;
-  font-weight: 900;
-  letter-spacing: -0.04em;
+	font-size: 36px;
+	font-weight: 900;
+	letter-spacing: -0.04em;
 }
 
 .actions {
-  display: flex;
-  gap: 16px;
+	display: flex;
+	gap: 16px;
 }
 
 .pill {
-  min-width: 180px;
-  height: 48px;
-  border-radius: 9999px;
-  border: none;
-  background: #fff;
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow:
-    0 2px 0 rgba(0, 0, 0, 0.04),
-    0 8px 20px rgba(0, 0, 0, 0.12);
+	min-width: 180px;
+	height: 48px;
+	border-radius: 9999px;
+	border: none;
+	background: #fff;
+	font-weight: 700;
+	cursor: pointer;
+	box-shadow:
+		0 2px 0 rgba(0, 0, 0, 0.04),
+		0 8px 20px rgba(0, 0, 0, 0.12);
 }

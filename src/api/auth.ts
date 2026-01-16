@@ -16,10 +16,7 @@ export const updateUser = async (name?: string, profileImageUrl?: string) => {
 	return response.data as User;
 };
 
-export const signup = async (
-	email: string,
-	password: string,
-) => {
+export const signup = async (email: string, password: string) => {
 	const response = await api.post<AuthTokens>("/auth/register", {
 		email,
 		password,
