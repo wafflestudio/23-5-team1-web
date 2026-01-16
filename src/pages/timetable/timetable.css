@@ -95,9 +95,15 @@
 	margin-bottom: 6px;
 }
 
+.tt-field {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
 .tt-field input,
 .tt-field select {
-	width: 100%;
+	width: 95%;
 	border: 1px solid #e6e6e6;
 	border-radius: 10px;
 	padding: 10px 12px;
@@ -124,15 +130,38 @@
 	border-color: #111;
 }
 
-.tt-timeRow {
+.tt-timeRange {
 	display: flex;
 	gap: 10px;
 	align-items: center;
 }
 
-.tt-tilde {
-	color: #777;
+.tt-timeRange select {
+	appearance: none;          /* 기본 select 스타일 제거 */
+	-webkit-appearance: none;
+	-moz-appearance: none;
+
+	padding: 8px 14px;
+	border-radius: 10px;
+	border: none;
+	background: #f2f2f2;
+
+	font-size: 15px;
 	font-weight: 600;
+	color: #1677ff;            /* 파란 시간 텍스트 */
+
+	cursor: pointer;
+}
+
+.tt-timeRange select:focus {
+	outline: none;
+	box-shadow: 0 0 0 2px rgba(22, 119, 255, 0.25);
+}
+
+.tt-tilde {
+	color: #888;
+	font-size: 14px;
+	font-weight: 500;
 }
 
 .tt-link {
@@ -246,15 +275,22 @@
 .tt-block {
 	position: absolute;
 	display: grid;
-	grid-template-columns:  1fr;
+	grid-template-columns: 1fr;
 	padding: 8px;
 	border: none;
 	border-radius: 10px;
 	background: #d9d9d9;
 	color: #111;
+	align-content: start;
+	align-items: start;
 	text-align: left;
 	cursor: pointer;
 	overflow: hidden;
+}
+
+.tt-blockRemove {
+	justify-self: end;
+	color: #333;
 }
 
 .tt-blockTitle {
