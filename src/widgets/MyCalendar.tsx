@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Calendar, type View, Views } from "react-big-calendar";
 import styles from "../styles/Calendar.module.css";
 import { localizer } from "../util/Calendar/calendarLocalizer";
@@ -52,7 +52,12 @@ export const MyCalendar = ({
 	onShowMoreClick,
 	onSelectEvent,
 }: MyCalendarProps) => {
+	const [date, setDate] = useState(new Date());
 	const [currentView, setCurrentView] = useState<View>(Views.MONTH);
+
+	const onNavigate = useCallback((newDate: Date) => {
+		setDate(newDate);
+	}, []);
 
 	const CALENDER_EVENTS = useMemo(() => {
 		return events.map((event: Event) => {
@@ -78,6 +83,39 @@ export const MyCalendar = ({
 		});
 	}, [events, currentView]);
 
+	const formats = useMemo(
+		() => ({
+			monthHeaderFormat: "yyyy년 M월",
+			dayHeaderFormat: "M월 d일 EEE",
+			weekdayFormat: (date: Date) => {
+				const days = ["일", "월", "화", "수", "목", "금", "토"];
+				return days[date.getDay()];
+			},
+			dayRangeHeaderFormat: ({ start, end }: { start: Date; end: Date }) => {
+				const startDate = start.toLocaleDateString("ko-KR", {
+					month: "long",
+					day: "numeric",
+				});
+				const endDate = end.toLocaleDateString("ko-KR", {
+					month: "long",
+					day: "numeric",
+				});
+				return `${startDate} – ${endDate}`;
+			},
+			timeGutterFormat: "a h:mm",
+			eventTimeRangeFormat: ({ start, end }: { start: Date; end: Date }) => {
+				return `${start.toLocaleTimeString("ko-KR", {
+					hour: "numeric",
+					minute: "2-digit",
+				})} – ${end.toLocaleTimeString("ko-KR", {
+					hour: "numeric",
+					minute: "2-digit",
+				})}`;
+			},
+		}),
+		[],
+	);
+
 	return (
 		<div className={styles.calendarContainer}>
 			<Calendar
@@ -85,7 +123,7 @@ export const MyCalendar = ({
 				events={CALENDER_EVENTS}
 				startAccessor="start"
 				endAccessor="end"
-				style={{ height: 800 }}
+				style={{ height: "100%" }}
 				// custom toolbar
 				components={{
 					toolbar: Toolbar,
@@ -93,15 +131,15 @@ export const MyCalendar = ({
 				}}
 				// style function
 				eventPropGetter={eventPropGetter}
+				date={date}
 				// view setup
 				view={currentView}
 				onView={(view) => setCurrentView(view)}
 				views={[Views.MONTH, Views.WEEK, Views.DAY]}
+				onNavigate={onNavigate}
 				defaultView={Views.MONTH}
 				// 한국어 형식
-				formats={{
-					monthHeaderFormat: "yyyy년 M월",
-				}}
+				formats={formats}
 				// 더보기 눌렀을 때 popup 나타나기 X, 사이드뷰 나타남
 				popup={false}
 				onDrillDown={onShowMoreClick}

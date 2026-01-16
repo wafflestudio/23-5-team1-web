@@ -34,8 +34,8 @@ const CardView = ({ event }: { event: Event }) => {
 				<img
 					src={
 						isBookmarked
-							? "../assets/Bookmarked.svg"
-							: "../assets/notBookmarked.svg"
+							? "/assets/Bookmarked.svg"
+							: "/assets/notBookmarked.svg"
 					}
 					alt={isBookmarked ? "Remove bookmark" : "Add bookmark"}
 				/>

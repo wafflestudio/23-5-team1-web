@@ -225,3 +225,18 @@ export interface SearchResult {
 	total: number;
 	items: Event[];
 }
+
+export interface FetchMonthEventArgs {
+	start?: Date; // optional - default to today
+	statusId?: number[];
+	eventTypeId?: number[];
+	orgId?: number[];
+}
+export interface FetchDayEventArgs {
+	date?: Date;
+	page?: number;
+	size?: number;
+	statusId?: number[];
+	eventTypeId?: number[];
+	orgId?: number[];
+}

@@ -1,13 +1,19 @@
-import { type View, Views } from "react-big-calendar";
+import {
+	Navigate,
+	type NavigateAction,
+	type View,
+	Views,
+} from "react-big-calendar";
 import { IoIosSearch } from "react-icons/io";
 import { useAuth } from "../contexts/AuthProvider";
 import styles from "../styles/Toolbar.module.css";
 
 interface ToolbarProps {
 	view: View;
-	onNavigate: (action: "PREV" | "NEXT" | "TODAY") => void;
+	onNavigate: (action: NavigateAction) => void;
 	onView: (view: View) => void;
 	label: string;
+	date: Date;
 }
 
 const Toolbar: React.FC<ToolbarProps> = ({
@@ -33,7 +39,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
 					<button
 						type="button"
 						onClick={() => onView(Views.WEEK)}
-						className={`${styles.toggleBtn} ${view === Views.MONTH ? styles.toggleBtnActive : ""}`}
+						className={`${styles.toggleBtn} ${view === Views.WEEK ? styles.toggleBtnActive : ""}`}
 					>
 						주
 					</button>
@@ -55,33 +61,33 @@ const Toolbar: React.FC<ToolbarProps> = ({
 						<button
 							type="button"
 							className={styles.todayBtn}
-							onClick={() => onNavigate("TODAY")}
+							onClick={() => onNavigate(Navigate.TODAY)}
 						>
 							오늘
 						</button>
 						<button
 							type="button"
 							className={styles.navIconBtn}
-							onClick={() => onNavigate("PREV")}
+							onClick={() => onNavigate(Navigate.PREVIOUS)}
 						>
-							&lt; {/* < */}
+							&lt;
 						</button>
 						<button
 							type="button"
 							className={styles.navIconBtn}
-							onClick={() => onNavigate("NEXT")}
+							onClick={() => onNavigate(Navigate.NEXT)}
 						>
-							&gt; {/* > */}
+							&gt;
 						</button>
 					</div>
 				</div>
 
 				<div className={styles.rightGroup}>
-					<IoIosSearch color="rgba(130, 130, 130, 1)" />
+					<IoIosSearch size={20} color="rgba(130, 130, 130, 1)" />
 					<button type="button" className={styles.profileButton}>
 						<img
 							alt="user profile"
-							src={user?.profileImageUrl || "../assets/defaultProfile.png"}
+							src={user?.profileImageUrl || "/assets/defaultProfile.png"}
 						/>
 					</button>
 				</div>

@@ -1,193 +1,307 @@
-/* Sidebar.module.css */
+.body {
+  height: 100vh;
+}
 
 .sidebarContainer {
-	width: 280px; /* Adjust based on your layout needs */
-	height: 100vh;
-	background-color: #f9f9f9; /* Light grey background */
-	padding: 30px 20px;
-	box-sizing: border-box;
-	display: flex;
-	flex-direction: column;
-	border-right: 1px solid #eee;
-	font-family:
-		-apple-system, BlinkMacSystemFont, "Pretendard", "Apple SD Gothic Neo",
-		sans-serif;
+  width: 256px;
+  height: 100vh;
+  overflow-y: auto;
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+
+  background-color: #f9f9f9;
+  box-sizing: border-box;
+  border-right: 1px solid #eee;
+  font-family: -apple-system, BlinkMacSystemFont, "Pretendard",
+    "Apple SD Gothic Neo", sans-serif;
+}
+
+.sidebarContainer::-webkit-scrollbar {
+  display: none;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+/* -- for hidden state -- */
+.hiddenSidebar {
+  width: 60px;
+  height: 100vh;
+  background-color: #f8f9fa;
+  border-right: 1px solid #e0e0e0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+  box-sizing: border-box;
+}
+
+.expandBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 8px;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+}
+
+.expandBtn:hover {
+  background-color: #e5e5e5;
 }
 
 /* --- Header --- */
 .headerRow {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	margin-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.header {
+  font-size: 16px;
+  font-weight: 700;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.collapseBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
 .headerTitle {
-	font-size: 1.2rem;
-	font-weight: 800;
-	color: #000;
-	background: none;
-	border: none;
-	cursor: pointer;
-	padding: 0;
-	text-align: left;
-}
-
-.collapseBtn {
-	background: none;
-	border: none;
-	color: #bbb;
-	font-size: 1.2rem;
-	cursor: pointer;
-	font-weight: 300;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #000;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
 }
 
 /* --- Section Titles --- */
 .sectionTitle {
-	font-size: 1rem;
-	font-weight: 700;
-	color: #111;
-	margin-bottom: 15px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #111;
+  margin-bottom: 15px;
 }
 
 /* --- Filter Groups --- */
 .filterGroup {
-	margin-bottom: 20px;
-	display: flex;
-	flex-direction: column;
-	gap: 8px;
-}
-
-.labelRow {
-	display: flex;
-	align-items: center;
-	gap: 8px;
-	padding-left: 4px;
-}
-
-.icon {
-	width: 18px;
-	height: 18px;
-	opacity: 0.6; /* Slight transparency for grey icon look */
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .labelText {
-	font-size: 0.95rem;
-	font-weight: 600;
-	color: #333;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #333;
 }
 
-/* --- Dropdown Styling --- */
-.selectWrapper {
-	position: relative;
-	width: 100%;
+.labelRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 4px;
 }
 
-/* Customizing the select box */
-.dropdown {
-	width: 100%;
-	appearance: none; /* Remove default arrow */
-	-webkit-appearance: none;
-	background-color: #ffffff;
-	border: none; /* No border as per neumorphic/clean look */
-	border-radius: 20px; /* Highly rounded corners */
-	padding: 10px 15px;
-	font-size: 0.95rem;
-	color: #444;
-	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03); /* Soft shadow */
-	cursor: pointer;
-	outline: none;
+.labelLeftBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  color: inherit;
+  flex: 1;
 }
 
-/* Custom Arrow using a pseudo-element on wrapper isn't possible with just the select tag easily, 
-   so we use a background image on the select itself */
-.dropdown {
-	background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23CCC%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
-	background-repeat: no-repeat;
-	background-position: right 15px center;
-	background-size: 12px;
+.labelLeftBtn:hover .labelText {
+  color: #000;
 }
 
-.dropdown:focus {
-	box-shadow: 0 0 0 2px #ddd;
+.icon {
+  width: 18px;
+  height: 18px;
+}
+
+.chevron {
+  font-size: 10px;
+  color: #999;
+  margin-left: 4px;
+  display: flex;
+  align-items: center;
+}
+
+.resetBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #999;
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.resetBtn:hover {
+  background-color: #e5e5e5;
+  color: #555;
+}
+
+/* --- Toggle --- */
+.toggleListWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  /* Optional: Limit height if lists are very long */
+  max-height: 200px;
+  overflow-y: auto;
+  padding-right: 4px; /* Space for scrollbar */
+}
+
+.toggleListWrapper::-webkit-scrollbar {
+  width: 4px;
+}
+.toggleListWrapper::-webkit-scrollbar-thumb {
+  background-color: #ddd;
+  border-radius: 2px;
+}
+
+.toggleItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  background: none;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.2s;
+  width: 100%;
+}
+
+.toggleItem:hover {
+  background-color: #eeeeee;
+}
+
+.toggleItem.active {
+  background-color: #eff6ff; /* Light blue bg */
+}
+
+.checkIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px; /* Icon size */
+}
+
+.toggleText {
+  font-size: 13px;
+  color: #444;
+  line-height: 1.4;
+}
+
+.toggleItem.active .toggleText {
+  color: #111;
+  font-weight: 500;
 }
 
 /* --- Exclude Section --- */
 .inputContainer {
-	display: flex;
-	background-color: #ffffff;
-	border-radius: 20px;
-	padding: 5px;
-	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
-	align-items: center;
+  display: flex;
+  background-color: #ffffff;
+  border-radius: 20px;
+  padding: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+  align-items: center;
+  justify-content: center;
 }
 
 .excludeInput {
-	border: none;
-	background: transparent;
-	flex-grow: 1;
-	padding: 5px 10px;
-	outline: none;
-	font-size: 0.9rem;
+  border: none;
+  background: transparent;
+  padding: 5px 10px;
+  outline: none;
+  font-size: 0.9rem;
 }
 
 .applyBtn {
-	background: none;
-	border: none;
-	font-weight: 600;
-	color: #555;
-	cursor: pointer;
-	padding: 5px 10px;
-	font-size: 0.9rem;
+  background: none;
+  border: none;
+  font-weight: 600;
+  color: #555;
+  cursor: pointer;
+  font-size: 0.9rem;
+  min-width: 50px;
 }
 
 .tagContainer {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 8px;
-	margin-top: 5px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 5px;
 }
 
 .tag {
-	background-color: #ccc; /* Darker grey for tag background */
-	color: #555;
-	font-size: 0.8rem;
-	padding: 4px 10px;
-	border-radius: 12px;
-	display: flex;
-	align-items: center;
-	gap: 5px;
+  background-color: #ccc; /* Darker grey for tag background */
+  color: #555;
+  font-size: 0.8rem;
+  padding: 4px 10px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .tagClose {
-	background: none;
-	border: none;
-	color: #555;
-	cursor: pointer;
-	padding: 0;
-	font-size: 1rem;
-	line-height: 1;
+  background: none;
+  border: none;
+  color: #555;
+  cursor: pointer;
+  padding: 0;
+  font-size: 1rem;
+  line-height: 1;
 }
 
 /* --- Page Links --- */
 .pageLink {
-	display: flex;
-	align-items: center;
-	gap: 12px;
-	padding: 8px 0;
-	cursor: pointer;
-	color: #111;
-	font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  cursor: pointer;
+  color: #111;
+  font-weight: 600;
 }
 
 .pageLink:hover {
-	opacity: 0.7;
+  opacity: 0.7;
 }
 
 /* Placeholder for Page Icons (Grey square/flag) */
 .iconBox {
-	width: 20px;
-	height: 20px;
-	background-color: #999;
-	/* Replace background-color with generic mask or use img tag inside */
+  width: 20px;
+  height: 20px;
+  background-color: #999;
+  /* Replace background-color with generic mask or use img tag inside */
 }

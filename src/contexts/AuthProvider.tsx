@@ -118,7 +118,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 				logout,
 			}}
 		>
-			{!isLoading && children}
+			{children}
 		</AuthContext.Provider>
 	);
 };
