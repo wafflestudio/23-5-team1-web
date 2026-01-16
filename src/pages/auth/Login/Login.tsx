@@ -10,15 +10,27 @@ export default function Login() {
 
 	const navigate = useNavigate();
 
-	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
+
+		// 입력 검증
 		if (email.trim() === "") {
 			alert("이메일을 입력하세요");
-		} else if (password.trim() === "") {
+			return;
+		}
+
+		if (password.trim() === "") {
 			alert("비밀번호를 입력하세요");
-		} else {
-			login(email, password).catch(() => setCheck(false));
+			return;
+		}
+
+		try {
+			await login(email, password);
+
+			setCheck(true);
 			navigate("/auth/complete");
+		} catch (err) {
+			setCheck(false);
 		}
 	};
 
