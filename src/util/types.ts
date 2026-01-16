@@ -129,7 +129,7 @@ export interface Course {
 	instructor?: string;
 }
 
-export type SlotRow =TimeSlot & {rowId: string};
+export type SlotRow = TimeSlot & { rowId: string };
 
 export type Day = 0 | 1 | 2 | 3 | 4 | 5 | 6; // 0: 일요일, 1: 월요일, ..., 6: 토요일
 

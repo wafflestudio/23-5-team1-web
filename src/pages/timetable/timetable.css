@@ -31,9 +31,9 @@
 	border-radius: 10px;
 	cursor: pointer;
 
-	background: #FF0031;
+	background: #ff0031;
 	box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-	}
+}
 
 .tt-leftSidebar {
 	border-right: 1px solid #eee;
@@ -137,7 +137,7 @@
 }
 
 .tt-timeRange select {
-	appearance: none;          /* 기본 select 스타일 제거 */
+	appearance: none; /* 기본 select 스타일 제거 */
 	-webkit-appearance: none;
 	-moz-appearance: none;
 
@@ -148,7 +148,7 @@
 
 	font-size: 15px;
 	font-weight: 600;
-	color: #1677ff;            /* 파란 시간 텍스트 */
+	color: #1677ff; /* 파란 시간 텍스트 */
 
 	cursor: pointer;
 }

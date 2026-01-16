@@ -141,7 +141,7 @@ export const Sidebar = () => {
 
 	const handleTimetableClick = () => {
 		navigate("/timetable");
-	}
+	};
 
 	if (isHidden) {
 		return (
@@ -297,7 +297,11 @@ export const Sidebar = () => {
 				/>
 				<span>찜한 행사</span>
 			</div>
-			<button type="button" className={styles.pageLink} onClick={() => handleTimetableClick()}>
+			<button
+				type="button"
+				className={styles.pageLink}
+				onClick={() => handleTimetableClick()}
+			>
 				<img
 					className={styles.icon}
 					src="/assets/timetable.svg"
