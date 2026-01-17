@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import star1 from "./../../../../public/assets/Star1.svg";
-import star2 from "./../../../../public/assets/Star2.svg";
+import star1 from "/assets/Star1.svg";
+import star2 from "/assets/Star2.svg";
 import styles from "./CompleteSignUp.module.css";
 
 const STARS = [star1, star2];

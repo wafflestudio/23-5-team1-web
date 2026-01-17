@@ -47,9 +47,10 @@
 :global(.rbc-month-row) {
   display: flex;
   flex: 1;
-  position: relative; /* CRITICAL - allows absolute positioning of children */
+  position: relative;
+  padding-bottom: 5px;
   border-bottom: 5px solid #ffffff;
-  min-height: 0;
+  min-height: fit-content;
 }
 
 :global(.rbc-month-row):last-child {
@@ -145,6 +146,15 @@
   box-shadow: none !important;
   padding: 2px 6px !important;
   margin-bottom: 2px !important;
+  position: relative;
+}
+
+:global(.rbc-event:hover) {
+  z-index: 1000 !important;
+}
+
+:global(.rbc-row-segment) {
+  position: relative;
 }
 
 /* Show more link */
@@ -234,26 +244,39 @@
 /* ============================================ */
 
 .resetEventStyle {
-  background: transparent !important;
+  background: none !important;
   padding: 0 !important;
   border: none !important;
+  opacity: 1 !important;
 }
 
 .blockEventContainer {
-  padding: 4px 8px;
-  border-radius: 4px;
+  padding: 2px 4px;
+  border-radius: 7px;
+  opacity: 1 !important;
   font-size: 0.75rem;
   color: #1f2937;
   white-space: nowrap;
   overflow: hidden;
+  text-align: center;
   text-overflow: ellipsis;
   line-height: 1.4;
   font-weight: 500;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.blockEventContainer:hover {
+  min-width: fit-content;
+  z-index: 1000;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .arrowEventContainer {
   display: flex;
   flex-direction: column;
+  text-align: center;
   position: relative;
   width: 100%;
   padding: 2px 0;

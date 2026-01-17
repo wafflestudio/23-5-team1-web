@@ -1,10 +1,10 @@
 export const CATEGORY_COLORS: Record<number, string> = {
-	1: "rgba(208, 183, 82, 0.6)",
-	2: "rgba(11, 206, 132, 0.6)",
-	3: "rgba(11, 206, 132, 0.6)",
-	4: "rgba(0, 136, 255, 0.6)",
-	5: "rgba(162, 90, 255, 0.6)",
-	999: "rgba(255, 45, 85, 0.6)",
+	1: "#DFD093",
+	2: "#69DEB1",
+	3: "#72D3FA",
+	4: "#62B4FB",
+	5: "#C398FB",
+	999: "#FB7D95",
 };
 
 export const CATEGORY_LIST: Record<number, string> = {
