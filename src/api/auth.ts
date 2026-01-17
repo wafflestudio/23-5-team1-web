@@ -3,12 +3,16 @@ import type { AuthTokens, User } from "../util/types";
 import api, { API_URL } from "./axios";
 import { TokenService } from "./tokenService";
 
-export const getUser = async () => {
-	const response = await api.get("/users/me");
-	return response.data as User;
+export const getUser = async (): Promise<User> => {
+	const res = await api.get<User>("/users/me");
+	console.log(res.data);
+	return res.data;
 };
 
-export const updateUser = async (username?: string, profileImageUrl?: string) => {
+export const updateUser = async (
+	username?: string,
+	profileImageUrl?: string,
+) => {
 	const response = await api.patch("/users/me", {
 		username,
 		profileImageUrl,
