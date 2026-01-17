@@ -1,202 +1,289 @@
 .calendarContainer {
-	height: calc(100vh - 3rem);
-	padding: 1.5rem;
-	background-color: #ffffff;
-	font-family:
-		"Pretendard", -apple-system, BlinkMacSystemFont, system-ui, Roboto,
-		sans-serif;
+  height: calc(100vh - 3rem);
+  padding: 1.5rem;
+  background-color: #ffffff;
+  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui,
+    Roboto, sans-serif;
 }
 
 :global(.rbc-calendar) {
-	height: 100% !important;
+  height: 100% !important;
 }
 
-/* 요일 헤더 (월, 화, 수...) */
-:global(.rbc-header) {
-	flex: 1;
-	border-bottom: none !important;
-	font-size: 0.875rem;
-	font-weight: 500;
-	color: #6b7280;
-	padding: 0.75rem 0;
-	text-align: center;
-}
+/* ============================================ */
+/* MONTH VIEW STRUCTURE - DO NOT CHANGE */
+/* ============================================ */
 
-:global(.rbc-header):first-child {
-	color: #ef4444 !important; /* Red color */
-}
-
-/* Month View structure */
 :global(.rbc-month-view) {
-	height: 100%;
-	display: flex;
-	flex-direction: column;
-	gap: 8px;
+  border: 1px solid #ffffff;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 :global(.rbc-month-header) {
-	display: flex;
+  display: flex;
+  border-bottom: 1px solid #ffffff;
 }
 
-/* Month row (week rows) */
+/* Header cells (weekday names) */
+:global(.rbc-header) {
+  flex: 1;
+  border-bottom: none !important;
+  border-left: 1px solid #ffffff;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #6b7280;
+  padding: 0.75rem 0;
+  text-align: center;
+}
+
+:global(.rbc-header):first-child {
+  color: #ef4444 !important;
+  border-left: none;
+}
+
+/* Each week row */
 :global(.rbc-month-row) {
-	display: flex;
-	flex: 1;
-	gap: 8px;
-}
-:global(.rbc-row-content) {
-	width: 100%;
-	display: flex;
-}
-
-:global(.rbc-row) {
-	display: flex;
-	width: 100%;
-	flex-direction: row;
-	gap: 5px;
+  display: flex;
+  flex: 1;
+  position: relative; /* CRITICAL - allows absolute positioning of children */
+  border-bottom: 5px solid #ffffff;
+  min-height: 0;
 }
 
 :global(.rbc-month-row):last-child {
-	border-bottom: none !important;
+  border-bottom: none;
 }
 
-/* 각 날짜 */
+/* Background grid layer */
+:global(.rbc-row-bg) {
+  display: flex;
+  position: absolute; /* CRITICAL - sits behind content */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+:global(.rbc-day-bg) {
+  flex: 1;
+  border-left: 5px solid #ffffff;
+  border-radius: 7px;
+  background-color: #f7f7f7; /* Light gray background */
+}
+
+:global(.rbc-day-bg):first-child {
+  border-left: none;
+}
+
+:global(.rbc-off-range-bg) {
+  background-color: #fafafa !important; /* Slightly different for off-range */
+}
+
+/* Content layer (dates + events) */
+:global(.rbc-row-content) {
+  display: flex;
+  flex-direction: column; /* CRITICAL - stacks date row and event rows */
+  position: relative; /* CRITICAL - sits on top of background */
+  z-index: 1;
+  width: 100%;
+}
+
+/* Each .rbc-row inside content */
+:global(.rbc-row-content > .rbc-row) {
+  display: flex;
+  flex-direction: row; /* CRITICAL - horizontal layout */
+  width: 100%;
+}
+
+:global(.rbc-event-content) {
+  padding: 1px 2px;
+}
+
+/* Date number row */
 :global(.rbc-date-cell) {
-	background-color: rgba(247, 247, 247, 1);
-}
-
-/* '오늘' 날짜 배경색 제거 (커스텀 스타일 적용 위해) */
-:global(.rbc-today) {
-	background-color: transparent !important;
-}
-
-/* 날짜 숫자 스타일 */
-:global(.rbc-date-cell) {
-	padding: 0.5rem;
-	font-size: 0.875rem;
-	font-weight: 500;
-	width: 100%;
-	border-radius: 5px;
+  flex: 1; /* CRITICAL - equal width columns */
+  padding: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-align: left; /* Align date to left */
 }
 
 :global(.rbc-button-link) {
-	background: none;
-	border-width: 0;
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  padding: 0;
+  font: inherit;
 }
 
-/* '오늘' 날짜 숫자 강조 (검은 동그라미) */
+/* Today's date styling */
+:global(.rbc-today) {
+  background-color: transparent !important;
+}
+
 :global(.rbc-now .rbc-button-link) {
-	background-color: #1f2937; /* dark gray */
-	color: white;
-	width: 24px;
-	height: 24px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	border-radius: 50%;
+  background-color: #1f2937;
+  color: white;
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
 }
 
-/* 이벤트 블록 기본 스타일 재정의 */
+:global(.rbc-off-range) {
+  color: #9ca3af; /* Gray out dates from other months */
+}
+
+/* Events container */
 :global(.rbc-event) {
-	border: none !important;
-	box-shadow: none !important;
-	margin: 1px 4px !important;
-	padding: 2px 6px !important;
-	min-height: 24px;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 2px 6px !important;
+  margin-bottom: 2px !important;
 }
 
-/* '+2 more' 같은 더보기 링크 스타일 */
+/* Show more link */
 :global(.rbc-show-more) {
-	background-color: transparent;
-	color: #6b7280;
-	font-size: 0.75rem;
-	font-weight: 600;
-	margin-left: 8px;
+  background-color: transparent;
+  color: #6b7280;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  padding: 2px 4px;
+  text-align: left;
 }
 
-/* Week and Day views */
+:global(.rbc-show-more):hover {
+  color: #374151;
+  text-decoration: underline;
+}
+
+/* ============================================ */
+/* WEEK & DAY VIEWS */
+/* ============================================ */
+
 :global(.rbc-time-view) {
-	height: 100%;
-	border: 1px solid #e5e7eb;
-	display: flex;
-	flex-direction: column;
+  height: 100%;
+  border: 1px solid #ffffff;
+  display: flex;
+  flex-direction: column;
 }
 
 :global(.rbc-time-header) {
-	display: flex;
-	flex-direction: column;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid #ffffff;
+}
+
+:global(.rbc-time-header-content) {
+  display: flex;
+  flex: 1;
+  border-left: 1px solid #ffffff;
 }
 
 :global(.rbc-time-content) {
-	flex: 1;
-	overflow-y: auto;
-	display: flex;
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
 }
 
-/* Time gutter (hours column) */
 :global(.rbc-time-gutter) {
-	white-space: nowrap;
+  white-space: nowrap;
+  text-align: right;
+  padding-right: 8px;
+}
+
+:global(.rbc-time-slot) {
+  border-top: 1px solid #f3f4f6;
 }
 
 :global(.rbc-timeslot-group) {
-	min-height: 60px;
-	border-bottom: 1px solid #e5e7eb;
+  min-height: 60px;
+  border-bottom: 1px solid #ffffff;
 }
 
-/* 1. Remove default event styling to prevent conflicts */
+:global(.rbc-time-header-cell) {
+  flex: 1;
+  border-left: 1px solid #ffffff;
+  padding: 8px;
+  text-align: center;
+}
+
+:global(.rbc-time-header-cell):first-child {
+  border-left: none;
+}
+
+:global(.rbc-day-slot) {
+  flex: 1;
+  border-left: 1px solid #ffffff;
+  position: relative;
+}
+
+:global(.rbc-day-slot):first-child {
+  border-left: none;
+}
+
+/* ============================================ */
+/* CUSTOM EVENT STYLES */
+/* ============================================ */
+
 .resetEventStyle {
-	background: transparent !important;
-	padding: 0 !important;
-	border: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+  border: none !important;
 }
 
-/* 2. Block Event (The Yellow/Purple boxes) */
 .blockEventContainer {
-	padding: 2px 6px;
-	border-radius: 4px;
-	font-size: 0.75rem; /* Small text */
-	color: #1f2937; /* Dark text */
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	line-height: 1.5;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  color: #1f2937;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4;
+  font-weight: 500;
 }
 
-/* 3. Arrow Event Container (The Cyan/Green lines) */
 .arrowEventContainer {
-	display: flex;
-	flex-direction: column;
-	position: relative;
-	width: 100%;
-	margin-top: 2px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+  padding: 2px 0;
 }
 
-/* Text sitting on top of the arrow */
 .arrowText {
-	font-size: 0.7rem;
-	margin-bottom: -2px; /* Pull text closer to line */
-	margin-left: 4px;
-	font-weight: 600;
+  font-size: 0.7rem;
+  margin-bottom: -2px;
+  margin-left: 4px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* The Line */
 .arrowLine {
-	height: 3px; /* Thin line */
-	width: 100%;
-	position: relative;
-	border-radius: 2px;
+  height: 3px;
+  width: 100%;
+  position: relative;
+  border-radius: 2px;
 }
 
-/* The Arrowhead Triangle */
 .arrowHead {
-	position: absolute;
-	right: -4px; /* Hang off the end slightly */
-	top: -4px; /* Center vertically relative to line height */
-	width: 0;
-	height: 0;
-	border-top: 5px solid transparent;
-	border-bottom: 5px solid transparent;
-	border-left-width: 8px;
-	border-left-style: solid;
-	/* Color is set inline in the component */
+  position: absolute;
+  right: -4px;
+  top: -4px;
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left-width: 8px;
+  border-left-style: solid;
 }

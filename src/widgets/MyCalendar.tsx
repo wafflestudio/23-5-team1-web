@@ -116,6 +116,13 @@ export const MyCalendar = ({
 		[],
 	);
 
+	const messages = useMemo(
+		() => ({
+			showMore: (total: number) => `+${total}`,
+		}),
+		[],
+	);
+
 	return (
 		<div className={styles.calendarContainer}>
 			<Calendar
@@ -142,7 +149,11 @@ export const MyCalendar = ({
 				formats={formats}
 				// 더보기 눌렀을 때 popup 나타나기 X, 사이드뷰 나타남
 				popup={false}
-				onDrillDown={onShowMoreClick}
+				onDrillDown={(date: Date) => {
+					onShowMoreClick(date, Views.MONTH);
+				}}
+				// 더보기 미리보기
+				messages={messages}
 				// 행사 눌렀을 때 상세 뷰 나타나게 하기 :
 				onSelectEvent={onSelectEvent}
 			/>

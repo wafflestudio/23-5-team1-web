@@ -76,8 +76,11 @@ const CalendarView = () => {
 						<MonthSideView day={clickedDate} onClose={handleCloseSideMonth} />
 					</div>
 				)}
+
 				{showDetailView && clickedEventId !== undefined && (
-					<DetailView eventId={clickedEventId} onClose={handleCloseDetail} />
+					<div className={styles.sidePanel}>
+						<DetailView eventId={clickedEventId} onClose={handleCloseDetail} />
+					</div>
 				)}
 			</div>
 		</div>

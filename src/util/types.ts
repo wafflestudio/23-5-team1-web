@@ -27,6 +27,7 @@ export interface EventBase {
 	organization: string; // 주체기관 id
 
 	applyLink: string; // 지원 url
+	tags: string;
 
 	// following properties are only on BlockEvents
 	capacity: number;
@@ -39,11 +40,6 @@ export interface EventBase {
 }
 
 export interface EventDTO extends EventBase {
-	tags: {
-		id: number;
-		name: string;
-	}[];
-
 	applyStart: string; //  지원 시작 날짜
 	applyEnd: string; // 지원 마감 날짜
 	eventStart: string; // 활동 시작 날짜일시
@@ -51,12 +47,10 @@ export interface EventDTO extends EventBase {
 }
 
 export interface Event extends EventBase {
-	tags: string[];
-
 	applyStart: Date; //  지원 시작 날짜
 	applyEnd: Date; // 지원 마감 날짜
-	eventStart: Date; // 활동 시작 날짜일시
-	eventEnd: Date; // 활동 끝 날짜일시
+	eventStart: Date | null; // 활동 시작 날짜일시
+	eventEnd: Date | null; // 활동 끝 날짜일시
 }
 
 export interface EventDetailExtras {
