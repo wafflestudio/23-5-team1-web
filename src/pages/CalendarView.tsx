@@ -13,6 +13,9 @@ const CalendarView = () => {
 	const { monthViewData, fetchMonthEvents } = useEvents();
 	const { globalCategory, globalOrg, globalStatus } = useFilter();
 
+	// 현재 기준점이 되는 날짜
+	const [currentDate, setCurrentDate] = useState<Date>(new Date());
+
 	const [showSideMonth, setShowSideMonth] = useState<boolean>(false);
 	const [showDetailView, setShowDetailView] = useState<boolean>(false);
 	const [clickedDate, setClickedDate] = useState<Date>(new Date());
@@ -25,7 +28,9 @@ const CalendarView = () => {
 
 	useEffect(() => {
 		const loadEvents = async () => {
-			const param: FetchMonthEventArgs = {};
+			const param: FetchMonthEventArgs = {
+				start: currentDate,
+			};
 			if (globalCategory) param.eventTypeId = globalCategory.map((g) => g.id);
 			if (globalOrg) param.orgId = globalOrg.map((g) => g.id);
 			if (globalStatus) param.statusId = globalStatus.map((g) => g.id);
@@ -33,7 +38,7 @@ const CalendarView = () => {
 			await fetchMonthEvents(param);
 		};
 		loadEvents();
-	}, [fetchMonthEvents, globalCategory, globalOrg, globalStatus]);
+	}, [currentDate, fetchMonthEvents, globalCategory, globalOrg, globalStatus]);
 
 	// click handler
 	const onShowMoreClick = (date: Date, view: string) => {
@@ -67,6 +72,7 @@ const CalendarView = () => {
 				<div className={styles.calendarWrapper}>
 					<MyCalendar
 						events={MONTH_EVENTS}
+						setCurrentDate={setCurrentDate}
 						onShowMoreClick={onShowMoreClick}
 						onSelectEvent={onSelectEvent}
 					/>
@@ -76,8 +82,11 @@ const CalendarView = () => {
 						<MonthSideView day={clickedDate} onClose={handleCloseSideMonth} />
 					</div>
 				)}
+
 				{showDetailView && clickedEventId !== undefined && (
-					<DetailView eventId={clickedEventId} onClose={handleCloseDetail} />
+					<div className={styles.sidePanel}>
+						<DetailView eventId={clickedEventId} onClose={handleCloseDetail} />
+					</div>
 				)}
 			</div>
 		</div>

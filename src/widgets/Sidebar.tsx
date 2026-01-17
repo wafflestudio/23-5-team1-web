@@ -289,14 +289,14 @@ export const Sidebar = () => {
 			<div className={styles.sectionTitle} style={{ marginTop: "40px" }}>
 				페이지
 			</div>
-			<div className={styles.pageLink}>
+			<button className={styles.pageLink} type="button">
 				<img
 					className={styles.icon}
 					src="/assets/bookmark.svg"
 					alt="bookmark icon"
 				/>
 				<span>찜한 행사</span>
-			</div>
+			</button>
 			<button
 				type="button"
 				className={styles.pageLink}

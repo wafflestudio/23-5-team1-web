@@ -27,7 +27,6 @@ export const signup = async (email: string, password: string) => {
 	});
 
 	TokenService.setTokens(response.data.accessToken, response.data.refreshToken);
-	// TODO : get newly made user instance & navigate to Onboarding page
 };
 
 export const login = async (email: string, password: string) => {
@@ -37,7 +36,6 @@ export const login = async (email: string, password: string) => {
 	});
 
 	TokenService.setTokens(response.data.accessToken, response.data.refreshToken);
-	// TODO : login & navigate to Calendar page (main)
 };
 
 export const socialLogin = async (provider: string, idToken: string) => {
