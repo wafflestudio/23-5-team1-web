@@ -44,7 +44,7 @@ const CardView = ({ event }: { event: Event }) => {
 			<span className={styles.dateText}>
 				{
 					// !event.eventStart : 기간제 행사, yyyy.mm.dd ~ yyyy.mm.dd로 표시
-					event.eventStart
+					event.eventStart && event.eventEnd
 						? // 단발성 행사
 							event.eventStart === event.eventEnd
 							? // yyyy.mm.dd만 표시
