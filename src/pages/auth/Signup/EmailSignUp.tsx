@@ -1,10 +1,13 @@
+import axios from "axios";
 import type React from "react";
 import { useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+// 이후 AuthProvider 에서 useAuth로 수정해야 함 
 import { signup } from "../../../api/auth";
 import CompleteSignUp from "../OnBoarding/CompleteSignUp";
 import Onboarding from "../OnBoarding/Onboarding";
 import ProfileSetting from "../OnBoarding/ProfileSetting";
+import styles from "./EmailSignUp.module.css";
 
 export default function EmailSignUp() {
 	const errorStatements = [
@@ -54,59 +57,114 @@ export default function EmailSignUp() {
 		if (password !== value) setPwConfirmError("비밀번호가 일치하지 않습니다.");
 		else setPwConfirmError("");
 	};
-
-	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+
 		if (
-			error.length === 0 &&
-			password.length > 0 &&
-			password === confirmPassword
+			error.length > 0 ||
+			password.length === 0 ||
+			password !== confirmPassword
 		) {
-			signup(emailRef.current?.value || "", password, null).catch((err) => {
-				console.error("Signup failed:", err);
-			});
+			alert("입력한 정보를 다시 확인해주세요.");
+			return;
+		}
+
+		try {
+			await signup(emailRef.current?.value || "", password);
+
 			setSearchParams((prev) => {
 				const next = new URLSearchParams(prev);
 				next.set("step", "profile");
 				return next;
 			});
-		} else {
-			alert("입력한 정보를 다시 확인해주세요.");
+		} catch (err: unknown) {
+			console.error("Signup failed:", err);
+
+			if (axios.isAxiosError(err)) {
+				const status = err.response?.status;
+				const message = err.response?.data?.message;
+
+				switch (status) {
+					case 400:
+						alert(message ?? "입력 형식이 올바르지 않습니다.");
+						break;
+
+					case 409:
+						alert("이미 가입된 이메일입니다.");
+						break;
+
+					case 422:
+						alert("비밀번호 조건을 확인해주세요.");
+						break;
+
+					case 500:
+						alert("서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+						break;
+
+					default:
+						alert("회원가입에 실패했습니다.");
+				}
+			} else {
+				alert("네트워크 오류가 발생했습니다.");
+			}
 		}
 	};
+
+	const pwHasError = error.length > 0;
+	const pwConfirmHasError = !!pwConfirmError;
+
 	return (
-		<>
-			<div>
-				<h2>계정 생성</h2>
-				<p>이메일과 비밀번호를 설정해주세요.</p>
+		<div className={styles.page}>
+			<div className={styles.box}>
+				<div className={styles.header}>
+					<h2 className={styles.title}>계정 생성</h2>
+					<p className={styles.subtitle}>이메일과 비밀번호를 설정해주세요</p>
+				</div>
+
+				<form className={styles.form} onSubmit={handleSubmit}>
+					<input
+						className={styles.input}
+						type="email"
+						required
+						placeholder="email@snu.ac.kr"
+						ref={emailRef}
+					/>
+
+					<input
+						className={`${styles.input} ${pwHasError ? styles.inputError : ""}`}
+						type="password"
+						required
+						placeholder="비밀번호"
+						value={password}
+						onChange={(e) => handlePwError(e.target.value)}
+					/>
+
+					{error?.map((err) => (
+						<div key={err} className={styles.errorPill} role="alert">
+							{err}
+						</div>
+					))}
+
+					<input
+						className={`${styles.input} ${pwConfirmHasError ? styles.inputError : ""}`}
+						type="password"
+						required
+						placeholder="비밀번호 확인"
+						value={confirmPassword}
+						onChange={(e) => handlePwConfirmChange(e.target.value)}
+					/>
+
+					{pwConfirmError && (
+						<div className={styles.errorPill} role="alert">
+							{pwConfirmError}
+						</div>
+					)}
+
+					<button className={styles.submit} type="submit">
+						계정 생성
+					</button>
+				</form>
 			</div>
-			<form onSubmit={handleSubmit}>
-				<input
-					type="email"
-					required
-					placeholder="email.snu.ac.kr"
-					ref={emailRef}
-				></input>
-				<input
-					type="password"
-					required
-					placeholder="비밀번호"
-					value={password}
-					onChange={(e) => handlePwError(e.target.value)}
-				></input>
-				{error?.map((err) => (
-					<p key={err}>{err}</p>
-				))}
-				<input
-					type="password"
-					required
-					placeholder="비밀번호 확인"
-					value={confirmPassword}
-					onChange={(e) => handlePwConfirmChange(e.target.value)}
-				></input>
-				{pwConfirmError && <p>{pwConfirmError}</p>}
-				<button type="submit">계정 생성</button>
-			</form>
-		</>
+		</div>
 	);
 }

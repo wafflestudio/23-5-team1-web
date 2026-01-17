@@ -1,24 +1,33 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { getCategoryGroups, getOrganizations } from "../../../api/event";
-import { addInterestCategory } from "../../../api/user";
+import { addInterestCategories } from "../../../api/user";
 import type { Category, CategoryGroup } from "../../../util/types";
 
 export default function Onboarding() {
 	const [, setSearchParams] = useSearchParams();
 
-	const handleSubmit = () => {
-		selectedPreferences.forEach((preference, index) => {
-			addInterestCategory(preference.id, index);
-		});
-		setSearchParams((prev) => {
-			const next = new URLSearchParams(prev);
-			next.set("step", "complete");
-			return next;
-		});
+	const handleSubmit = async () => {
+		try {
+			const items = selectedPreferences.map((p, index) => ({
+				categoryId: p.id,
+				priority: index + 1,
+			}));
+
+			await addInterestCategories(items);
+
+			setSearchParams((prev) => {
+				const next = new URLSearchParams(prev);
+				next.set("step", "complete");
+				return next;
+			});
+		} catch (e) {
+			console.error(e);
+			alert("저장에 실패했습니다. 잠시 후 다시 시도해주세요.");
+		}
 	};
 
-	const [categories, setCategories] = useState<CategoryGroup[]>([]);
+	const [categories, setCategories] = useState<Category[]>([]);
 	const [selectedPreferences, setSelectedPreferences] = useState<
 		CategoryGroup[]
 	>([]);
@@ -44,7 +53,7 @@ export default function Onboarding() {
 		setSelectedPreferences((prev) => {
 			if (prev.includes(preference)) {
 				// 이미 선택된 경우, 제외
-				return prev.filter((id) => id !== preference);
+				return prev.filter((p) => p.id !== preference.id);
 			} else {
 				// 선택되지 않은 경우, 추가
 				if (prev.length >= MAX_PREFERENCE) {
@@ -56,7 +65,7 @@ export default function Onboarding() {
 		});
 	};
 	return (
-		<div>
+		<div className="onb-page">
 			<div>
 				<h1>관심사 설정</h1>
 				<p>먼저 보고 싶은 행사의 카테고리 또는 주체기관을 선택해주세요.</p>
@@ -72,7 +81,9 @@ export default function Onboarding() {
 				<h2>카테고리</h2>
 				<div>
 					{categories.map((category) => {
-						const checked = selectedPreferences.includes(category);
+						const checked = selectedPreferences.some(
+							(p) => p.id === category.id,
+						);
 						const id = `category-${category.id}`;
 
 						return (
@@ -93,7 +104,7 @@ export default function Onboarding() {
 				<h2>주최 기관</h2>
 				<div>
 					{organizations?.map((org) => {
-						const checked = selectedPreferences.includes(org);
+						const checked = selectedPreferences.some((p) => p.id === org.id);
 						const id = `organization-${org.id}`;
 						return (
 							<div key={org.id}>

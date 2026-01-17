@@ -1,8 +1,38 @@
 .tt-page {
 	display: grid;
-	grid-template-columns: 260px 1fr 360px;
+	position: relative;
 	height: 100vh;
 	background: #fff;
+}
+
+.tt-page--closed {
+	grid-template-columns: 260px 1fr;
+}
+
+.tt-page--open {
+	grid-template-columns: 260px 1fr 360px;
+}
+
+.tt-addButton {
+	position: fixed;
+	right: 100px;
+	top: 250px;
+	z-index: 1000;
+
+	font-weight: 500;
+	color: #e6e6e6;
+
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+
+	padding: 10px 12px;
+	border: none;
+	border-radius: 10px;
+	cursor: pointer;
+
+	background: #ff0031;
+	box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
 }
 
 .tt-leftSidebar {
@@ -33,9 +63,9 @@
 }
 
 .tt-title {
-	margin: 0;
+	margin: 0px 0px 0px 80px;
 	font-size: 24px;
-	font-weight: 700;
+	font-weight: 500;
 }
 
 .tt-content {
@@ -65,9 +95,15 @@
 	margin-bottom: 6px;
 }
 
+.tt-field {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
 .tt-field input,
 .tt-field select {
-	width: 100%;
+	width: 95%;
 	border: 1px solid #e6e6e6;
 	border-radius: 10px;
 	padding: 10px 12px;
@@ -94,15 +130,38 @@
 	border-color: #111;
 }
 
-.tt-timeRow {
+.tt-timeRange {
 	display: flex;
 	gap: 10px;
 	align-items: center;
 }
 
-.tt-tilde {
-	color: #777;
+.tt-timeRange select {
+	appearance: none; /* 기본 select 스타일 제거 */
+	-webkit-appearance: none;
+	-moz-appearance: none;
+
+	padding: 8px 14px;
+	border-radius: 10px;
+	border: none;
+	background: #f2f2f2;
+
+	font-size: 15px;
 	font-weight: 600;
+	color: #1677ff; /* 파란 시간 텍스트 */
+
+	cursor: pointer;
+}
+
+.tt-timeRange select:focus {
+	outline: none;
+	box-shadow: 0 0 0 2px rgba(22, 119, 255, 0.25);
+}
+
+.tt-tilde {
+	color: #888;
+	font-size: 14px;
+	font-weight: 500;
 }
 
 .tt-link {
@@ -112,6 +171,11 @@
 	color: #d00;
 	cursor: pointer;
 	padding: 0;
+}
+
+.timeslot-delete {
+	display: flex;
+	justify-content: flex-end;
 }
 
 .tt-error {
@@ -186,6 +250,7 @@
 .tt-days {
 	display: grid;
 	grid-template-columns: repeat(7, 1fr);
+	position: relative;
 }
 
 .tt-dayCol {
@@ -204,21 +269,28 @@
 	left: 0;
 	right: 0;
 	height: 1px;
-	background: #f2f2f2;
+	background: rgba(242, 242, 242, 0.2);
 }
 
 .tt-block {
 	position: absolute;
-	left: 6px;
-	right: 6px;
+	display: grid;
+	grid-template-columns: 1fr;
+	padding: 8px;
 	border: none;
 	border-radius: 10px;
 	background: #d9d9d9;
 	color: #111;
-	padding: 8px;
+	align-content: start;
+	align-items: start;
 	text-align: left;
 	cursor: pointer;
 	overflow: hidden;
+}
+
+.tt-blockRemove {
+	justify-self: end;
+	color: #333;
 }
 
 .tt-blockTitle {

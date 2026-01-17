@@ -2,8 +2,10 @@ import { Route, Routes } from "react-router-dom";
 import Home from "../pages/auth/Home";
 import Login from "../pages/auth/Login/Login";
 import LoginHandler from "../pages/auth/Login/SocialLoginHandler";
+import CompleteSignUp from "../pages/auth/OnBoarding/CompleteSignUp";
 import EmailSignUp from "../pages/auth/Signup/EmailSignUp";
 import CalendarView from "../pages/CalendarView";
+import TimetablePage from "../pages/timetable/TimetablePage";
 
 export default function AppRoutes() {
 	return (
@@ -11,6 +13,7 @@ export default function AppRoutes() {
 			<Route path="/" element={<Home />} />
 			<Route path="/auth/login" element={<Login />} />
 			<Route path="/auth/signup" element={<EmailSignUp />} />
+			<Route path="/auth/complete" element={<CompleteSignUp />} />
 
 			{/* OAuth Redirect */}
 			<Route path="/oauth/kakao" element={<LoginHandler provider="kakao" />} />
@@ -22,6 +25,9 @@ export default function AppRoutes() {
 
 			{/* Main Feature page */}
 			<Route path="/main" element={<CalendarView />} />
+
+			{/* Timetable paage */}
+			<Route path="/timetable" element={<TimetablePage />} />
 		</Routes>
 	);
 }

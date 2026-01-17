@@ -8,23 +8,18 @@ export const getUser = async () => {
 	return response.data as User;
 };
 
-export const updateUser = async (name?: string, profileImageUrl?: string) => {
+export const updateUser = async (username?: string, profileImageUrl?: string) => {
 	const response = await api.patch("/users/me", {
-		name,
+		username,
 		profileImageUrl,
 	});
 	return response.data as User;
 };
 
-export const signup = async (
-	email: string,
-	password: string,
-	name: string | null,
-) => {
-	const response = await api.post<AuthTokens>("/auth/signup", {
+export const signup = async (email: string, password: string) => {
+	const response = await api.post<AuthTokens>("/auth/register", {
 		email,
 		password,
-		name,
 	});
 
 	TokenService.setTokens(response.data.accessToken, response.data.refreshToken);

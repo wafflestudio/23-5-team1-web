@@ -1,4 +1,4 @@
-import type { Course, Day, TimeSlot } from "../util/types";
+import type { Course, Day, TimeSlot } from "../../util/types";
 
 export type GridConfig = {
 	startHour: number; // 화면 시작 시간
@@ -18,16 +18,12 @@ export type PositionedBlock = {
 	endMin: number;
 };
 
-export function minutesToTop(min: number, cfg: GridConfig) {
+function minutesToTop(min: number, cfg: GridConfig) {
 	const startMin = cfg.startHour * 60;
 	return (min - startMin) * cfg.ppm;
 }
 
-export function durationToHeight(
-	startMin: number,
-	endMin: number,
-	cfg: GridConfig,
-) {
+function durationToHeight(startMin: number, endMin: number, cfg: GridConfig) {
 	return (endMin - startMin) * cfg.ppm;
 }
 
