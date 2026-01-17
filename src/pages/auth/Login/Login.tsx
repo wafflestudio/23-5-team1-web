@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { login } from "../../../api/auth";
+import { useAuth } from "../../../contexts/AuthProvider";
 import "./Login.css";
 
 export default function Login() {
 	const [email, setEmail] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
 	const [check, setCheck] = useState<boolean>(true);
+
+	const { login } = useAuth();
 
 	const navigate = useNavigate();
 
@@ -29,7 +31,7 @@ export default function Login() {
 
 			setCheck(true);
 			navigate("/auth/complete");
-		} catch (err) {
+		} catch {
 			setCheck(false);
 		}
 	};

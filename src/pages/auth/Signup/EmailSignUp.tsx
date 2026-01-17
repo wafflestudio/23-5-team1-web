@@ -2,8 +2,8 @@ import axios from "axios";
 import type React from "react";
 import { useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-// 이후 AuthProvider 에서 useAuth로 수정해야 함 
-import { signup } from "../../../api/auth";
+// 이후 AuthProvider 에서 useAuth로 수정해야 함
+import { useAuth } from "../../../contexts/AuthProvider";
 import CompleteSignUp from "../OnBoarding/CompleteSignUp";
 import Onboarding from "../OnBoarding/Onboarding";
 import ProfileSetting from "../OnBoarding/ProfileSetting";
@@ -24,6 +24,8 @@ export default function EmailSignUp() {
 
 	const [searchParams, setSearchParams] = useSearchParams();
 	const step = (searchParams.get("step") as string) ?? "email";
+
+	const { signup } = useAuth();
 
 	switch (step) {
 		case "profile":
