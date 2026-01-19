@@ -35,7 +35,7 @@ export const UserDataProvider = ({ children }: { children: ReactNode }) => {
 				userService.getBookmarks(1), // Fetch first page/all
 				userService.getInterestCategories(),
 			]);
-			setBookmarkedEvents(bookmarksData.items);
+			setBookmarkedEvents(bookmarksData);
 			setInterestCategories(interestsData);
 		} catch (error) {
 			console.error("Failed to load user data", error);
