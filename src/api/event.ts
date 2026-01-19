@@ -1,7 +1,7 @@
 import { transformEvent } from "../util/Calendar/transformEvent";
 import type {
-	Category,
-	CategoryGroupWithCategories,
+	OrgsResponse,
+	CategoryGroupWithCategoriesResponse,
 	DayViewParams,
 	DayViewResponse,
 	Event,
@@ -82,14 +82,13 @@ export const getEventDetail = async (eventId: number): Promise<EventDetail> => {
 };
 
 export const getCategoryGroups = async () => {
-	const res = await api.get<CategoryGroupWithCategories[]>(
+	const res = await api.get<CategoryGroupWithCategoriesResponse>(
 		"/category-groups/with-categories",
 	);
-
-	return res.data;
+	return res.data.items;
 };
 
 export const getOrganizations = async () => {
-	const res = await api.get<Category[]>("/categories/orgs");
-	return res.data;
+	const res = await api.get<OrgsResponse>("/categories/orgs");
+	return res.data.items;
 };

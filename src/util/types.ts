@@ -97,6 +97,14 @@ export interface CategoryGroupWithCategories {
 	categories: Category[]; // 실제 분류에 속하는 카테고리
 }
 
+export interface CategoryGroupWithCategoriesResponse {
+	items: CategoryGroupWithCategories[];
+}
+
+export interface OrgsResponse {
+	items: Category[];
+}
+
 export interface InterestCategories {
 	id: number;
 	categoryId: number;

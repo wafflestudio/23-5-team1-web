@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { getCategoryGroups, getOrganizations } from "../../../api/event";
 import { addInterestCategories } from "../../../api/user";
-import type { Category, CategoryGroup } from "../../../util/types";
+import type { Category } from "../../../util/types";
 
 export default function Onboarding() {
 	const [, setSearchParams] = useSearchParams();
@@ -28,41 +28,51 @@ export default function Onboarding() {
 	};
 
 	const [categories, setCategories] = useState<Category[]>([]);
-	const [selectedPreferences, setSelectedPreferences] = useState<
-		CategoryGroup[]
-	>([]);
+	const [selectedPreferences, setSelectedPreferences] = useState<Category[]>([]);
 	const [organizations, setOrganizations] = useState<Category[] | null>(null);
 
 	useEffect(() => {
-		getCategoryGroups().then((categoryGroups) => {
-			const categoryOnly = categoryGroups
-				.flatMap((item) => item.categories)
-				.filter((category) => category.groupId === 3);
-			setCategories(categoryOnly);
-		});
+	getCategoryGroups().then((categoryGroups) => {
+		console.log("categoryGroups:", categoryGroups);
+  		console.log("isArray:", Array.isArray(categoryGroups));
+  		console.log("type:", typeof categoryGroups);
+		const safe = Array.isArray(categoryGroups) ? categoryGroups : [];
+
+		// 프로그램 유형(groupId === 3)만 추출
+		const programTypes = safe
+		.flatMap((item) => item.categories ?? [])
+		.filter((c) => c.groupId === 3);
+
+		setCategories(programTypes);
+	});
 	}, []);
+
 	useEffect(() => {
-		getOrganizations().then((categories) => {
-			setOrganizations(categories);
-		});
+	getOrganizations().then((orgs) => {
+		console.log("orgs:", orgs);
+		console.log("isArray:", Array.isArray(orgs));
+		console.log("type:", typeof orgs);
+		setOrganizations(Array.isArray(orgs) ? orgs : []);
+	});
 	}, []);
 
 	const MAX_PREFERENCE = 3;
 
-	const togglePreference = (preference: CategoryGroup) => {
-		setSelectedPreferences((prev) => {
-			if (prev.includes(preference)) {
-				// 이미 선택된 경우, 제외
-				return prev.filter((p) => p.id !== preference.id);
-			} else {
-				// 선택되지 않은 경우, 추가
-				if (prev.length >= MAX_PREFERENCE) {
-					alert(`최대 ${MAX_PREFERENCE}개까지 선택할 수 있습니다.`);
-					return prev; // 최대 선택 개수 초과 시 무시
-				}
-				return [...prev, preference];
-			}
-		});
+	const togglePreference = (pref: Category) => {
+	setSelectedPreferences((prev) => {
+		const exists = prev.some((p) => p.id === pref.id && p.groupId === pref.groupId);
+
+		if (exists) {
+		return prev.filter((p) => !(p.id === pref.id && p.groupId === pref.groupId));
+		}
+
+		if (prev.length >= MAX_PREFERENCE) {
+		alert(`최대 ${MAX_PREFERENCE}개까지 선택할 수 있습니다.`);
+		return prev;
+		}
+
+		return [...prev, pref];
+	});
 	};
 	return (
 		<div className="onb-page">
