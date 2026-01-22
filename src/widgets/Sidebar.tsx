@@ -54,7 +54,6 @@ export const Sidebar = () => {
 	});
 	// if the category itself is hidden
 	const [isHidden, setIsHidden] = useState<boolean>(false);
-
 	// 모집중, 등
 	const STATUS_LIST =
 		categoryGroups.find((g) => g.group.id === 1)?.categories || [];

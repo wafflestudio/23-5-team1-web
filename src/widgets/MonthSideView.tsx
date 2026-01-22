@@ -8,9 +8,11 @@ import CardView from "./CardView";
 const MonthSideView = ({
 	day,
 	onClose,
+	onDetailClick,
 }: {
 	day: Date;
 	onClose: () => void;
+	onDetailClick: () => void;
 }) => {
 	const { fetchDayEvents, dayViewEvents } = useEvents();
 	const [date, setDate] = useState<Date>(day);
@@ -59,7 +61,9 @@ const MonthSideView = ({
 			</div>
 			<div className={styles.cardWrapper}>
 				{dayViewEvents.map((event) => (
-					<CardView key={event.id} event={event} />
+					<button type="button" key={event.id} onClick={onDetailClick} className={styles.cardButton}>
+						<CardView key={event.id} event={event} />
+					</button>
 				))}
 			</div>
 		</div>

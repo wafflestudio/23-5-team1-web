@@ -6,8 +6,8 @@ import {
 	useEffect,
 	useState,
 } from "react";
-import * as userService from "../api/user";
-import type { Category, Event } from "../util/types";
+import * as userService from "@api/user";
+import type { Category, Event } from "@types";
 import { useAuth } from "./AuthProvider";
 
 interface UserDataContextType {

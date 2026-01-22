@@ -31,7 +31,7 @@ body {
   overflow-y: auto;
   transition: flex-basis 0.3s ease;
   min-width: 0;
-  padding-bottom: 140px;
+  padding-bottom: 10px;
 
   -ms-overflow-style: none;
   scrollbar-width: none;

@@ -79,7 +79,6 @@ export const EventProvider: React.FC<{ children: ReactNode }> = ({
 	const refreshMetadata = useCallback(async () => {
 		setIsLoadingMeta(true);
 		try {
-			console.log("🔵 3. API 요청 직전");
 			const [groupsData, orgsData] = await Promise.all([
 				getCategoryGroups(),
 				getOrganizations(),

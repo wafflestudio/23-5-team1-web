@@ -6,7 +6,7 @@ import {
 	useContext,
 	useState,
 } from "react";
-import type { Category } from "../util/types";
+import type { Category } from "@types";
 
 interface FilterContextType {
 	globalStatus: Category[];

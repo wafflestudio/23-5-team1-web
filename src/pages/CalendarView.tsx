@@ -56,6 +56,11 @@ const CalendarView = () => {
 		setClickedEventId(event.resource.event.id);
 	};
 
+	const onShowDetail = () => {
+		setShowSideMonth(false);
+		setShowDetailView(true);
+	}
+
 	const handleCloseSideMonth = () => {
 		setShowSideMonth(false);
 	};
@@ -79,7 +84,7 @@ const CalendarView = () => {
 				</div>
 				{showSideMonth && (
 					<div className={styles.sidePanel}>
-						<MonthSideView day={clickedDate} onClose={handleCloseSideMonth} />
+						<MonthSideView day={clickedDate} onClose={handleCloseSideMonth} onDetailClick={onShowDetail}/>
 					</div>
 				)}
 

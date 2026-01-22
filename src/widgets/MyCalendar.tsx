@@ -8,45 +8,14 @@ import {
 import { Calendar, type View, Views } from "react-big-calendar";
 import styles from "../styles/Calendar.module.css";
 import { localizer } from "../util/Calendar/calendarLocalizer";
-import { CATEGORY_COLORS } from "../util/constants";
 import type { CalendarEvent, Event } from "../util/types";
 import Toolbar from "./Toolbar";
+import MonthEvent from "./MonthEvent";
 
 const eventPropGetter = () => {
 	return {
 		className: styles.resetEventStyle, // CSS 모듈로 기본 스타일 제거
 	};
-};
-
-const CustomEvent = ({ event: calendarEvent }: { event: CalendarEvent }) => {
-	const { isPeriodEvent, event } = calendarEvent.resource;
-	const color = CATEGORY_COLORS[event.eventTypeId] || CATEGORY_COLORS[999];
-
-	// 기간제 행사 : 화살표
-	if (isPeriodEvent) {
-		return (
-			<div className={styles.arrowEventContainer} style={{ color: color }}>
-				<span className={styles.arrowText}>{event.title}</span>
-				<div className={styles.arrowLine} style={{ backgroundColor: color }}>
-					<div
-						className={styles.arrowHead}
-						style={{ borderLeftColor: color }}
-					/>
-				</div>
-			</div>
-		);
-	}
-	// 단발성 행사 : 블록
-	return (
-		<div
-			className={styles.blockEventContainer}
-			style={{
-				backgroundColor: color,
-			}}
-		>
-			{event.title}
-		</div>
-	);
 };
 
 interface MyCalendarProps {
@@ -148,7 +117,10 @@ export const MyCalendar = ({
 				// custom toolbar
 				components={{
 					toolbar: Toolbar,
-					event: CustomEvent,
+					event: MonthEvent,
+					// month: {
+					// 	event: MonthEvent,
+					// }
 				}}
 				// style function
 				eventPropGetter={eventPropGetter}
