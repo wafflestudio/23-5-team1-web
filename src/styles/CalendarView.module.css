@@ -65,6 +65,6 @@ body {
 }
 @media (max-width: 1024px) {
   .sidePanel {
-    width: 340px; /* Slightly smaller on laptops */
+    width: 340px;
   }
 }

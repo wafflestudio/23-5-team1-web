@@ -11,6 +11,8 @@ import { localizer } from "../util/Calendar/calendarLocalizer";
 import type { CalendarEvent, Event } from "../util/types";
 import Toolbar from "./Toolbar";
 import MonthEvent from "./MonthEvent";
+import DayEvent from "./DayEvent";
+import CustomDayView from "./CustomDayView";
 
 const eventPropGetter = () => {
 	return {
@@ -85,7 +87,7 @@ export const MyCalendar = ({
 				});
 				return `${startDate} – ${endDate}`;
 			},
-			timeGutterFormat: "a h:mm",
+			timeGutterFormat: "h a",
 			eventTimeRangeFormat: ({ start, end }: { start: Date; end: Date }) => {
 				return `${start.toLocaleTimeString("ko-KR", {
 					hour: "numeric",
@@ -117,10 +119,13 @@ export const MyCalendar = ({
 				// custom toolbar
 				components={{
 					toolbar: Toolbar,
-					event: MonthEvent,
-					// month: {
-					// 	event: MonthEvent,
-					// }
+					// event: MonthEvent,
+					month: {
+						event: MonthEvent,
+					},
+					day: {
+						event: DayEvent,
+					}
 				}}
 				// style function
 				eventPropGetter={eventPropGetter}
@@ -128,7 +133,11 @@ export const MyCalendar = ({
 				// view setup
 				view={currentView}
 				onView={(view) => setCurrentView(view)}
-				views={[Views.MONTH, Views.WEEK, Views.DAY]}
+				views={{
+					month: true,
+					week: true,
+					day: CustomDayView,
+				}}
 				onNavigate={onNavigate}
 				defaultView={Views.MONTH}
 				// 한국어 형식

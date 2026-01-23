@@ -40,7 +40,7 @@ const DetailView = ({
 
 	useEffect(() => {
 		if (event) {
-			setIsBookmarked(event.isBookmarked);
+			setIsBookmarked(event.isBookmarked ? event.isBookmarked : false);
 		}
 	}, [event]);
 

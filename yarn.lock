@@ -813,7 +813,7 @@
 
 "@types/react-big-calendar@^1.16.3":
   version "1.16.3"
-  resolved "https://registry.npmjs.org/@types/react-big-calendar/-/react-big-calendar-1.16.3.tgz"
+  resolved "https://registry.yarnpkg.com/@types/react-big-calendar/-/react-big-calendar-1.16.3.tgz#85e5d4170022ee63d0b24c9c64f8dd11eda61748"
   integrity sha512-CR+5BKMhlr/wPgsp+sXOeNKNkoU1h/+6H1XoWuL7xnurvzGRQv/EnM8jPS9yxxBvXI8pjQBaJcI7RTSGiewG/Q==
   dependencies:
     "@types/date-arithmetic" "*"
@@ -1637,7 +1637,7 @@ queue-microtask@^1.2.2:
 
 react-big-calendar@^1.19.4:
   version "1.19.4"
-  resolved "https://registry.npmjs.org/react-big-calendar/-/react-big-calendar-1.19.4.tgz"
+  resolved "https://registry.yarnpkg.com/react-big-calendar/-/react-big-calendar-1.19.4.tgz#a1f00f4cb817a7e210a8137bbabf5726c032d2da"
   integrity sha512-FrvbDx2LF6JAWFD96LU1jjloppC5OgIvMYUYIPzAw5Aq+ArYFPxAjLqXc4DyxfsQDN0TJTMuS/BIbcSB7Pg0YA==
   dependencies:
     "@babel/runtime" "^7.20.7"

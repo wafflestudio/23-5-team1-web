@@ -4,7 +4,7 @@ export const CATEGORY_COLORS: Record<number, string> = {
 	3: "#72D3FA",
 	4: "#62B4FB",
 	5: "#C398FB",
-	999: "#FB7D95",
+	6: "#FB7D95",
 };
 
 export const CATEGORY_LIST: Record<number, string> = {

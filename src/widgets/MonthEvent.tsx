@@ -4,7 +4,7 @@ import styles from "../styles/MonthEvent.module.css"
 
 const MonthEvent = ({ event: calendarEvent }: { event: CalendarEvent }) => {
     const { isPeriodEvent, event } = calendarEvent.resource;
-    const color = CATEGORY_COLORS[event.eventTypeId] || CATEGORY_COLORS[999];
+    const color = CATEGORY_COLORS[event.eventTypeId] || CATEGORY_COLORS[6];
 
     // 기간제 행사 : 화살표
     if (isPeriodEvent) {

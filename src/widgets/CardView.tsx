@@ -7,11 +7,12 @@ import { CATEGORY_COLORS, CATEGORY_LIST } from "../util/constants";
 import type { Event } from "../util/types";
 
 const CardView = ({ event }: { event: Event }) => {
-	const [isBookmarked, setIsBookmarked] = useState<boolean>(event.isBookmarked);
+	const [isBookmarked, setIsBookmarked] = useState<boolean>(event.isBookmarked || false);
 	const ddayTargetDate = event.eventStart ? event.eventStart : event.applyEnd;
 
-	const handleToggleBookmark = async () => {
+	const handleToggleBookmark = async (e: React.MouseEvent<HTMLButtonElement>) => {
 		const previousState = isBookmarked;
+		e.stopPropagation();
 
 		// optimistic update
 		setIsBookmarked(!previousState);
