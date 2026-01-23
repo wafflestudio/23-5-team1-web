@@ -1,13 +1,7 @@
 import { useMemo, useRef, useState } from "react";
 import { SlArrowRight } from "react-icons/sl";
 import { TiDelete } from "react-icons/ti";
-import type {
-	Course,
-	Day,
-	Semester,
-	SlotRow,
-	TimeSlot,
-} from "@types";
+import type { Course, Day, Semester, SlotRow, TimeSlot } from "@types";
 import { DAY_LABELS_KO } from "@types";
 import { buildTimeOptions, STEP_MIN } from "./time";
 import "./timetable.css";

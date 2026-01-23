@@ -1,90 +1,90 @@
 .dayViewWrapper {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  background-color: #fff;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	background-color: #fff;
 }
 
 .dayViewWrapper :global(.rbc-time-view) {
-  flex: 1;
-  height: 100%;
-  overflow-y: scroll;
-  scrollbar-width: none;
+	flex: 1;
+	height: 100%;
+	overflow-y: scroll;
+	scrollbar-width: none;
 }
 .dayViewWrapper :global(.rbc-time-view)::-webkit-scrollbar {
-  display: none;
+	display: none;
 }
 
 .dayViewWrapper :global(.rbc-time-content) {
-  border-top: 1px solid #e5e7eb;
-  display: flex;
-  align-items: stretch;
-  position: relative;
-  /* flex-direction: row;
+	border-top: 1px solid #e5e7eb;
+	display: flex;
+	align-items: stretch;
+	position: relative;
+	/* flex-direction: row;
   flex-wrap: nowrap; */
 }
 
 :global(.rbc-time-gutter) {
-  min-width: fit-content;
+	min-width: fit-content;
 }
 
 .dayViewWrapper :global(.rbc-time-gutter .rbc-timeslot-group) {
-  border-bottom: 1px solid #f3f4f6;
-  min-height: 40px;
+	border-bottom: 1px solid #f3f4f6;
+	min-height: 40px;
 }
 
 .dayViewWrapper :global(.rbc-day-slot) {
-  width: 100%;
-  background-color: transparent !important;
-  position: relative !important;
+	width: 100%;
+	background-color: transparent !important;
+	position: relative !important;
 }
 
 :global(.rbc-day-slot .rbc-timeslot-group) {
-  min-height: 40px;
-  border-bottom: 1px solid #f3f4f6;
+	min-height: 40px;
+	border-bottom: 1px solid #f3f4f6;
 }
 
 :global(.rbc-time-slot .rbc-label) {
-  color: #696969;
-  font-size: 12px;
+	color: #696969;
+	font-size: 12px;
 }
 
 .dayViewWrapper :global(.rbc-event) {
-  border: 1px solid white !important;
-  border-radius: 4px !important;
-  background-color: transparent;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  padding: 0 !important;
+	border: 1px solid white !important;
+	border-radius: 4px !important;
+	background-color: transparent;
+	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+	padding: 0 !important;
 }
 
 .dayViewWrapper :global(.rbc-events-container) {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 100;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 100;
 }
 
 .dayViewWrapper :global(.rbc-event-content) {
-  padding: 0;
-  height: 100%;
-  width: 100%;
+	padding: 0;
+	height: 100%;
+	width: 100%;
 }
 
 .dayViewWrapper :global(.rbc-event-label) {
-  display: none;
+	display: none;
 }
 
 .dayViewWrapper :global(.rbc-day-bg),
 .dayViewWrapper :global(.rbc-row-bg) {
-  display: none;
+	display: none;
 }
 
 .dayViewWrapper :global(.rbc-time-header-cell) {
-  visibility: hidden;
+	visibility: hidden;
 }
 
 .dayViewWrapper :global(.rbc-allday-cell) {
-  height: 100%;
+	height: 100%;
 }

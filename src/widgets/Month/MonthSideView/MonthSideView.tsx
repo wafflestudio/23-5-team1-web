@@ -62,7 +62,14 @@ const MonthSideView = ({
 			<div className={styles.cardWrapper}>
 				{dayViewEvents.map((event) => (
 					// biome-ignore lint/a11y/useSemanticElements: Cannot use button because it contains nested interactive elements
-					<div role="button" key={event.id} tabIndex={0} onClick={onDetailClick} onKeyDown={(e) => e.key === 'Enter' && onDetailClick()} className={styles.cardButton}>
+					<div
+						role="button"
+						key={event.id}
+						tabIndex={0}
+						onClick={onDetailClick}
+						onKeyDown={(e) => e.key === "Enter" && onDetailClick()}
+						className={styles.cardButton}
+					>
 						<CardView key={event.id} event={event} />
 					</div>
 				))}

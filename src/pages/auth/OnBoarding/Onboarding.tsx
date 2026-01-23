@@ -28,51 +28,57 @@ export default function Onboarding() {
 	};
 
 	const [categories, setCategories] = useState<Category[]>([]);
-	const [selectedPreferences, setSelectedPreferences] = useState<Category[]>([]);
+	const [selectedPreferences, setSelectedPreferences] = useState<Category[]>(
+		[],
+	);
 	const [organizations, setOrganizations] = useState<Category[] | null>(null);
 
 	useEffect(() => {
-	getCategoryGroups().then((categoryGroups) => {
-		console.log("categoryGroups:", categoryGroups);
-  		console.log("isArray:", Array.isArray(categoryGroups));
-  		console.log("type:", typeof categoryGroups);
-		const safe = Array.isArray(categoryGroups) ? categoryGroups : [];
+		getCategoryGroups().then((categoryGroups) => {
+			console.log("categoryGroups:", categoryGroups);
+			console.log("isArray:", Array.isArray(categoryGroups));
+			console.log("type:", typeof categoryGroups);
+			const safe = Array.isArray(categoryGroups) ? categoryGroups : [];
 
-		// 프로그램 유형(groupId === 3)만 추출
-		const programTypes = safe
-		.flatMap((item) => item.categories ?? [])
-		.filter((c) => c.groupId === 3);
+			// 프로그램 유형(groupId === 3)만 추출
+			const programTypes = safe
+				.flatMap((item) => item.categories ?? [])
+				.filter((c) => c.groupId === 3);
 
-		setCategories(programTypes);
-	});
+			setCategories(programTypes);
+		});
 	}, []);
 
 	useEffect(() => {
-	getOrganizations().then((orgs) => {
-		console.log("orgs:", orgs);
-		console.log("isArray:", Array.isArray(orgs));
-		console.log("type:", typeof orgs);
-		setOrganizations(Array.isArray(orgs) ? orgs : []);
-	});
+		getOrganizations().then((orgs) => {
+			console.log("orgs:", orgs);
+			console.log("isArray:", Array.isArray(orgs));
+			console.log("type:", typeof orgs);
+			setOrganizations(Array.isArray(orgs) ? orgs : []);
+		});
 	}, []);
 
 	const MAX_PREFERENCE = 3;
 
 	const togglePreference = (pref: Category) => {
-	setSelectedPreferences((prev) => {
-		const exists = prev.some((p) => p.id === pref.id && p.groupId === pref.groupId);
+		setSelectedPreferences((prev) => {
+			const exists = prev.some(
+				(p) => p.id === pref.id && p.groupId === pref.groupId,
+			);
 
-		if (exists) {
-		return prev.filter((p) => !(p.id === pref.id && p.groupId === pref.groupId));
-		}
+			if (exists) {
+				return prev.filter(
+					(p) => !(p.id === pref.id && p.groupId === pref.groupId),
+				);
+			}
 
-		if (prev.length >= MAX_PREFERENCE) {
-		alert(`최대 ${MAX_PREFERENCE}개까지 선택할 수 있습니다.`);
-		return prev;
-		}
+			if (prev.length >= MAX_PREFERENCE) {
+				alert(`최대 ${MAX_PREFERENCE}개까지 선택할 수 있습니다.`);
+				return prev;
+			}
 
-		return [...prev, pref];
-	});
+			return [...prev, pref];
+		});
 	};
 	return (
 		<div className="onb-page">

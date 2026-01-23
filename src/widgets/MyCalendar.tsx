@@ -125,7 +125,7 @@ export const MyCalendar = ({
 					},
 					day: {
 						event: DayEvent,
-					}
+					},
 				}}
 				// style function
 				eventPropGetter={eventPropGetter}
