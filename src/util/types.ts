@@ -244,3 +244,5 @@ export interface FetchDayEventArgs {
 	eventTypeId?: number[];
 	orgId?: number[];
 }
+
+export type DayViewMode = "List" | "Grid" | "Calendar";

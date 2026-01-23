@@ -10,9 +10,9 @@ import styles from "../styles/Calendar.module.css";
 import { localizer } from "../util/Calendar/calendarLocalizer";
 import type { CalendarEvent, Event } from "../util/types";
 import Toolbar from "./Toolbar";
-import MonthEvent from "./MonthEvent";
-import DayEvent from "./DayEvent";
-import CustomDayView from "./CustomDayView";
+import MonthEvent from "./Month/MonthEvent";
+import DayEvent from "./Day/DayEvent";
+import CustomDayView from "./Day/CustomDayView";
 
 const eventPropGetter = () => {
 	return {

@@ -5,7 +5,7 @@ import { useFilter } from "../contexts/FilterContext";
 import styles from "../styles/CalendarView.module.css";
 import type { CalendarEvent, FetchMonthEventArgs } from "../util/types";
 import DetailView from "../widgets/DetailView";
-import MonthSideView from "../widgets/MonthSideView";
+import MonthSideView from "../widgets/Month/MonthSideView";
 import { MyCalendar } from "../widgets/MyCalendar";
 import { Sidebar } from "../widgets/Sidebar";
 

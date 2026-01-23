@@ -1,5 +1,5 @@
-import { CATEGORY_COLORS } from "../util/constants";
-import type { CalendarEvent } from "../util/types";
+import { CATEGORY_COLORS } from "../../util/constants";
+import type { CalendarEvent } from "../../util/types";
 import styles from "../styles/MonthEvent.module.css"
 
 const MonthEvent = ({ event: calendarEvent }: { event: CalendarEvent }) => {

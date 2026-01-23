@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { Navigate, type NavigateAction, type DateLocalizer } from "react-big-calendar";
 import TimeGrid from "react-big-calendar/lib/TimeGrid";
 import styles from "../styles/DayView.module.css";
+import { useDayView } from "../../contexts/DayViewContext";
 
 interface CustomDayViewProps {
   date: Date;
@@ -10,6 +11,8 @@ interface CustomDayViewProps {
 }
 
 const CustomDayView = ({date, localizer, ...props }: CustomDayViewProps) => {
+    const {dayViewMode} = useDayView();
+    
     const range = useMemo(() => {
         return CustomDayView.range(date);
     }, [date]);
@@ -24,17 +27,20 @@ const CustomDayView = ({date, localizer, ...props }: CustomDayViewProps) => {
 
     return (
         <div className={styles.dayViewWrapper}>
-            <TimeGrid
-                date={date}
-                localizer={localizer}
-                range={range}
-                eventOffset={15}
-                step={60}
-                timeslots={2}
-                min={minTime}
-                max={maxTime}
-                {...props}
-            />
+            {dayViewMode==="Calendar" && 
+                <TimeGrid
+                    date={date}
+                    localizer={localizer}
+                    range={range}
+                    eventOffset={15}
+                    step={60}
+                    timeslots={2}
+                    min={minTime}
+                    max={maxTime}
+                    {...props}
+                />
+            }
+            
         </div>
     )
 };
