@@ -7,8 +7,8 @@ import type {
 	Semester,
 	SlotRow,
 	TimeSlot,
-} from "../../util/types";
-import { DAY_LABELS_KO } from "../../util/types";
+} from "@types";
+import { DAY_LABELS_KO } from "@types";
 import { buildTimeOptions, STEP_MIN } from "./time";
 import "./timetable.css";
 

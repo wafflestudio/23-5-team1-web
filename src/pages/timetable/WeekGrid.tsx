@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { MdCancel } from "react-icons/md";
-import type { Course, Day } from "../../util/types";
-import { DAY_LABELS_KO } from "../../util/types";
+import type { Course, Day } from "@types";
+import { DAY_LABELS_KO } from "@types";
 import { flattenToBlocks, type GridConfig } from "./layout";
 import { formatAmPmFromMinutes } from "./time";
 import "./timetable.css";

@@ -5,8 +5,8 @@ import {
 	useEffect,
 	useState,
 } from "react";
-import * as auth from "../api/auth";
-import type { User } from "../util/types";
+import * as auth from "@api/auth";
+import type { User } from "@types";
 
 interface AuthContextType {
 	user: User | null;

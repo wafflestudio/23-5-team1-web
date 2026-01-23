@@ -1,8 +1,8 @@
 import { useMemo } from "react";
 import { Navigate, type NavigateAction, type DateLocalizer } from "react-big-calendar";
 import TimeGrid from "react-big-calendar/lib/TimeGrid";
-import styles from "../styles/DayView.module.css";
-import { useDayView } from "../../contexts/DayViewContext";
+import styles from "@styles/DayView.module.css";
+import { useDayView } from "@contexts/DayViewContext";
 
 interface CustomDayViewProps {
   date: Date;

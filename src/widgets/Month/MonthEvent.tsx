@@ -1,6 +1,6 @@
-import { CATEGORY_COLORS } from "../../util/constants";
-import type { CalendarEvent } from "../../util/types";
-import styles from "../styles/MonthEvent.module.css"
+import { CATEGORY_COLORS } from "@constants";
+import type { CalendarEvent } from "@types";
+import styles from "@styles/MonthEvent.module.css"
 
 const MonthEvent = ({ event: calendarEvent }: { event: CalendarEvent }) => {
     const { isPeriodEvent, event } = calendarEvent.resource;

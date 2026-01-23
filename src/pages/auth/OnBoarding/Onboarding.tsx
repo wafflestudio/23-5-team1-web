@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { getCategoryGroups, getOrganizations } from "../../../api/event";
-import { addInterestCategories } from "../../../api/user";
-import type { Category } from "../../../util/types";
+import { getCategoryGroups, getOrganizations } from "@api/event";
+import { addInterestCategories } from "@api/user";
+import type { Category } from "@types";
 
 export default function Onboarding() {
 	const [, setSearchParams] = useSearchParams();

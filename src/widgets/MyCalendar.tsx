@@ -6,9 +6,9 @@ import {
 	type SetStateAction,
 } from "react";
 import { Calendar, type View, Views } from "react-big-calendar";
-import styles from "../styles/Calendar.module.css";
-import { localizer } from "../util/Calendar/calendarLocalizer";
-import type { CalendarEvent, Event } from "../util/types";
+import styles from "@styles/Calendar.module.css";
+import { localizer } from "@calendarUtil/calendarLocalizer";
+import type { CalendarEvent, Event } from "@types";
 import Toolbar from "./Toolbar";
 import MonthEvent from "./Month/MonthEvent";
 import DayEvent from "./Day/DayEvent";

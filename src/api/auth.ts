@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { AuthTokens, User } from "../util/types";
+import type { AuthTokens, User } from "@types";
 import api, { API_URL } from "./axios";
 import { TokenService } from "./tokenService";
 

@@ -1,13 +1,13 @@
-import { addBookmark, removeBookmark } from "../api/user";
-import { useEvents } from "../contexts/EventContext";
+import { addBookmark, removeBookmark } from "@api/user";
+import { useEvents } from "@contexts/EventContext";
 import { useEffect, useState } from "react";
-import styles from "../styles/DetailView.module.css";
-import { formatDateDotParsed } from "../util/Calendar/dateFormatter";
+import styles from "@styles/DetailView.module.css";
+import { formatDateDotParsed } from "@calendarUtil/dateFormatter";
 import { getDDay } from "../util/Calendar/getDday";
-import { CATEGORY_COLORS, CATEGORY_LIST } from "../util/constants";
+import { CATEGORY_COLORS, CATEGORY_LIST } from "@constants";
 import { FaAnglesRight } from "react-icons/fa6";
 import { TiPencil } from "react-icons/ti";
-import type { EventDetail } from "../util/types";
+import type { EventDetail } from "@types";
 import DOMPurify from "isomorphic-dompurify";
 import parse from "html-react-parser";
 

@@ -1,4 +1,4 @@
-import { transformEvent } from "../util/Calendar/transformEvent";
+import { transformEvent } from "@calendarUtil/transformEvent";
 import type {
 	OrgsResponse,
 	CategoryGroupWithCategoriesResponse,

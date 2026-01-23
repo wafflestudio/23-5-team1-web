@@ -5,9 +5,9 @@ import {
 	Views,
 } from "react-big-calendar";
 import { IoIosSearch } from "react-icons/io";
-import { useAuth } from "../contexts/AuthProvider";
-import styles from "../styles/Toolbar.module.css";
-import { useDayView } from "../contexts/DayViewContext";
+import { useAuth } from "@contexts/AuthProvider";
+import styles from "@styles/Toolbar.module.css";
+import { useDayView } from "@contexts/DayViewContext";
 
 interface ToolbarProps {
 	view: View;

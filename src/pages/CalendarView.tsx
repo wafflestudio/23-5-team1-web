@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { Views } from "react-big-calendar";
-import { useEvents } from "../contexts/EventContext";
-import { useFilter } from "../contexts/FilterContext";
-import styles from "../styles/CalendarView.module.css";
-import type { CalendarEvent, FetchMonthEventArgs } from "../util/types";
-import DetailView from "../widgets/DetailView";
-import MonthSideView from "../widgets/Month/MonthSideView";
-import { MyCalendar } from "../widgets/MyCalendar";
-import { Sidebar } from "../widgets/Sidebar";
+import { useEvents } from "@contexts/EventContext";
+import { useFilter } from "@contexts/FilterContext";
+import styles from "@styles/CalendarView.module.css";
+import type { CalendarEvent, FetchMonthEventArgs } from "@types";
+import DetailView from "@widgets/DetailView";
+import MonthSideView from "@widgets/Month/MonthSideView/MonthSideView";
+import { MyCalendar } from "@widgets/MyCalendar";
+import { Sidebar } from "@widgets/Sidebar";
 
 const CalendarView = () => {
 	const { monthViewData, fetchMonthEvents } = useEvents();

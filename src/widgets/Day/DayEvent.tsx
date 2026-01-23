@@ -1,7 +1,7 @@
-import { CATEGORY_COLORS } from "../../util/constants";
-import type { CalendarEvent } from "../../util/types";
-import styles from '../styles/DayEvent.module.css'
-import { formatDateDotParsed } from "../../util/Calendar/dateFormatter";
+import { CATEGORY_COLORS } from "@constants";
+import type { CalendarEvent } from "@types";
+import styles from '@styles/DayEvent.module.css'
+import { formatDateDotParsed } from "@calendarUtil/dateFormatter";
 
 const DayEvent = ({ event : calendarEvent }: { event: CalendarEvent }) => {
     const { /*isPeriodEvent,*/ event } = calendarEvent.resource;

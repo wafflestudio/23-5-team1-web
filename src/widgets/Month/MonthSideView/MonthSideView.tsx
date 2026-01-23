@@ -1,8 +1,8 @@
 // 필요 : get events by day (get all)
 import { useEffect, useState } from "react";
 import { FaAngleLeft, FaAngleRight, FaAnglesRight } from "react-icons/fa6";
-import { useEvents } from "../contexts/EventContext";
-import styles from "../styles/MonthSideView.module.css";
+import { useEvents } from "@contexts/EventContext";
+import styles from "@styles/MonthSideView.module.css";
 import CardView from "./CardView";
 
 const MonthSideView = ({

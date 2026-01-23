@@ -13,9 +13,9 @@ import {
 	getEventSearch,
 	getMonthEvents,
 	getOrganizations,
-} from "../api/event";
-import { formatDateToYYYYMMDD } from "../util/Calendar/dateFormatter";
-import { getMonthRange } from "../util/Calendar/getMonthRange";
+} from "@api/event";
+import { formatDateToYYYYMMDD } from "@calendarUtil/dateFormatter";
+import { getMonthRange } from "@calendarUtil/getMonthRange";
 import type {
 	Category,
 	CategoryGroupWithCategories,
@@ -28,7 +28,7 @@ import type {
 	MonthViewResponse,
 	SearchParams,
 	SearchResult,
-} from "../util/types";
+} from "@types";
 
 interface EventContextType {
 	monthViewData: MonthViewResponse | null;

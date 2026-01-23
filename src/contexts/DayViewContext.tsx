@@ -6,7 +6,7 @@ import {
     useContext,
     useState,
 } from "react";
-import type { DayViewMode } from "../util/types";
+import type { DayViewMode } from "@types";
 
 interface DayViewContextType {
     dayViewMode: DayViewMode;
