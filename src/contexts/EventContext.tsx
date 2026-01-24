@@ -33,6 +33,8 @@ import type {
 interface EventContextType {
 	monthViewData: MonthViewResponse | null;
 	dayViewEvents: Event[];
+	dayDate: Date;
+	setDayDate: React.Dispatch<React.SetStateAction<Date>>;
 	searchResults: SearchResult | null;
 
 	categoryGroups: CategoryGroupWithCategories[];
@@ -60,6 +62,7 @@ export const EventProvider: React.FC<{ children: ReactNode }> = ({
 	const [monthViewData, setMonthViewData] = useState<MonthViewResponse | null>(
 		null,
 	);
+	const [dayDate, setDayDate] = useState<Date>(new Date());
 	const [dayViewEvents, setDayViewEvents] = useState<Event[]>([]);
 	const [searchResults, setSearchResults] = useState<SearchResult | null>(null);
 
@@ -197,6 +200,8 @@ export const EventProvider: React.FC<{ children: ReactNode }> = ({
 	const value: EventContextType = {
 		monthViewData,
 		dayViewEvents,
+		dayDate,
+		setDayDate,
 		searchResults,
 		categoryGroups,
 		organizations,

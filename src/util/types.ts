@@ -208,6 +208,9 @@ export interface DayViewParams {
 }
 
 export interface DayViewResponse {
+	page: number;
+	size: number;
+	total: number;
 	date: string; // yyyy-mm-dd
 	items: EventDTO[];
 }

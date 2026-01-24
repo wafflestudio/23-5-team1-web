@@ -1,0 +1,67 @@
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  text-align: left;
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.table thead tr {
+  background-color: #ffffff;
+  color: #333;
+  font-weight: bold;
+}
+
+.table th,
+.table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #eaeaea;
+}
+
+/* D-day */
+.table li {
+  font-size: 13px;
+  font-weight: 600;
+  color: #333333;
+  padding: 4px 8px;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  white-space: nowrap;
+  text-align: center;
+  width: fit-content;
+}
+
+/* 날짜 */
+.table tbody td:nth-child(5) {
+  font-size: 14px;
+  color: #828282;
+}
+
+/* 주체기관 */
+table tbody td:nth-child(6) {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.table thead tr td {
+  min-width: 60px;
+}
+
+.table tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.table tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+.table tbody tr:last-of-type td {
+  border-bottom: 2px solid #009879;
+}
+
+li {
+  list-style: none;
+}
