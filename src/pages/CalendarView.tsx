@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { Views } from "react-big-calendar";
-import { useEvents } from "../contexts/EventContext";
-import { useFilter } from "../contexts/FilterContext";
-import styles from "../styles/CalendarView.module.css";
-import type { CalendarEvent, FetchMonthEventArgs } from "../util/types";
-import DetailView from "../widgets/DetailView";
-import MonthSideView from "../widgets/MonthSideView";
-import { MyCalendar } from "../widgets/MyCalendar";
-import { Sidebar } from "../widgets/Sidebar";
+import { useEvents } from "@contexts/EventContext";
+import { useFilter } from "@contexts/FilterContext";
+import styles from "@styles/CalendarView.module.css";
+import type { CalendarEvent, FetchMonthEventArgs } from "@types";
+import DetailView from "@widgets/DetailView";
+import MonthSideView from "@widgets/Month/MonthSideView/MonthSideView";
+import { MyCalendar } from "@widgets/MyCalendar";
+import { Sidebar } from "@widgets/Sidebar";
 
 const CalendarView = () => {
 	const { monthViewData, fetchMonthEvents } = useEvents();
@@ -56,6 +56,11 @@ const CalendarView = () => {
 		setClickedEventId(event.resource.event.id);
 	};
 
+	const onShowDetail = () => {
+		setShowSideMonth(false);
+		setShowDetailView(true);
+	};
+
 	const handleCloseSideMonth = () => {
 		setShowSideMonth(false);
 	};
@@ -79,7 +84,11 @@ const CalendarView = () => {
 				</div>
 				{showSideMonth && (
 					<div className={styles.sidePanel}>
-						<MonthSideView day={clickedDate} onClose={handleCloseSideMonth} />
+						<MonthSideView
+							day={clickedDate}
+							onClose={handleCloseSideMonth}
+							onDetailClick={onShowDetail}
+						/>
 					</div>
 				)}
 

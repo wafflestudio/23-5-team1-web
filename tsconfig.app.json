@@ -22,7 +22,17 @@
 		"noUnusedParameters": true,
 		"erasableSyntaxOnly": true,
 		"noFallthroughCasesInSwitch": true,
-		"noUncheckedSideEffectImports": true
+		"noUncheckedSideEffectImports": true,
+		"paths": {
+			"@/*": ["./src/*"],
+			"@styles/*": ["./src/styles/*"],
+			"@calendarUtil/*": ["./src/util/Calendar/*"],
+			"@types": ["./src/util/types"],
+			"@contexts/*": ["./src/contexts/*"],
+			"@constants": ["./src/util/constants"],
+			"@api/*": ["./src/api/*"],
+			"@widgets/*": ["./src/widgets/*"]
+		}
 	},
 	"include": ["src"]
 }

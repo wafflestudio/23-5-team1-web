@@ -22,21 +22,21 @@ export interface EventBase {
 	operationMode: string; // 온라인 오프라인 온오프라인 병행
 
 	statusId: number; // 1 : 모집중, 2 : 마감 임박, 3 : 마감
-	eventTypeId: number; // 1: 교육(특강/세미나) 2:공모전/경진대회 3:현장학습/인턴 4:사회공헌/봉사 5:학습/진로상담 6:레크리에이션 999:기타
+	eventTypeId: number; // 1: 교육(특강/세미나) 2:공모전/경진대회 3:현장학습/인턴 4:사회공헌/봉사 5:학습/진로상담 6:레크리에이션 6:기타
 	orgId: number; // 주체기관 id - FE에서는 사용 X
 	organization: string; // 주체기관 id
 
 	applyLink: string; // 지원 url
-	tags: string;
+	tags?: string;
 
 	// following properties are only on BlockEvents
 	capacity: number;
 	location: string;
 
 	applyCount: number;
-	isInterested: boolean;
-	matchedInterestPriority: number;
-	isBookmarked: boolean; // 백엔드 요청 부분
+	isInterested?: boolean;
+	matchedInterestPriority?: number;
+	isBookmarked?: boolean; // 백엔드 요청 부분
 }
 
 export interface EventDTO extends EventBase {
@@ -244,3 +244,5 @@ export interface FetchDayEventArgs {
 	eventTypeId?: number[];
 	orgId?: number[];
 }
+
+export type DayViewMode = "List" | "Grid" | "Calendar";

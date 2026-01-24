@@ -2,7 +2,7 @@ import axios from "axios";
 import type React from "react";
 import { useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { useAuth } from "../../../contexts/AuthProvider";
+import { useAuth } from "@contexts/AuthProvider";
 import CompleteSignUp from "../OnBoarding/CompleteSignUp";
 import Onboarding from "../OnBoarding/Onboarding";
 import ProfileSetting from "../OnBoarding/ProfileSetting";

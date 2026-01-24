@@ -7,11 +7,11 @@ import {
 } from "react-icons/fa6";
 import { MdCheckBox, MdCheckBoxOutlineBlank, MdRefresh } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../contexts/AuthProvider";
-import { useEvents } from "../contexts/EventContext";
-import { useFilter } from "../contexts/FilterContext";
-import styles from "../styles/Sidebar.module.css";
-import type { Category } from "../util/types";
+import { useAuth } from "@contexts/AuthProvider";
+import { useEvents } from "@contexts/EventContext";
+import { useFilter } from "@contexts/FilterContext";
+import styles from "@styles/Sidebar.module.css";
+import type { Category } from "@types";
 
 export const Sidebar = () => {
 	type FilterType = "status" | "org" | "category";
@@ -54,7 +54,6 @@ export const Sidebar = () => {
 	});
 	// if the category itself is hidden
 	const [isHidden, setIsHidden] = useState<boolean>(false);
-
 	// 모집중, 등
 	const STATUS_LIST =
 		categoryGroups.find((g) => g.group.id === 1)?.categories || [];

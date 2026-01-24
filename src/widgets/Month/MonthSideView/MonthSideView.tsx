@@ -1,16 +1,18 @@
 // 필요 : get events by day (get all)
 import { useEffect, useState } from "react";
 import { FaAngleLeft, FaAngleRight, FaAnglesRight } from "react-icons/fa6";
-import { useEvents } from "../contexts/EventContext";
-import styles from "../styles/MonthSideView.module.css";
+import { useEvents } from "@contexts/EventContext";
+import styles from "@styles/MonthSideView.module.css";
 import CardView from "./CardView";
 
 const MonthSideView = ({
 	day,
 	onClose,
+	onDetailClick,
 }: {
 	day: Date;
 	onClose: () => void;
+	onDetailClick: () => void;
 }) => {
 	const { fetchDayEvents, dayViewEvents } = useEvents();
 	const [date, setDate] = useState<Date>(day);
@@ -59,7 +61,17 @@ const MonthSideView = ({
 			</div>
 			<div className={styles.cardWrapper}>
 				{dayViewEvents.map((event) => (
-					<CardView key={event.id} event={event} />
+					// biome-ignore lint/a11y/useSemanticElements: Cannot use button because it contains nested interactive elements
+					<div
+						role="button"
+						key={event.id}
+						tabIndex={0}
+						onClick={onDetailClick}
+						onKeyDown={(e) => e.key === "Enter" && onDetailClick()}
+						className={styles.cardButton}
+					>
+						<CardView key={event.id} event={event} />
+					</div>
 				))}
 			</div>
 		</div>

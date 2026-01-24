@@ -2,7 +2,7 @@ import type React from "react";
 import { useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import defaultProfile from "/assets/defaultProfile.png";
-import { updateUser } from "../../../api/auth";
+import { updateUser } from "@api/auth";
 import styles from "./ProfileSetting.module.css";
 
 export default function ProfileSetting() {

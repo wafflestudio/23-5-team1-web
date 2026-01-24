@@ -1,0 +1,71 @@
+.dayEventContainer {
+	height: 100%;
+	width: 100%;
+	padding: 4px 8px;
+	border-radius: 4px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	opacity: 90%;
+	color: rgb(27, 27, 27);
+	font-size: 13px;
+	font-weight: 500;
+	line-height: 1.3;
+	box-sizing: border-box;
+}
+
+.eventContent {
+	width: 100%;
+	height: fit-content;
+	word-wrap: break-word;
+	overflow-wrap: break-word;
+}
+
+.eventTitle {
+	font-weight: 600;
+}
+
+.eventMeta {
+	font-weight: 400;
+	font-size: 12px;
+}
+/* 
+.arrowEventContainer {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  position: relative;
+  width: 100%;
+  padding: 10px 0;
+}
+
+.arrowText {
+  font-size: 0.7rem;
+  margin-bottom: -2px;
+  margin-left: 4px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.arrowLine {
+  height: 3px;
+  width: 100%;
+  position: relative;
+  border-radius: 2px;
+}
+
+.arrowHead {
+  position: absolute;
+  right: -2px;
+  top: -4px;
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left-width: 8px;
+  border-left-style: solid;
+} */

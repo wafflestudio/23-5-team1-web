@@ -1,17 +1,22 @@
 import { useState } from "react";
-import { addBookmark, removeBookmark } from "../api/user";
-import styles from "../styles/CardView.module.css";
-import { formatDateDotParsed } from "../util/Calendar/dateFormatter";
-import { getDDay } from "../util/Calendar/getDday";
-import { CATEGORY_COLORS, CATEGORY_LIST } from "../util/constants";
-import type { Event } from "../util/types";
+import { addBookmark, removeBookmark } from "@api/user";
+import styles from "@styles/CardView.module.css";
+import { formatDateDotParsed } from "@calendarUtil/dateFormatter";
+import { getDDay } from "@calendarUtil/getDday";
+import { CATEGORY_COLORS, CATEGORY_LIST } from "@constants";
+import type { Event } from "@types";
 
 const CardView = ({ event }: { event: Event }) => {
-	const [isBookmarked, setIsBookmarked] = useState<boolean>(event.isBookmarked);
+	const [isBookmarked, setIsBookmarked] = useState<boolean>(
+		event.isBookmarked || false,
+	);
 	const ddayTargetDate = event.eventStart ? event.eventStart : event.applyEnd;
 
-	const handleToggleBookmark = async () => {
+	const handleToggleBookmark = async (
+		e: React.MouseEvent<HTMLButtonElement>,
+	) => {
 		const previousState = isBookmarked;
+		e.stopPropagation();
 
 		// optimistic update
 		setIsBookmarked(!previousState);

@@ -2,12 +2,18 @@
 	display: flex;
 	flex-direction: column;
 	margin-bottom: 1.5rem;
+	z-index: 1;
 }
 
 .centerControl {
 	display: flex;
+	width: 100%;
 	justify-content: center;
 	margin-bottom: 1rem;
+}
+
+.centerControl.dayView {
+	position: relative;
 }
 
 .viewToggleGroup {
@@ -19,7 +25,7 @@
 }
 
 .toggleBtn {
-	padding: 0.25rem 1rem;
+	padding: 0.25em 1em;
 	border-radius: 9999px;
 	font-size: 0.875rem;
 	font-weight: 500;
@@ -28,6 +34,26 @@
 	color: #6b7280; /* gray-500 */
 	cursor: pointer;
 	transition: all 0.2s ease;
+}
+
+.profileButton > img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.rightGroup .viewToggleGroup {
+	width: min-content;
+	border-radius: 16px;
+}
+
+.rightGroup .toggleBtn {
+	padding: 0.15em 0.5em;
+	border-radius: 13px;
+}
+.rightGroup .toggleBtn > img {
+	width: 20px;
+	aspect-ratio: 1;
 }
 
 .toggleBtn:hover {
@@ -48,8 +74,7 @@
 
 .rightGroup {
 	display: flex;
-	align-items: center;
-	gap: 0.75rem; /* Add gap between search and profile */
+	flex-direction: column;
 }
 
 .rightGroup svg {
@@ -105,6 +130,19 @@
 	background-color: #f3f4f6;
 }
 
+.profileRow {
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 0.75rem; /* Add gap between search and profile */
+}
+
+.profileRow.dayView {
+	position: absolute;
+	right: 0;
+}
+
 .profileButton {
 	width: 35px;
 	height: 35px; /* Add explicit height */
@@ -114,10 +152,4 @@
 	cursor: pointer;
 	border-radius: 50%; /* Make it circular */
 	overflow: hidden; /* Clip image to circle */
-}
-
-.profileButton img {
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
 }

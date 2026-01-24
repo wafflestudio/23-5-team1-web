@@ -1,5 +1,5 @@
-import { transformEvent } from "../util/Calendar/transformEvent";
-import type { Category, EventDTO } from "../util/types";
+import { transformEvent } from "@calendarUtil/transformEvent";
+import type { Category, EventDTO } from "@types";
 import api from "./axios";
 
 // --- Bookmarks ---
