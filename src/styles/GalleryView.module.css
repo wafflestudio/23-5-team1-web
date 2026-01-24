@@ -1,0 +1,6 @@
+.galleryContainer {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+	gap: 18px;
+	padding-block: 16px 48px;
+}

@@ -1,8 +1,4 @@
-import {
-	useCallback,
-	useMemo,
-	useState,
-} from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Calendar, type View, Views } from "react-big-calendar";
 import styles from "@styles/Calendar.module.css";
 import { localizer } from "@calendarUtil/calendarLocalizer";
@@ -42,13 +38,13 @@ export const MyCalendar = ({
 		[setDayDate],
 	);
 
-
-
 	const currentEvents = useMemo(() => {
 		switch (currentView) {
-			case Views.MONTH: return monthEvents;
-			 /* TODO : make week data */
-			case Views.DAY: return dayEvents;
+			case Views.MONTH:
+				return monthEvents;
+			/* TODO : make week data */
+			case Views.DAY:
+				return dayEvents;
 			default:
 				return monthEvents;
 		}

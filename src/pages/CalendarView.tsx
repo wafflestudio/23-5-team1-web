@@ -3,7 +3,11 @@ import { Views } from "react-big-calendar";
 import { useEvents } from "@contexts/EventContext";
 import { useFilter } from "@contexts/FilterContext";
 import styles from "@styles/CalendarView.module.css";
-import type { CalendarEvent, FetchDayEventArgs, FetchMonthEventArgs } from "@types";
+import type {
+	CalendarEvent,
+	FetchDayEventArgs,
+	FetchMonthEventArgs,
+} from "@types";
 import DetailView from "@widgets/DetailView";
 import MonthSideView from "@widgets/Month/MonthSideView/MonthSideView";
 import { MyCalendar } from "@widgets/MyCalendar";
@@ -11,10 +15,17 @@ import { Sidebar } from "@widgets/Sidebar";
 import { useDetail } from "@contexts/DetailContext";
 
 const CalendarView = () => {
-	const { monthViewData, fetchMonthEvents, dayViewEvents, fetchDayEvents, dayDate } = useEvents();
+	const {
+		monthViewData,
+		fetchMonthEvents,
+		dayViewEvents,
+		fetchDayEvents,
+		dayDate,
+	} = useEvents();
 	const { globalCategory, globalOrg, globalStatus } = useFilter();
 	// detail 보이는 뷰 조정
-	const { showDetail, setShowDetail, clickedEventId, setClickedEventId } = useDetail();
+	const { showDetail, setShowDetail, clickedEventId, setClickedEventId } =
+		useDetail();
 
 	// 현재 기준점이 되는 날짜
 	const [currentDate, setCurrentDate] = useState<Date>(new Date());
@@ -31,14 +42,15 @@ const CalendarView = () => {
 
 	useEffect(() => {
 		setCurrentDate(dayDate);
-	}, [dayDate])
+	}, [dayDate]);
 
 	useEffect(() => {
 		const loadEvents = async () => {
 			const paramMonth: FetchMonthEventArgs = {
 				start: currentDate,
 			};
-			if (globalCategory) paramMonth.eventTypeId = globalCategory.map((g) => g.id);
+			if (globalCategory)
+				paramMonth.eventTypeId = globalCategory.map((g) => g.id);
 			if (globalOrg) paramMonth.orgId = globalOrg.map((g) => g.id);
 			if (globalStatus) paramMonth.statusId = globalStatus.map((g) => g.id);
 
@@ -51,14 +63,15 @@ const CalendarView = () => {
 		const loadDayEvents = async () => {
 			const paramDay: FetchDayEventArgs = {
 				date: currentDate,
-			}
+			};
 
-			if (globalCategory) paramDay.eventTypeId = globalCategory.map((g) => g.id);
+			if (globalCategory)
+				paramDay.eventTypeId = globalCategory.map((g) => g.id);
 			if (globalOrg) paramDay.orgId = globalOrg.map((g) => g.id);
 			if (globalStatus) paramDay.statusId = globalStatus.map((g) => g.id);
 
 			await fetchDayEvents(paramDay);
-		}
+		};
 		loadDayEvents();
 	}, [currentDate, fetchDayEvents, globalCategory, globalOrg, globalStatus]);
 
