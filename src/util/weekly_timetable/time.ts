@@ -1,8 +1,8 @@
 export const STEP_MIN = 5;
 
-// function clamp(n: number, min: number, max: number) {
-// 	return Math.max(min, Math.min(n, max));
-// }
+export function clamp(n: number, min: number, max: number) {
+	return Math.max(min, Math.min(n, max));
+}
 
 // function snapToStep(min: number, step = STEP_MIN) {
 // 	return Math.round(min / step) * step;

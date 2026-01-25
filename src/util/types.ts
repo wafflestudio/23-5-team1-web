@@ -116,19 +116,47 @@ export interface Memo {
 
 export type Semester = "SPRING" | "SUMMER" | "FALL" | "WINTER";
 
-export interface Course {
+export interface CourseBase {
+  year: number;
+  semester: Semester;
+  courseTitle: string;
+  source: string;
+  timeSlots: TimeSlot[];
+  courseNumber?: string;
+  lectureNumber?: string;
+  credit?: number;
+  instructor?: string;
+}
+
+export interface Course extends CourseBase {
+  id: number;
+}
+
+export interface CreateCustomCourseRequest extends CourseBase {}
+
+interface TimetableBase {
+	name: string;
 	year: number;
 	semester: Semester;
+}
+
+export interface Timetable extends TimetableBase {
 	id: number;
-	courseNumber?: string;
-	lectureNumber?: string;
-	courseTitle: string;
-	// 시간 데이터 정의 수정 필요
-	slot: TimeSlot[];
-	// startAt: number;
-	// endAt: number;
-	credit?: number;
-	instructor?: string;
+}
+
+export interface TimetableWithCourse extends Timetable {
+	courses: Course[];
+}
+
+export interface CreateTimetableRequest extends TimetableBase {}
+
+export interface PatchTimetableRequest {
+	name: string;
+}
+
+export interface GetCoursesResponse {
+	enrollId: number;
+	course: Course;
 }
 
 export type SlotRow = TimeSlot & { rowId: string };
@@ -150,13 +178,6 @@ export const DAY_LABELS_KO: Record<Day, string> = {
 	5: "금",
 	6: "토",
 };
-
-export interface Timetable {
-	name: string;
-	year: number;
-	semester: Semester;
-	courses: Course[];
-}
 
 export interface EventFilters {
 	from: string;
@@ -239,6 +260,11 @@ export interface FetchMonthEventArgs {
 	eventTypeId?: number[];
 	orgId?: number[];
 }
+export interface FetchWeekEventArgs {
+	from: string;
+	to: string;
+}
+
 export interface FetchDayEventArgs {
 	date?: Date;
 	page?: number;
