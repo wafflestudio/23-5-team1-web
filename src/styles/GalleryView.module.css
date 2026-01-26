@@ -1,0 +1,12 @@
+.galleryContainer {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(max(250px, 30%), 1fr));
+	gap: 25px;
+	padding: 16px 16px;
+}
+
+@media (min-width: 985px) {
+	.galleryContainer {
+		padding: 16px 30px;
+	}
+}

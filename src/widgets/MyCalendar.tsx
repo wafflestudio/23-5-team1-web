@@ -1,10 +1,4 @@
-import {
-	useCallback,
-	useMemo,
-	useState,
-	type Dispatch,
-	type SetStateAction,
-} from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Calendar, type View, Views } from "react-big-calendar";
 import styles from "@styles/Calendar.module.css";
 import { localizer } from "@calendarUtil/calendarLocalizer";
@@ -13,6 +7,7 @@ import Toolbar from "./Toolbar";
 import MonthEvent from "./Month/MonthEvent";
 import DayEvent from "./Day/DayEvent";
 import CustomDayView from "./Day/CustomDayView";
+import { useEvents } from "@/contexts/EventContext";
 
 const eventPropGetter = () => {
 	return {
@@ -21,31 +16,42 @@ const eventPropGetter = () => {
 };
 
 interface MyCalendarProps {
-	events: Event[];
-	setCurrentDate: Dispatch<SetStateAction<Date>>;
+	monthEvents: Event[];
+	dayEvents: Event[];
 	onShowMoreClick: (date: Date, view: string) => void;
 	onSelectEvent: (event: CalendarEvent) => void;
 }
 
 export const MyCalendar = ({
-	events,
-	setCurrentDate,
+	monthEvents,
+	dayEvents,
 	onShowMoreClick,
 	onSelectEvent,
 }: MyCalendarProps) => {
-	const [date, setDate] = useState(new Date());
+	const { dayDate, setDayDate } = useEvents();
 	const [currentView, setCurrentView] = useState<View>(Views.MONTH);
 
 	const onNavigate = useCallback(
 		(newDate: Date) => {
-			setCurrentDate(newDate);
-			setDate(newDate);
+			setDayDate(newDate);
 		},
-		[setCurrentDate],
+		[setDayDate],
 	);
 
+	const currentEvents = useMemo(() => {
+		switch (currentView) {
+			case Views.MONTH:
+				return monthEvents;
+			/* TODO : make week data */
+			case Views.DAY:
+				return dayEvents;
+			default:
+				return monthEvents;
+		}
+	}, [currentView, monthEvents, dayEvents]);
+
 	const CALENDER_EVENTS = useMemo(() => {
-		return events.map((event: Event) => {
+		return currentEvents.map((event: Event) => {
 			const isPeriodEvent = !event.eventStart; // 기간제 여부
 			const startDate = event.eventStart || event.applyStart;
 			const endDate = event.eventEnd || event.applyEnd;
@@ -66,7 +72,7 @@ export const MyCalendar = ({
 				resource: { event, isPeriodEvent },
 			};
 		});
-	}, [events, currentView]);
+	}, [currentEvents, currentView]);
 
 	const formats = useMemo(
 		() => ({
@@ -129,7 +135,7 @@ export const MyCalendar = ({
 				}}
 				// style function
 				eventPropGetter={eventPropGetter}
-				date={date}
+				date={dayDate}
 				// view setup
 				view={currentView}
 				onView={(view) => setCurrentView(view)}

@@ -65,6 +65,11 @@
 .cardButton {
 	background: none;
 	border-width: 0;
+
+	padding: 20px;
+	border-radius: 16px;
+	box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.08);
+	box-sizing: border-box;
 }
 
 .cardWrapper {
@@ -80,7 +85,7 @@
 
 /*  Hide scrollbar  */
 .cardWrapper::-webkit-scrollbar {
-	width: 6px;
+	width: 0px;
 }
 .cardWrapper::-webkit-scrollbar-thumb {
 	background-color: #e0e0e0;

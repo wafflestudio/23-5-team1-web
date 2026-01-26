@@ -5,8 +5,8 @@ export const transformEvent = (dto: EventDTO): Event => {
 	return {
 		...dto,
 		eventTypeId:
-			dto.eventTypeId && dto.eventTypeId <= 6 && dto.eventTypeId >= 1
-				? dto.eventTypeId
+			dto.eventTypeId && dto.eventTypeId <= 9 && dto.eventTypeId >= 4
+				? dto.eventTypeId - 3
 				: 6,
 		applyStart: new Date(dto.applyStart),
 		applyEnd: new Date(dto.applyEnd),

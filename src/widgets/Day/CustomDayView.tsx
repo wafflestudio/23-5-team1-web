@@ -7,14 +7,23 @@ import {
 import TimeGrid from "react-big-calendar/lib/TimeGrid";
 import styles from "@styles/DayView.module.css";
 import { useDayView } from "@contexts/DayViewContext";
+import Table from "./Table";
+import type { CalendarEvent } from "@types";
+import GalleryView from "./Gallery/GalleryView";
 
 interface CustomDayViewProps {
 	date: Date;
 	localizer: DateLocalizer;
+	events: CalendarEvent[];
 	[key: string]: unknown;
 }
 
-const CustomDayView = ({ date, localizer, ...props }: CustomDayViewProps) => {
+const CustomDayView = ({
+	date,
+	localizer,
+	events,
+	...props
+}: CustomDayViewProps) => {
 	const { dayViewMode } = useDayView();
 
 	const range = useMemo(() => {
@@ -50,6 +59,7 @@ const CustomDayView = ({ date, localizer, ...props }: CustomDayViewProps) => {
 					date={date}
 					localizer={localizer}
 					range={range}
+					events={events}
 					eventOffset={15}
 					step={60}
 					timeslots={2}
@@ -58,6 +68,13 @@ const CustomDayView = ({ date, localizer, ...props }: CustomDayViewProps) => {
 					{...props}
 				/>
 			)}
+			{dayViewMode === "List" && (
+				<Table
+					theadData={["찜", "제목", "D-day", "카테고리", "날짜", "주체기관"]}
+					tbodyData={events}
+				/>
+			)}
+			{dayViewMode === "Grid" && <GalleryView events={events} />}
 		</div>
 	);
 };
