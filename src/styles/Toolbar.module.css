@@ -5,6 +5,16 @@
 	z-index: 1;
 }
 
+.timetableToolbarContainer {
+	display: flex;
+	margin-top: 70px;
+	margin-left: 30px;
+	margin-right: 30px;
+	flex-direction: column;
+	margin-bottom: 1.5rem;
+	z-index: 1;
+}
+
 .centerControl {
 	display: flex;
 	width: 100%;

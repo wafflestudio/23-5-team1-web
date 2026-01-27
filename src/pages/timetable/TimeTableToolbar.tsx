@@ -27,7 +27,7 @@ const TimeTableToolbar = ({
 		years ??
 		Array.from({ length: 7 }, (_, i) => new Date().getFullYear() - 3 + i);
 	return (
-		<div className={styles.toolbarContainer}>
+		<div className={styles.timetableToolbarContainer}>
 			<div className={styles.headerRow}>
 				<div className={styles.selectGroup}>
 					<span className={styles.selectWrap}>
@@ -62,7 +62,7 @@ const TimeTableToolbar = ({
 					<p className={styles.dateTitle}>{timetableName}</p>
 				</div>
 
-				<div className={styles.rightGroup}>
+				<div className={styles.profileRow}>
 					<IoIosSearch size={20} color="rgba(130, 130, 130, 1)" />
 					<button type="button" className={styles.profileButton}>
 						<img
