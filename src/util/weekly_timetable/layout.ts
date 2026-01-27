@@ -1,4 +1,10 @@
-import type { Course, Day, TimeSlot, Event, GetCoursesResponse } from "../types";
+import type {
+	Course,
+	Day,
+	TimeSlot,
+	Event,
+	GetCoursesResponse,
+} from "../types";
 import { dayOfWeekToDay } from "./time";
 
 export type GridConfig = {
@@ -8,27 +14,27 @@ export type GridConfig = {
 };
 
 export type WeekGridBlock<T> = {
-    id: number;
-    day: Day;
-    top: number;
-    height: number;
-    title: string;
-    startMin: number;
-    endMin: number;
-    raw: T;
-}
+	id: number;
+	day: Day;
+	top: number;
+	height: number;
+	title: string;
+	startMin: number;
+	endMin: number;
+	raw: T;
+};
 
 export type TimetableGridBlock<T> = {
-    id: number;
+	id: number;
 	enrollId: number;
-    day: Day;
-    top: number;
-    height: number;
-    title: string;
-    startMin: number;
-    endMin: number;
-    raw: T;
-}
+	day: Day;
+	top: number;
+	height: number;
+	title: string;
+	startMin: number;
+	endMin: number;
+	raw: T;
+};
 
 function minutesToTop(min: number, cfg: GridConfig) {
 	const startMin = cfg.startHour * 60;
@@ -82,14 +88,17 @@ export function flattenEventsToBlocks(
 			title: event.title,
 			day: toDay(event.eventStart.getDay()),
 			top: minutesToTop(event.eventStart.getMinutes(), cfg),
-			height: durationToHeight(event.eventStart.getMinutes(), event.eventEnd.getMinutes(), cfg),
+			height: durationToHeight(
+				event.eventStart.getMinutes(),
+				event.eventEnd.getMinutes(),
+				cfg,
+			),
 			startMin: event.eventStart.getMinutes(),
 			endMin: event.eventEnd.getMinutes(),
 			raw: event,
-
 		});
 	});
-	return blocks
+	return blocks;
 }
 
 // 겹침 체크
@@ -103,7 +112,7 @@ export function hasOverlap(existing: TimeSlot[], next: TimeSlot) {
 }
 
 export const config: GridConfig = {
-  startHour: 0,
-  endHour: 24,
-  ppm: 0.9,
+	startHour: 0,
+	endHour: 24,
+	ppm: 0.9,
 };

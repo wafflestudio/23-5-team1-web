@@ -2,7 +2,10 @@ import { useMemo, useRef, useState } from "react";
 import { SlArrowRight } from "react-icons/sl";
 import { TiDelete } from "react-icons/ti";
 import { hasOverlap } from "../../util/weekly_timetable/layout";
-import { dayOfWeekToDay, dayToDayOfWeek } from "../../util/weekly_timetable/time";
+import {
+	dayOfWeekToDay,
+	dayToDayOfWeek,
+} from "../../util/weekly_timetable/time";
 
 import type {
 	Course,
@@ -27,11 +30,18 @@ type Props = {
 
 const DAYS: Day[] = [0, 1, 2, 3, 4, 5, 6];
 
-export function AddClassPanel({ timetableId, onAdd, allSlots, year, semester, setIsClicked }: Props) {
+export function AddClassPanel({
+	timetableId,
+	onAdd,
+	allSlots,
+	year,
+	semester,
+	setIsClicked,
+}: Props) {
 	const timeOptions = useMemo(() => buildTimeOptions(STEP_MIN), []);
 	const [title, setTitle] = useState("");
 	const [professor, setProfessor] = useState("");
-	const [credit, setCredit] = useState<number | undefined>(undefined); 
+	const [credit, setCredit] = useState<number | undefined>(undefined);
 
 	const emptyRow = (): SlotRow => ({
 		rowId: crypto.randomUUID(),
@@ -46,38 +56,40 @@ export function AddClassPanel({ timetableId, onAdd, allSlots, year, semester, se
 		setSlot((prev) => prev.filter((t) => t.rowId !== rowId));
 	const updateRow = (rowId: string, patch: Partial<SlotRow>) =>
 		setSlot((prev) =>
-			prev.map((r) => (r.rowId === rowId ? ({ ...r, ...patch } as SlotRow): r)),
+			prev.map((r) =>
+				r.rowId === rowId ? ({ ...r, ...patch } as SlotRow) : r,
+			),
 		);
 
 	const nextIdRef = useRef(0);
 
 	const isTimeRangeValid = useMemo(() => {
-	return slot.every((t) =>
-		t.endAt > t.startAt &&
-		t.startAt % STEP_MIN === 0 &&
-		t.endAt % STEP_MIN === 0
-	);
+		return slot.every(
+			(t) =>
+				t.endAt > t.startAt &&
+				t.startAt % STEP_MIN === 0 &&
+				t.endAt % STEP_MIN === 0,
+		);
 	}, [slot]);
 
 	const isTitleValid = useMemo(() => {
 		return title.trim().length > 0;
-	}, [title])
+	}, [title]);
 
 	const hasConflict = useMemo(() => {
-	if (!isTimeRangeValid) return false; // 시간 자체가 말이 안 되면 겹침 검사 의미 없음
-	return slot.some((s) => hasOverlap(allSlots, s));
+		if (!isTimeRangeValid) return false; // 시간 자체가 말이 안 되면 겹침 검사 의미 없음
+		return slot.some((s) => hasOverlap(allSlots, s));
 	}, [slot, allSlots, isTimeRangeValid]);
 
 	const canSave = isTimeRangeValid && isTitleValid && !hasConflict;
 
-
 	const handleSave = () => {
 		const conflict = slot.some((s) => hasOverlap(allSlots, s));
-		if (conflict){
+		if (conflict) {
 			alert("시간이 겹치는 수업은 추가할 수 없습니다.");
 			return;
 		}
-		if (!timetableId){
+		if (!timetableId) {
 			alert("시간표를 먼저 추가해주세요.");
 			return;
 		}
@@ -87,7 +99,7 @@ export function AddClassPanel({ timetableId, onAdd, allSlots, year, semester, se
 			year: year,
 			semester: semester,
 			courseTitle: title,
-			source: "CUSTOM",  // 이후 강의 크롤링 가능하면 수정해야 함
+			source: "CUSTOM", // 이후 강의 크롤링 가능하면 수정해야 함
 			timeSlots: slot.map(({ rowId, ...rest }) => rest),
 			courseNumber: undefined,
 			lectureNumber: undefined,
@@ -95,7 +107,7 @@ export function AddClassPanel({ timetableId, onAdd, allSlots, year, semester, se
 			instructor: professor || undefined,
 		};
 
-		const {id, ...body} = item;
+		const { id, ...body } = item;
 
 		onAdd(timetableId, body);
 		nextIdRef.current += 1;
@@ -136,7 +148,7 @@ export function AddClassPanel({ timetableId, onAdd, allSlots, year, semester, se
 					onChange={(e) => {
 						const value = e.target.value;
 						setCredit(value === "" ? undefined : Number(value));
-						}}
+					}}
 					placeholder="3"
 					min={0}
 					step={1}
@@ -157,8 +169,10 @@ export function AddClassPanel({ timetableId, onAdd, allSlots, year, semester, se
 								<button
 									key={d}
 									type="button"
-									className={`tt-dayBtn ${ dayOfWeekToDay(t.dayOfweek) === d ? "is-active" : ""}`}
-									onClick={() => updateRow(t.rowId, { dayOfweek: dayToDayOfWeek(d) })}
+									className={`tt-dayBtn ${dayOfWeekToDay(t.dayOfweek) === d ? "is-active" : ""}`}
+									onClick={() =>
+										updateRow(t.rowId, { dayOfweek: dayToDayOfWeek(d) })
+									}
 								>
 									{DAY_LABELS_KO[d]}
 								</button>

@@ -131,7 +131,10 @@ export const patchTimetableName = async (
 	body: PatchTimetableRequest,
 ): Promise<Timetable> => {
 	const dtoBody = toUpdateTimetableRequestDto(body);
-	const res = await api.patch<TimetableResponse>(`/timetables/${timetableId}`, dtoBody);
+	const res = await api.patch<TimetableResponse>(
+		`/timetables/${timetableId}`,
+		dtoBody,
+	);
 	return toTimetable(res.data);
 };
 

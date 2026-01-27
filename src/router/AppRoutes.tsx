@@ -32,10 +32,10 @@ export default function AppRoutes() {
 				path="/timetable"
 				element={
 					<TimetableProvider>
-					<TimetablePage />
+						<TimetablePage />
 					</TimetableProvider>
 				}
-				/>
+			/>
 		</Routes>
 	);
 }

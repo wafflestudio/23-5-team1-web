@@ -56,8 +56,9 @@ export const TimetableProvider = ({ children }: { children: ReactNode }) => {
 	const { isAuthenticated } = useAuth();
 
 	const [timetables, setTimetables] = useState<Timetable[]>([]);
-	const [currentTimetable, setCurrentTimetable] =
-		useState<Timetable | null>(null);
+	const [currentTimetable, setCurrentTimetable] = useState<Timetable | null>(
+		null,
+	);
 	const [courses, setCourses] = useState<GetCoursesResponse[]>([]);
 	const [isLoading, setIsLoading] = useState(false);
 
@@ -74,7 +75,7 @@ export const TimetableProvider = ({ children }: { children: ReactNode }) => {
 				// 기본 선택
 				if (res.length > 0) {
 					setCurrentTimetable(res[0]);
-				}else {
+				} else {
 					setCurrentTimetable(null);
 				}
 			} finally {
@@ -98,10 +99,7 @@ export const TimetableProvider = ({ children }: { children: ReactNode }) => {
 		timetableId: number,
 		body: PatchTimetableRequest,
 	) => {
-		const updated = await timetableApi.patchTimetableName(
-			timetableId,
-			body,
-		);
+		const updated = await timetableApi.patchTimetableName(timetableId, body);
 
 		setTimetables((prev) =>
 			prev.map((t) => (t.id === timetableId ? updated : t)),

@@ -66,7 +66,9 @@ export const EventProvider: React.FC<{ children: ReactNode }> = ({
 		null,
 	);
 	const [dayDate, setDayDate] = useState<Date>(new Date());
-	const [weekViewData, setWeekViewData] = useState<MonthViewResponse | null>(null);
+	const [weekViewData, setWeekViewData] = useState<MonthViewResponse | null>(
+		null,
+	);
 	const [dayViewEvents, setDayViewEvents] = useState<Event[]>([]);
 	const [searchResults, setSearchResults] = useState<SearchResult | null>(null);
 
@@ -140,10 +142,7 @@ export const EventProvider: React.FC<{ children: ReactNode }> = ({
 	);
 
 	const fetchWeekEvents = useCallback(
-		async ({
-			from,
-			to,
-		}: FetchWeekEventArgs) => {
+		async ({ from, to }: FetchWeekEventArgs) => {
 			const params: MonthViewParams = {
 				from: from,
 				to: to,
@@ -157,7 +156,6 @@ export const EventProvider: React.FC<{ children: ReactNode }> = ({
 			} finally {
 				setIsLoadingMonth(false);
 			}
-
 		},
 		[],
 	);

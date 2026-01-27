@@ -117,19 +117,19 @@ export interface Memo {
 export type Semester = "SPRING" | "SUMMER" | "FALL" | "WINTER";
 
 export interface CourseBase {
-  year: number;
-  semester: Semester;
-  courseTitle: string;
-  source: "CUSTOM"|"CRAWLED";
-  timeSlots: TimeSlot[];
-  courseNumber?: string;
-  lectureNumber?: string;
-  credit?: number;
-  instructor?: string;
+	year: number;
+	semester: Semester;
+	courseTitle: string;
+	source: "CUSTOM" | "CRAWLED";
+	timeSlots: TimeSlot[];
+	courseNumber?: string;
+	lectureNumber?: string;
+	credit?: number;
+	instructor?: string;
 }
 
 export interface Course extends CourseBase {
-  id: number;
+	id: number;
 }
 
 export interface CreateCustomCourseRequest extends CourseBase {}

@@ -168,45 +168,45 @@
 }
 
 .selectWrap {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
+	position: relative;
+	display: inline-flex;
+	align-items: center;
 }
 
 .select {
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
+	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
 
-  height: 36px;
-  padding: 0 34px 0 12px;
-  border-radius: 12px;
-  border: 1px solid #e6e6e6;
-  background: #fff;
-  color: #111;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  outline: none;
+	height: 36px;
+	padding: 0 34px 0 12px;
+	border-radius: 12px;
+	border: 1px solid #e6e6e6;
+	background: #fff;
+	color: #111;
+	font-size: 14px;
+	font-weight: 600;
+	cursor: pointer;
+	outline: none;
 }
 
 .select:hover {
-  background: #fafafa;
+	background: #fafafa;
 }
 
 .select:focus {
-  border-color: #d0d0d0;
-  box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.04);
+	border-color: #d0d0d0;
+	box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.04);
 }
 
 .selectWrap::after {
-  content: "";
-  position: absolute;
-  right: 12px;
-  width: 8px;
-  height: 8px;
-  border-right: 2px solid #8a8a8a;
-  border-bottom: 2px solid #8a8a8a;
-  transform: rotate(45deg);
-  pointer-events: none;
+	content: "";
+	position: absolute;
+	right: 12px;
+	width: 8px;
+	height: 8px;
+	border-right: 2px solid #8a8a8a;
+	border-bottom: 2px solid #8a8a8a;
+	transform: rotate(45deg);
+	pointer-events: none;
 }

@@ -1,28 +1,25 @@
 import { useState } from "react";
-import {
-	FaAnglesLeft,
-	FaAnglesRight,
-} from "react-icons/fa6";
+import { FaAnglesLeft, FaAnglesRight } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthProvider";
 import styles from "../../styles/Sidebar.module.css";
-import type { PatchTimetableRequest, Timetable } from "../../util/types"
+import type { PatchTimetableRequest, Timetable } from "../../util/types";
 
 interface TimeTableSidebarProps {
-    timetables: Timetable[];
-    onAddTimetable: () =>  Promise<void>;
-    onSelectTimetable: (timetable: Timetable) => void;
-    onRename: (timetableId: number, body: PatchTimetableRequest) => void;
-    onDelete: (timetableId: number) => void;
+	timetables: Timetable[];
+	onAddTimetable: () => Promise<void>;
+	onSelectTimetable: (timetable: Timetable) => void;
+	onRename: (timetableId: number, body: PatchTimetableRequest) => void;
+	onDelete: (timetableId: number) => void;
 }
 
 export const TimeTableSidebar = ({
-    timetables,
-    onAddTimetable,
-    onSelectTimetable,
-    onRename,
-    onDelete,
-} : TimeTableSidebarProps) => {
+	timetables,
+	onAddTimetable,
+	onSelectTimetable,
+	onRename,
+	onDelete,
+}: TimeTableSidebarProps) => {
 	const { user } = useAuth();
 	// if the category itself is hidden
 	const [isHidden, setIsHidden] = useState<boolean>(false);
@@ -32,9 +29,9 @@ export const TimeTableSidebar = ({
 
 	const navigate = useNavigate();
 
-    const handleCalendarClick = () => {
-        navigate("/main");
-    }
+	const handleCalendarClick = () => {
+		navigate("/main");
+	};
 
 	const handleHeaderClick = () => {
 		// if user exists: refresh page
@@ -97,96 +94,99 @@ export const TimeTableSidebar = ({
 				</button>
 			</div>
 
-            {/* My Timetables */}
-            <div className={styles.section}>
-                <div className={styles.sectionHeader}>
-                <div className={styles.sectionTitle}>나의 시간표</div>
-                <button
-                    type="button"
-                    className={styles.iconBtn}
-                    onClick={onAddTimetable}
-                    aria-label="시간표 추가"
-                >
-                    <span className={styles.plus} aria-hidden="true">
-                    +
-                    </span>
-                </button>
-                </div>
+			{/* My Timetables */}
+			<div className={styles.section}>
+				<div className={styles.sectionHeader}>
+					<div className={styles.sectionTitle}>나의 시간표</div>
+					<button
+						type="button"
+						className={styles.iconBtn}
+						onClick={onAddTimetable}
+						aria-label="시간표 추가"
+					>
+						<span className={styles.plus} aria-hidden="true">
+							+
+						</span>
+					</button>
+				</div>
 
-                <ul className={styles.list}>
-                {timetables.map((tt) => (
-                    <li key={tt.id} className={styles.listItem}>
-						{nameChangeId === tt.id ? (
-							<div className={styles.renameBox}>
-							<input
-								className={styles.renameInput}
-								value={newName}
-								onChange={(e) => setNewName(e.target.value)}
-								onKeyDown={(e) => {
-									if (e.key === "Enter") {
-									onRename(tt.id, {name: newName});
-									}
-									if (e.key === "Escape") {
-									setEditingId(null);
-									}
-								}}
-							></input>
-							<button 
-								type="button"
-								className={styles.applyButton}
-								onClick={() => applyRename(tt.id)}>
-								적용
-							</button>
-							</div>
-						) : (
-							<button
-								type="button"
-								className={`${styles.rowBtn}`}
-								onClick={() => onSelectTimetable(tt)}
-							>
-								<span className={styles.rowText}>
-								<span className={styles.ttName}>{tt.name}</span>
-								</span>
-							</button>
-						)}
-
-						{nameChangeId !== tt.id && (<button
-								type="button"
-								className={styles.moreBtn}
-								onClick={() => setEditingId(tt.id)}
-								aria-label={`${tt.name} 더보기`}
-							>
-								<span aria-hidden="true">⋮</span>
-							</button>)}
-
-						{editingId === tt.id && nameChangeId !== tt.id && (
-							<div className={styles.menu}>
+				<ul className={styles.list}>
+					{timetables.map((tt) => (
+						<li key={tt.id} className={styles.listItem}>
+							{nameChangeId === tt.id ? (
+								<div className={styles.renameBox}>
+									<input
+										className={styles.renameInput}
+										value={newName}
+										onChange={(e) => setNewName(e.target.value)}
+										onKeyDown={(e) => {
+											if (e.key === "Enter") {
+												onRename(tt.id, { name: newName });
+											}
+											if (e.key === "Escape") {
+												setEditingId(null);
+											}
+										}}
+									></input>
+									<button
+										type="button"
+										className={styles.applyButton}
+										onClick={() => applyRename(tt.id)}
+									>
+										적용
+									</button>
+								</div>
+							) : (
 								<button
 									type="button"
-									className={styles.menuItem}
-									onClick={() => startRename(tt)}
+									className={`${styles.rowBtn}`}
+									onClick={() => onSelectTimetable(tt)}
 								>
-									이름 바꾸기
+									<span className={styles.rowText}>
+										<span className={styles.ttName}>{tt.name}</span>
+									</span>
 								</button>
+							)}
 
+							{nameChangeId !== tt.id && (
 								<button
 									type="button"
-									className={`${styles.menuItem} ${styles.danger}`}
-									onClick={() => onDelete(tt.id)}
+									className={styles.moreBtn}
+									onClick={() => setEditingId(tt.id)}
+									aria-label={`${tt.name} 더보기`}
 								>
-									삭제
+									<span aria-hidden="true">⋮</span>
 								</button>
-							</div>
-						)}
-                    </li>
-                ))}
-                </ul>
-            </div>
+							)}
+
+							{editingId === tt.id && nameChangeId !== tt.id && (
+								<div className={styles.menu}>
+									<button
+										type="button"
+										className={styles.menuItem}
+										onClick={() => startRename(tt)}
+									>
+										이름 바꾸기
+									</button>
+
+									<button
+										type="button"
+										className={`${styles.menuItem} ${styles.danger}`}
+										onClick={() => onDelete(tt.id)}
+									>
+										삭제
+									</button>
+								</div>
+							)}
+						</li>
+					))}
+				</ul>
+			</div>
 
 			<div className={styles.sectionTitle} style={{ marginTop: "40px" }}>
 				페이지
 			</div>
-            <button
+			<button
 				type="button"
 				className={styles.pageLink}
 				onClick={() => handleCalendarClick()}
