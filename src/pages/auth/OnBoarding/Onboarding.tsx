@@ -34,11 +34,8 @@ export default function Onboarding() {
 	const [organizations, setOrganizations] = useState<Category[] | null>(null);
 
 	useEffect(() => {
-		getCategoryGroups().then((categoryGroups) => {
-			console.log("categoryGroups:", categoryGroups);
-			console.log("isArray:", Array.isArray(categoryGroups));
-			console.log("type:", typeof categoryGroups);
-			const safe = Array.isArray(categoryGroups) ? categoryGroups : [];
+	getCategoryGroups().then((categoryGroups) => {
+		const safe = Array.isArray(categoryGroups) ? categoryGroups : [];
 
 			// 프로그램 유형(groupId === 3)만 추출
 			const programTypes = safe
@@ -50,12 +47,9 @@ export default function Onboarding() {
 	}, []);
 
 	useEffect(() => {
-		getOrganizations().then((orgs) => {
-			console.log("orgs:", orgs);
-			console.log("isArray:", Array.isArray(orgs));
-			console.log("type:", typeof orgs);
-			setOrganizations(Array.isArray(orgs) ? orgs : []);
-		});
+	getOrganizations().then((orgs) => {
+		setOrganizations(Array.isArray(orgs) ? orgs : []);
+	});
 	}, []);
 
 	const MAX_PREFERENCE = 3;
