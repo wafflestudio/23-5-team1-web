@@ -2,6 +2,7 @@ import { useMemo, useRef, useState } from "react";
 import { SlArrowRight } from "react-icons/sl";
 import { TiDelete } from "react-icons/ti";
 import { hasOverlap } from "../../util/weekly_timetable/layout";
+import { dayOfWeekToDay, dayToDayOfWeek } from "../../util/weekly_timetable/time";
 
 import type {
 	Course,
@@ -16,6 +17,7 @@ import { buildTimeOptions, STEP_MIN } from "../../util/weekly_timetable/time";
 import "./timetable.css";
 
 type Props = {
+	timetableId?: number;
 	onAdd: (timetableId: number, body: CreateCustomCourseRequest) => void;
 	allSlots: TimeSlot[];
 	year: number;
@@ -25,7 +27,7 @@ type Props = {
 
 const DAYS: Day[] = [0, 1, 2, 3, 4, 5, 6];
 
-export function AddClassPanel({ onAdd, allSlots, year, semester, setIsClicked }: Props) {
+export function AddClassPanel({ timetableId, onAdd, allSlots, year, semester, setIsClicked }: Props) {
 	const timeOptions = useMemo(() => buildTimeOptions(STEP_MIN), []);
 	const [title, setTitle] = useState("");
 	const [professor, setProfessor] = useState("");
@@ -33,9 +35,9 @@ export function AddClassPanel({ onAdd, allSlots, year, semester, setIsClicked }:
 
 	const emptyRow = (): SlotRow => ({
 		rowId: crypto.randomUUID(),
-		day: 0,
-		startMin: 8 * 60,
-		endMin: 11 * 60,
+		dayOfweek: "MON",
+		startAt: 8 * 60,
+		endAt: 11 * 60,
 	});
 
 	const [slot, setSlot] = useState<SlotRow[]>([emptyRow()]);
@@ -51,9 +53,9 @@ export function AddClassPanel({ onAdd, allSlots, year, semester, setIsClicked }:
 
 	const isTimeRangeValid = useMemo(() => {
 	return slot.every((t) =>
-		t.endMin > t.startMin &&
-		t.startMin % STEP_MIN === 0 &&
-		t.endMin % STEP_MIN === 0
+		t.endAt > t.startAt &&
+		t.startAt % STEP_MIN === 0 &&
+		t.endAt % STEP_MIN === 0
 	);
 	}, [slot]);
 
@@ -75,23 +77,27 @@ export function AddClassPanel({ onAdd, allSlots, year, semester, setIsClicked }:
 			alert("시간이 겹치는 수업은 추가할 수 없습니다.");
 			return;
 		}
+		if (!timetableId){
+			alert("시간표를 먼저 추가해주세요.");
+			return;
+		}
 
 		const item: Course = {
 			id: nextIdRef.current,
 			year: year,
 			semester: semester,
-			courseTitle: title.trim(),
+			courseTitle: title,
 			source: "CUSTOM",  // 이후 강의 크롤링 가능하면 수정해야 함
-			timeSlots: slot,
+			timeSlots: slot.map(({ rowId, ...rest }) => rest),
 			courseNumber: undefined,
 			lectureNumber: undefined,
 			credit: credit,
-			instructor: professor.trim() || undefined,
+			instructor: professor || undefined,
 		};
 
 		const {id, ...body} = item;
 
-		onAdd(item.id, body);
+		onAdd(timetableId, body);
 		nextIdRef.current += 1;
 
 		//reset
@@ -126,7 +132,7 @@ export function AddClassPanel({ onAdd, allSlots, year, semester, setIsClicked }:
 				<div>학점 (선택)</div>
 				<input
 					type="number"
-					value={credit}
+					value={credit ?? ""}
 					onChange={(e) => {
 						const value = e.target.value;
 						setCredit(value === "" ? undefined : Number(value));
@@ -151,8 +157,8 @@ export function AddClassPanel({ onAdd, allSlots, year, semester, setIsClicked }:
 								<button
 									key={d}
 									type="button"
-									className={`tt-dayBtn ${t.day === d ? "is-active" : ""}`}
-									onClick={() => updateRow(t.rowId, { day: d })}
+									className={`tt-dayBtn ${ dayOfWeekToDay(t.dayOfweek) === d ? "is-active" : ""}`}
+									onClick={() => updateRow(t.rowId, { dayOfweek: dayToDayOfWeek(d) })}
 								>
 									{DAY_LABELS_KO[d]}
 								</button>
@@ -161,9 +167,9 @@ export function AddClassPanel({ onAdd, allSlots, year, semester, setIsClicked }:
 
 						<div className="tt-timeRange">
 							<select
-								value={t.startMin}
+								value={t.startAt}
 								onChange={(e) =>
-									updateRow(t.rowId, { startMin: Number(e.target.value) })
+									updateRow(t.rowId, { startAt: Number(e.target.value) })
 								}
 							>
 								{timeOptions.map((o) => (
@@ -175,9 +181,9 @@ export function AddClassPanel({ onAdd, allSlots, year, semester, setIsClicked }:
 							<span className="tt-tilde">~</span>
 
 							<select
-								value={t.endMin}
+								value={t.endAt}
 								onChange={(e) =>
-									updateRow(t.rowId, { endMin: Number(e.target.value) })
+									updateRow(t.rowId, { endAt: Number(e.target.value) })
 								}
 							>
 								{timeOptions.map((o) => (

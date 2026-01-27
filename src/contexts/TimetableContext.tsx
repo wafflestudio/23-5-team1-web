@@ -74,6 +74,8 @@ export const TimetableProvider = ({ children }: { children: ReactNode }) => {
 				// 기본 선택
 				if (res.length > 0) {
 					setCurrentTimetable(res[0]);
+				}else {
+					setCurrentTimetable(null);
 				}
 			} finally {
 				setIsLoading(false);
@@ -122,10 +124,10 @@ export const TimetableProvider = ({ children }: { children: ReactNode }) => {
 	};
 
 	// --- Courses / Enrolls ---
-	const loadCourses = async (timetableId: number) => {
+	const loadCourses = useCallback(async (timetableId: number) => {
 		const data = await timetableApi.getTimetableCourses(timetableId);
 		setCourses(data);
-	};
+	}, []);
 
 	const addCustomCourse = async (
 		timetableId: number,

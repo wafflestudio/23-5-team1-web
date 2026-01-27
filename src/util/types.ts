@@ -120,7 +120,7 @@ export interface CourseBase {
   year: number;
   semester: Semester;
   courseTitle: string;
-  source: string;
+  source: "CUSTOM"|"CRAWLED";
   timeSlots: TimeSlot[];
   courseNumber?: string;
   lectureNumber?: string;
@@ -159,15 +159,17 @@ export interface GetCoursesResponse {
 	course: Course;
 }
 
-export type SlotRow = TimeSlot & { rowId: string };
-
 export type Day = 0 | 1 | 2 | 3 | 4 | 5 | 6; // 0: 일요일, 1: 월요일, ..., 6: 토요일
 
+export type DayOfWeek = "MON" | "TUE" | "WED" | "THU" | "FRI" | "SAT" | "SUN";
+
 export type TimeSlot = {
-	day: Day;
-	startMin: number;
-	endMin: number;
+	dayOfweek: DayOfWeek;
+	startAt: number;
+	endAt: number;
 };
+
+export type SlotRow = TimeSlot & { rowId: string };
 
 export const DAY_LABELS_KO: Record<Day, string> = {
 	0: "일",
@@ -275,3 +277,8 @@ export interface FetchDayEventArgs {
 }
 
 export type DayViewMode = "List" | "Grid" | "Calendar";
+
+export interface ApiErrorResponse {
+	code: string;
+	message: string;
+}

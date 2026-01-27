@@ -1,3 +1,5 @@
+import type { Day, DayOfWeek } from "../types";
+
 export const STEP_MIN = 5;
 
 export function clamp(n: number, min: number, max: number) {
@@ -37,3 +39,41 @@ export function buildTimeOptions(step = STEP_MIN) {
 	}
 	return out;
 }
+
+export const dayToDayOfWeek = (day: Day): DayOfWeek => {
+	switch (day) {
+		case 0:
+			return "SUN";
+		case 1:
+			return "MON";
+		case 2:
+			return "TUE";
+		case 3:
+			return "WED";
+		case 4:
+			return "THU";
+		case 5:
+			return "FRI";
+		case 6:
+			return "SAT";
+	}
+};
+
+export const dayOfWeekToDay = (dow: DayOfWeek): Day => {
+	switch (dow) {
+		case "SUN":
+			return 0;
+		case "MON":
+			return 1;
+		case "TUE":
+			return 2;
+		case "WED":
+			return 3;
+		case "THU":
+			return 4;
+		case "FRI":
+			return 5;
+		case "SAT":
+			return 6;
+	}
+};

@@ -1,28 +1,30 @@
 import {useMemo} from "react";
-import { DAY_LABELS_KO, type Day } from "../../util/types";
+import { DAY_LABELS_KO, type Day, type GetCoursesResponse, type Course} from "../../util/types";
 import type { GridConfig, TimetableGridBlock } from "../../util/weekly_timetable/layout";
 import { formatAmPmFromMinutes } from "../../util/weekly_timetable/time";
 import { MdCancel } from "react-icons/md";
 
-export type WeekGridProps<T> = {
-    items: T[];
+export type WeekGridProps = {
+    timetableId: number;
+    items: GetCoursesResponse[];
     config: GridConfig;
-    toBlocks: (items: T[], config: GridConfig) => TimetableGridBlock<T>[];
-    onSelectBlock?: (id: number, item: T) => void;
-    onAddBlock?: (id: number, item: T) => void;
+    toBlocks: (items: GetCoursesResponse[], config: GridConfig) => TimetableGridBlock<Course>[];
+    onSelectBlock?: (id: number, item: Course) => void;
+    onAddBlock?: (id: number, item: Course) => void;
     onRemoveBlock?: (timetableId: number, enrollId: number) => Promise<void>;
     dayLabels?: Record<Day, string>;
 }
 
 const Days: Day[] = [0, 1, 2, 3, 4, 5, 6];
 
-export function TimetableGrid<T>({
+export function TimetableGrid({
+    timetableId,
     items,
     config,
     toBlocks,
     onRemoveBlock,
     dayLabels = DAY_LABELS_KO,
-}: WeekGridProps<T>) {
+}: WeekGridProps) {
     const blocks = useMemo(() => toBlocks(items, config), [items, config, toBlocks]);
     const totalHeight = config.endHour * 60 * config.ppm;
     const hourMarks = useMemo(() => {
@@ -35,7 +37,7 @@ export function TimetableGrid<T>({
         return list;
     }, [config]);
     const blocksByDay = useMemo(() => {
-        const map: Record<Day, TimetableGridBlock<T>[]> = {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: [] };
+        const map: Record<Day, TimetableGridBlock<Course>[]> = {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: [] };
         for (const b of blocks) map[b.day].push(b);
         return map;
     }, [blocks]);
@@ -62,8 +64,9 @@ export function TimetableGrid<T>({
 
         <div className="tt-days" style={{ height: totalHeight }}>
           {Days.map((d) => (
-            <DayColumn<T>
+            <DayColumn<Course>
               key={d}
+              timetableId={timetableId}
               height={totalHeight}
               blocks={blocksByDay[d]}
               config={config}
@@ -78,12 +81,14 @@ export function TimetableGrid<T>({
 }
 
 function DayColumn<T>({
+    timetableId,
     height,
     blocks,
     config,
     onSelectBlock,
     onRemoveBlock,
 }: {
+    timetableId: number;
     height: number;
     blocks: TimetableGridBlock<T>[];
     config: GridConfig;
@@ -105,7 +110,7 @@ function DayColumn<T>({
                   {onRemoveBlock && (
                     <MdCancel
                       className="tt-blockRemove"
-                      onClick={() => onRemoveBlock(b.id, b.enrollId)}
+                      onClick={() => onRemoveBlock(timetableId, b.enrollId)}
                     />
                   )}
                     <div className="tt-blockTitle">{b.title}</div>

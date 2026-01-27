@@ -1,4 +1,5 @@
 import type { Course, Day, TimeSlot, Event, GetCoursesResponse } from "../types";
+import { dayOfWeekToDay } from "./time";
 
 export type GridConfig = {
 	startHour: number; // 화면 시작 시간
@@ -56,11 +57,11 @@ export function flattenCoursesToBlocks(
 				id: courseRes.course.id,
 				enrollId: courseRes.enrollId,
 				title: courseRes.course.courseTitle,
-				day: slot.day,
-				startMin: slot.startMin,
-				endMin: slot.endMin,
-				top: minutesToTop(slot.startMin, cfg),
-				height: durationToHeight(slot.startMin, slot.endMin, cfg),
+				day: dayOfWeekToDay(slot.dayOfweek),
+				startMin: slot.startAt,
+				endMin: slot.endAt,
+				top: minutesToTop(slot.startAt, cfg),
+				height: durationToHeight(slot.startAt, slot.endAt, cfg),
 				raw: courseRes.course,
 			});
 		});
@@ -75,6 +76,7 @@ export function flattenEventsToBlocks(
 ): WeekGridBlock<Event>[] {
 	const blocks: WeekGridBlock<Event>[] = [];
 	events.forEach((event) => {
+		if (!event.eventStart || !event.eventEnd) return;
 		blocks.push({
 			id: event.id,
 			title: event.title,
@@ -94,9 +96,9 @@ export function flattenEventsToBlocks(
 export function hasOverlap(existing: TimeSlot[], next: TimeSlot) {
 	return existing.some(
 		(s) =>
-			s.day === next.day &&
-			next.startMin < s.endMin &&
-			s.startMin < next.endMin,
+			s.dayOfweek === next.dayOfweek &&
+			next.startAt < s.endAt &&
+			s.startAt < next.endAt,
 	);
 }
 

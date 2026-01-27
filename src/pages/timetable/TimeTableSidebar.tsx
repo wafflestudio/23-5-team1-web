@@ -5,7 +5,7 @@ import {
 } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthProvider";
-import styles from "../styles/Sidebar.module.css";
+import styles from "../../styles/Sidebar.module.css";
 import type { PatchTimetableRequest, Timetable } from "../../util/types"
 
 interface TimeTableSidebarProps {
@@ -45,9 +45,24 @@ export const TimeTableSidebar = ({
 		navigate("/timetable");
 	};
 
-    // const totalCredit = (t: TimetableWithCourse) => {
-    //     return t.courses.reduce((sum, c) => sum + (c.credit ?? 0), 0);
-    // }
+	const startRename = (tt: Timetable) => {
+		setNameChangeId(tt.id);
+		setEditingId(null);
+		setNewName(tt.name ?? "");
+	};
+
+	const cancelRename = () => {
+		setNameChangeId(null);
+		setNewName("");
+	};
+
+	const applyRename = async (ttId: number) => {
+		const name = newName.trim();
+		if (!name) return;
+		onRename(ttId, { name });
+		cancelRename();
+		setEditingId(null);
+	};
 
 	if (isHidden) {
 		return (
@@ -102,7 +117,9 @@ export const TimeTableSidebar = ({
                 {timetables.map((tt) => (
                     <li key={tt.id} className={styles.listItem}>
 						{nameChangeId === tt.id ? (
+							<div className={styles.renameBox}>
 							<input
+								className={styles.renameInput}
 								value={newName}
 								onChange={(e) => setNewName(e.target.value)}
 								onKeyDown={(e) => {
@@ -114,36 +131,51 @@ export const TimeTableSidebar = ({
 									}
 								}}
 							></input>
+							<button 
+								type="button"
+								className={styles.applyButton}
+								onClick={() => applyRename(tt.id)}>
+								적용
+							</button>
+							</div>
 						) : (
 							<button
 								type="button"
 								className={`${styles.rowBtn}`}
-								onClick={() => onSelectTimetable?.(tt)}
+								onClick={() => onSelectTimetable(tt)}
 							>
-								<span className={styles.bullet} aria-hidden="true">
-								•
-								</span>
-
 								<span className={styles.rowText}>
 								<span className={styles.ttName}>{tt.name}</span>
-								{/*<span className={styles.credit}> ({totalCredit(tt)}학점)</span>*/}
 								</span>
 							</button>
 						)}
 
-						<button
-							type="button"
-							className={styles.moreBtn}
-							onClick={() => setEditingId(tt.id)}
-							aria-label={`${tt.name} 더보기`}
-						>
-							<span aria-hidden="true">⋮</span>
-						</button>
+						{nameChangeId !== tt.id && (<button
+								type="button"
+								className={styles.moreBtn}
+								onClick={() => setEditingId(tt.id)}
+								aria-label={`${tt.name} 더보기`}
+							>
+								<span aria-hidden="true">⋮</span>
+							</button>)}
 
-						{editingId === tt.id &&(
-							<div>
-								<button type="button" onClick={() => setNameChangeId(tt.id)}>이름 바꾸기</button>
-								<button type="button" onClick={() => onDelete(tt.id)}>삭제</button>
+						{editingId === tt.id && nameChangeId !== tt.id && (
+							<div className={styles.menu}>
+								<button
+									type="button"
+									className={styles.menuItem}
+									onClick={() => startRename(tt)}
+								>
+									이름 바꾸기
+								</button>
+
+								<button
+									type="button"
+									className={`${styles.menuItem} ${styles.danger}`}
+									onClick={() => onDelete(tt.id)}
+								>
+									삭제
+								</button>
 							</div>
 						)}
                     </li>
@@ -181,7 +213,7 @@ export const TimeTableSidebar = ({
 			>
 				<img
 					className={styles.icon}
-					src="/assets/timetable_active.svg"
+					src="/assets/timetableActive.png"
 					alt="timetable icon"
 				/>
 				<span>시간표</span>

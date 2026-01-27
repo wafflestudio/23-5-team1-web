@@ -1,7 +1,7 @@
 import type { Semester } from "../../util/types";
 import { IoIosSearch } from "react-icons/io";
 import { useAuth } from "../../contexts/AuthProvider";
-import styles from "../styles/Toolbar.module.css";
+import styles from "../../styles/Toolbar.module.css";
 
 interface TimeTableToolbarProps {
     timetableName: string;
@@ -27,7 +27,7 @@ const TimeTableToolbar = ({
 	return (
 		<div className={styles.toolbarContainer}>
 			<div className={styles.headerRow}>
-				<div className={styles.leftGroup}>
+				<div className={styles.selectGroup}>
 					<span className={styles.selectWrap}>
                         <select
                             className={styles.select}
@@ -41,9 +41,6 @@ const TimeTableToolbar = ({
                             </option>
                             ))}
                         </select>
-                        <span className={styles.chevron} aria-hidden="true">
-                            ▾
-                        </span>
                     </span>
 
                     <span className={styles.selectWrap}>
@@ -59,11 +56,8 @@ const TimeTableToolbar = ({
                                 </option>
                             ))}
                         </select>
-                        <span className={styles.chevron} aria-hidden="true">
-                            ▾
-                        </span>
                     </span>
-                    <p>{timetableName}</p>
+                    <p className={styles.dateTitle}>{timetableName}</p>
 				</div>
 
 				<div className={styles.rightGroup}>
