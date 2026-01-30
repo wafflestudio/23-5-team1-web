@@ -23,6 +23,7 @@ import type {
 	Event,
 	EventDetail,
 	FetchDayEventArgs,
+	FetchWeekEventArgs,
 	FetchMonthEventArgs,
 	MonthViewParams,
 	MonthViewResponse,
@@ -32,6 +33,7 @@ import type {
 
 interface EventContextType {
 	monthViewData: MonthViewResponse | null;
+	weekViewData: MonthViewResponse | null;
 	dayViewEvents: Event[];
 	dayDate: Date;
 	setDayDate: React.Dispatch<React.SetStateAction<Date>>;
@@ -47,6 +49,7 @@ interface EventContextType {
 	error: string | null;
 
 	fetchMonthEvents: (params: FetchMonthEventArgs) => Promise<void>;
+	fetchWeekEvents: (params: FetchWeekEventArgs) => Promise<void>;
 	fetchDayEvents: (params: FetchDayEventArgs) => Promise<void>;
 	searchEvents: (params: SearchParams) => Promise<void>;
 	clearSearch: () => void;
@@ -63,6 +66,9 @@ export const EventProvider: React.FC<{ children: ReactNode }> = ({
 		null,
 	);
 	const [dayDate, setDayDate] = useState<Date>(new Date());
+	const [weekViewData, setWeekViewData] = useState<MonthViewResponse | null>(
+		null,
+	);
 	const [dayViewEvents, setDayViewEvents] = useState<Event[]>([]);
 	const [searchResults, setSearchResults] = useState<SearchResult | null>(null);
 
@@ -135,6 +141,25 @@ export const EventProvider: React.FC<{ children: ReactNode }> = ({
 		[],
 	);
 
+	const fetchWeekEvents = useCallback(
+		async ({ from, to }: FetchWeekEventArgs) => {
+			const params: MonthViewParams = {
+				from: from,
+				to: to,
+			};
+			try {
+				const data = await getMonthEvents(params);
+				setWeekViewData(data);
+			} catch (err) {
+				console.error(err);
+				setError("failed fo fetch week events");
+			} finally {
+				setIsLoadingMonth(false);
+			}
+		},
+		[],
+	);
+
 	const fetchDayEvents = useCallback(
 		async ({
 			date = new Date(),
@@ -199,6 +224,7 @@ export const EventProvider: React.FC<{ children: ReactNode }> = ({
 
 	const value: EventContextType = {
 		monthViewData,
+		weekViewData,
 		dayViewEvents,
 		dayDate,
 		setDayDate,
@@ -211,6 +237,7 @@ export const EventProvider: React.FC<{ children: ReactNode }> = ({
 		isLoadingMeta,
 		error,
 		fetchMonthEvents,
+		fetchWeekEvents,
 		fetchDayEvents,
 		searchEvents,
 		clearSearch,

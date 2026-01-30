@@ -6,6 +6,7 @@ import CompleteSignUp from "../pages/auth/OnBoarding/CompleteSignUp";
 import EmailSignUp from "../pages/auth/Signup/EmailSignUp";
 import CalendarView from "../pages/CalendarView";
 import TimetablePage from "../pages/timetable/TimetablePage";
+import { TimetableProvider } from "../contexts/TimetableContext";
 
 export default function AppRoutes() {
 	return (
@@ -27,7 +28,14 @@ export default function AppRoutes() {
 			<Route path="/main" element={<CalendarView />} />
 
 			{/* Timetable paage */}
-			<Route path="/timetable" element={<TimetablePage />} />
+			<Route
+				path="/timetable"
+				element={
+					<TimetableProvider>
+						<TimetablePage />
+					</TimetableProvider>
+				}
+			/>
 		</Routes>
 	);
 }

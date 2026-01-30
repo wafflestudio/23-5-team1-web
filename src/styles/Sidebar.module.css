@@ -140,6 +140,28 @@ body::-webkit-scrollbar {
 	height: 18px;
 }
 
+.iconBtn {
+	width: 30px;
+	height: 30px;
+	border-radius: 10px;
+	border: 0;
+	background: transparent;
+	cursor: pointer;
+	display: grid;
+	place-items: center;
+}
+
+.iconBtn:hover {
+	background: #f6f6f6;
+}
+
+.plus {
+	font-size: 20px;
+	line-height: 1;
+	color: #333;
+	transform: translateY(-1px);
+}
+
 .chevron {
 	font-size: 10px;
 	color: #999;
@@ -300,4 +322,198 @@ body::-webkit-scrollbar {
 
 .pageLink:hover {
 	opacity: 0.7;
+}
+
+/* Placeholder for Page Icons (Grey square/flag) */
+.iconBox {
+	width: 20px;
+	height: 20px;
+	background-color: #999;
+	/* Replace background-color with generic mask or use img tag inside */
+}
+
+.list {
+	list-style: none;
+	margin: 6px 0 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+.listItem {
+	position: relative;
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	padding: 0 4px;
+}
+
+.rowBtn {
+	flex: 1;
+	border: 0;
+	background: transparent;
+	cursor: pointer;
+	text-align: left;
+	padding: 10px 10px;
+	border-radius: 12px;
+	display: flex;
+	align-items: center;
+	min-height: 40px;
+}
+
+.rowBtn:hover {
+	background: #f6f6f6;
+}
+
+.rowText {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	min-width: 0;
+}
+
+.ttName {
+	font-size: 14px;
+	color: #111;
+	letter-spacing: -0.01em;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.moreBtn {
+	position: relative;
+	width: 34px;
+	height: 34px;
+	border: 0;
+	background: transparent;
+	cursor: pointer;
+	border-radius: 10px;
+	display: grid;
+	place-items: center;
+	color: #777;
+	font-size: 18px;
+}
+
+.moreBtn:hover {
+	background: #f6f6f6;
+}
+
+.menu {
+	position: absolute;
+	right: 8px;
+	top: 100%;
+	margin-top: 8px;
+
+	width: 160px;
+	padding: 6px;
+
+	background: #ffffff;
+	border: 1px solid rgba(0, 0, 0, 0.08);
+	border-radius: 12px;
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+
+	z-index: 50;
+}
+
+.menuItem {
+	width: 100%;
+	text-align: left;
+
+	padding: 10px 12px;
+	border: none;
+	border-radius: 10px;
+
+	background: transparent;
+	cursor: pointer;
+
+	font-size: 14px;
+	font-weight: 600;
+	color: #111;
+}
+
+.menuItem:hover {
+	background: rgba(0, 0, 0, 0.05);
+}
+
+.menuItem:active {
+	transform: translateY(0.5px);
+}
+
+.menuItem:focus-visible {
+	outline: 2px solid rgba(0, 0, 0, 0.25);
+	outline-offset: 2px;
+}
+
+/* 삭제 전용 */
+.danger {
+	color: #d92d20;
+}
+
+.danger:hover {
+	background: rgba(217, 45, 32, 0.1);
+}
+
+.renameBox {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+/* 입력창 */
+.renameInput {
+	height: 32px;
+	padding: 0 10px;
+
+	font-size: 14px;
+	border-radius: 8px;
+	border: 1px solid rgba(0, 0, 0, 0.15);
+
+	outline: none;
+}
+
+.renameInput:focus {
+	border-color: #111;
+}
+
+/* 적용 버튼 (입력 아래) */
+.applyButton {
+	height: 30px;
+	width: fit-content; /* 버튼이 입력 폭을 다 차지하지 않게 */
+	align-self: flex-end; /* 오른쪽 정렬 */
+
+	padding: 0 12px;
+	border: none;
+	border-radius: 8px;
+
+	font-size: 13px;
+	font-weight: 600;
+
+	background: #111;
+	color: #fff;
+	cursor: pointer;
+}
+
+.applyButton:hover {
+	background: #000;
+}
+
+.applyButton:active {
+	transform: translateY(0.5px);
+}
+
+.applyButton:focus-visible {
+	outline: 2px solid rgba(0, 0, 0, 0.3);
+	outline-offset: 2px;
+}
+
+/* 선택: 비활성화 */
+.applyButton:disabled {
+	opacity: 0.4;
+	cursor: not-allowed;
 }

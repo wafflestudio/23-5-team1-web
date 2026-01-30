@@ -1,16 +1,16 @@
-import { useMemo, useState } from "react";
-import type { Course, Semester } from "../../util/types";
+import { useEffect, useState, useMemo } from "react";
+import { useTimetable } from "../../contexts/TimetableContext";
+import type { Semester } from "../../util/types";
 import { AddClassPanel } from "./AddClassPanel";
-import { type GridConfig, hasOverlap } from "./layout";
-import { WeekGrid } from "./WeekGrid";
+import {
+	flattenCoursesToBlocks,
+	config,
+} from "../../util/weekly_timetable/layout";
+import { TimetableGrid } from "../components/TimetableGrid";
 import "./timetable.css";
 import { SlArrowLeft } from "react-icons/sl";
-import { Sidebar } from "../../widgets/Sidebar";
-
-// import Toolbar from "../widgets/Toolbar";
-
-type TTKey = `${number}-${Semester}`;
-type Tables = Partial<Record<TTKey, Course[]>>;
+import { TimeTableSidebar } from "./TimeTableSidebar";
+import TimeTableToolbar from "./TimeTableToolbar";
 
 export default function TimetablePage() {
 	const now = new Date();
@@ -22,88 +22,108 @@ export default function TimetablePage() {
 		{ id: "WINTER", label: "겨울 계절" },
 	];
 
+	const {
+		timetables,
+		courses,
+		currentTimetable,
+		createTimetable,
+		isLoading,
+		loadTimetable,
+		selectTimetable,
+		updateTimetableName,
+		deleteTimetable,
+		loadCourses,
+		addCustomCourse,
+		//updateCustomCourse,
+		deleteCourse,
+	} = useTimetable();
+
 	const [year, setYear] = useState<number>(now.getFullYear());
 	const [semester, setSemester] = useState<Semester>("SPRING");
-	const [tables, setTables] = useState<Tables>({});
+	const [tableName, setTableName] = useState<string>("");
 
-	const config: GridConfig = useMemo(
-		() => ({
-			startHour: 0,
-			endHour: 24,
-			ppm: 0.9,
-		}),
-		[],
-	);
+	useEffect(() => {
+		loadTimetable(year, semester);
+	}, [year, semester, loadTimetable]);
 
-	// 추후 백엔드 연결 필요
-	const key = `${year}-${semester}` as TTKey;
-	const courses = tables[key] ?? [];
-	const allSlots = courses.flatMap((c) => c.slot);
+	useEffect(() => {
+		if (!currentTimetable) return;
+		loadCourses(currentTimetable.id);
+	}, [currentTimetable, loadCourses]);
 
-	const addCourse = (item: Course) => {
-		if (item.slot.some((t) => hasOverlap(allSlots, t))) {
-			alert("겹치는 수업은 추가할 수 없습니다.");
+	useEffect(() => {
+		if (!currentTimetable) {
+			console.log("시간표 없음");
+			setIsClicked(false);
+			setTableName("");
 			return;
 		}
+		setTableName(currentTimetable?.name ?? "");
+	}, [currentTimetable]);
 
-		setTables((prev) => ({
-			...prev,
-			[key]: [...(prev[key] ?? []), item],
-		}));
-	};
+	const hasTimetable = !!currentTimetable;
 
-	const removeCourse = (courseId: number) => {
-		setTables((prev) => ({
-			...prev,
-			[key]: (prev[key] ?? []).filter((course) => course.id !== courseId),
-		}));
-	};
+	const visibleCourses = hasTimetable ? (courses ?? []) : [];
+
+	const allSlots = useMemo(
+		() => visibleCourses.flatMap((c) => c.course.timeSlots),
+		[visibleCourses],
+	);
 
 	const [isClicked, setIsClicked] = useState(false);
+
+	if (isLoading) return <div>로딩 중...</div>;
 
 	return (
 		<div
 			className={`tt-page ${isClicked ? "tt-page--open" : "tt-page--closed"}`}
 		>
-			<Sidebar />
+			<TimeTableSidebar
+				timetables={timetables}
+				onAddTimetable={() =>
+					createTimetable({
+						year,
+						semester,
+						name: "새 시간표",
+					})
+				}
+				onSelectTimetable={selectTimetable}
+				onRename={updateTimetableName}
+				onDelete={deleteTimetable}
+			/>
 
 			<main>
-				<div className="tt-title">
-					<h1>
-						{now.getFullYear()}년 {now.getMonth() + 1}월 {now.getDate()}일
-					</h1>
-					<select
-						value={year}
-						onChange={(e) => setYear(Number(e.target.value))}
-					>
-						{years.map((y) => (
-							<option key={y} value={y}>
-								{y}
-							</option>
-						))}
-					</select>
-					<select
-						value={semester}
-						onChange={(e) => setSemester(e.target.value as Semester)}
-					>
-						{semesters.map((s) => (
-							<option key={s.id} value={s.id}>
-								{s.label}
-							</option>
-						))}
-					</select>
-					{/* < Toolbar/> */}
-				</div>
-
-				<div>
-					<WeekGrid
-						courses={courses}
-						config={config}
-						removeCourse={removeCourse}
-					/>
-				</div>
+				<TimeTableToolbar
+					timetableName={tableName}
+					year={year}
+					semester={semester}
+					SEMESTER_LABEL={semesters}
+					onSemesterChange={setSemester}
+					onYearChange={setYear}
+					years={years}
+				/>
+				{!hasTimetable ? (
+					<div style={{ padding: 16 }}>
+						<div style={{ fontSize: 16, fontWeight: 700, marginBottom: 8 }}>
+							선택된 시간표가 없어요
+						</div>
+						<div style={{ opacity: 0.7, lineHeight: 1.5 }}>
+							왼쪽 사이드바에서 시간표를 추가하거나 선택해 주세요.
+						</div>
+					</div>
+				) : (
+					<div>
+						<TimetableGrid
+							timetableId={currentTimetable?.id ?? 0}
+							items={courses ?? []}
+							config={config}
+							toBlocks={flattenCoursesToBlocks}
+							onRemoveBlock={deleteCourse}
+						/>
+					</div>
+				)}
 			</main>
-			{!isClicked && (
+			{hasTimetable && !isClicked && (
 				<button
 					type="button"
 					className="tt-addButton"
@@ -113,9 +133,11 @@ export default function TimetablePage() {
 					<SlArrowLeft /> 수업 추가
 				</button>
 			)}
-			{isClicked && (
+			{hasTimetable && isClicked && (
 				<AddClassPanel
-					onAdd={addCourse}
+					timetableId={currentTimetable?.id}
+					onAdd={addCustomCourse}
+					allSlots={allSlots}
 					year={year}
 					semester={semester}
 					setIsClicked={setIsClicked}

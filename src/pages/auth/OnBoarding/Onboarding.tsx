@@ -35,9 +35,6 @@ export default function Onboarding() {
 
 	useEffect(() => {
 		getCategoryGroups().then((categoryGroups) => {
-			console.log("categoryGroups:", categoryGroups);
-			console.log("isArray:", Array.isArray(categoryGroups));
-			console.log("type:", typeof categoryGroups);
 			const safe = Array.isArray(categoryGroups) ? categoryGroups : [];
 
 			// 프로그램 유형(groupId === 3)만 추출
@@ -51,9 +48,6 @@ export default function Onboarding() {
 
 	useEffect(() => {
 		getOrganizations().then((orgs) => {
-			console.log("orgs:", orgs);
-			console.log("isArray:", Array.isArray(orgs));
-			console.log("type:", typeof orgs);
 			setOrganizations(Array.isArray(orgs) ? orgs : []);
 		});
 	}, []);
