@@ -262,6 +262,9 @@ export interface FetchMonthEventArgs {
 export interface FetchWeekEventArgs {
 	from: string;
 	to: string;
+	statusId?: number[];
+	eventTypeId?: number[];
+	orgId?: number[];
 }
 
 export interface FetchDayEventArgs {
