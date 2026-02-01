@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
 	FaAnglesLeft,
 	FaAnglesRight,
@@ -26,7 +26,7 @@ export const Sidebar = () => {
 		globalSetter: React.Dispatch<React.SetStateAction<Category[]>>;
 	}
 
-	const { user } = useAuth();
+	const { user, logout } = useAuth();
 	const { excludedKeywords, addExcludedKeyword, deleteExcludedKeyword } = useUserData();
 	const { categoryGroups, isLoadingMeta } = useEvents();
 	const {
@@ -57,6 +57,9 @@ export const Sidebar = () => {
 	});
 	// if the category itself is hidden
 	const [isHidden, setIsHidden] = useState<boolean>(false);
+
+	const ref = useRef<HTMLDivElement>(null);
+
 	// 모집중, 등
 	const STATUS_LIST =
 		categoryGroups.find((g) => g.group.id === 1)?.categories || [];
@@ -172,7 +175,7 @@ export const Sidebar = () => {
 	}
 
 	return (
-		<div className={styles.sidebarContainer}>
+		<div className={styles.sidebarContainer} ref={ref}>
 			<div className={styles.headerRow}>
 				<button
 					type="button"
@@ -311,8 +314,8 @@ export const Sidebar = () => {
 				)}
 			</div>
 
-			{/* TODO : 찜한 행사 & 시간표 */}
-			<div className={styles.sectionTitle} style={{ marginTop: "40px" }}>
+			{/* TODO : 찜한 행사 */}
+			<div className={styles.sectionTitle} style={{ marginTop: "20px" }}>
 				페이지
 			</div>
 			<button className={styles.pageLink} type="button">
@@ -335,6 +338,8 @@ export const Sidebar = () => {
 				/>
 				<span>시간표</span>
 			</button>
+			{user && <button type='button' onClick={()=>{logout(); ref?.current?.scrollTo(0, 0); }} className={styles.logout}>로그아웃</button>}
 		</div>
+	
 	);
-};
+}
