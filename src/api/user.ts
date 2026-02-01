@@ -12,8 +12,8 @@ export const getExcludedKeywords = async () => {
 	const res = await api.get<{ items: Keywords[] }>(
 		"/users/me/excluded-keywords",
 	);
-	const keywords: string[] = res.data.items.map(
-		(item: Keywords) => item.keyword,
+	const keywords: { id: number; keyword: string }[] = res.data.items.map(
+		(item: Keywords) => ({ id: item.id, keyword: item.keyword }),
 	);
 
 	return keywords;
@@ -23,6 +23,10 @@ export const addExcludedKeywords = async (keyword: string) => {
 	await api.post("/users/me/excluded-keywords", {
 		keyword,
 	});
+};
+
+export const deleteExcludedKeywords = async (id: number) => {
+	await api.delete(`/users/me/excluded-keywords/${id}`);
 };
 
 // --- Bookmarks ---

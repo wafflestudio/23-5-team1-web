@@ -48,8 +48,7 @@ const CalendarView = () => {
 	// Day context data doesn't need additional transformation; it is returned as Event[]
 	useEffect(() => {
 		setCurrentDate(dayDate);
-		console.log(rawMonthEvents);
-	}, [dayDate, rawMonthEvents]);
+	}, [dayDate]);
 
 	useEffect(() => {
 		const loadMonthEvents = async () => {

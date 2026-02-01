@@ -13,7 +13,7 @@ import { useFilter } from "@contexts/FilterContext";
 import styles from "@styles/Sidebar.module.css";
 import type { Category } from "@types";
 import { useUserData } from "@/contexts/UserDataContext";
-import { addExcludedKeywords } from "@/api/user";
+import { IoIosClose } from "react-icons/io";
 
 export const Sidebar = () => {
 	type FilterType = "status" | "org" | "category";
@@ -27,7 +27,7 @@ export const Sidebar = () => {
 	}
 
 	const { user } = useAuth();
-	const { excludedKeywords } = useUserData();
+	const { excludedKeywords, addExcludedKeyword, deleteExcludedKeyword } = useUserData();
 	const { categoryGroups, isLoadingMeta } = useEvents();
 	const {
 		globalCategory,
@@ -145,10 +145,11 @@ export const Sidebar = () => {
 		if (!excludeInput.trim()) return;
 
 		if ("key" in e) {
-			if (e.key !== "Enter") return;
+			if (e.key !== "Enter" || e.nativeEvent.isComposing) return;
 			e.stopPropagation();
+			e.preventDefault();
 		}
-		addExcludedKeywords(excludeInput);
+		addExcludedKeyword(excludeInput);
 		setExcludeInput("");
 	};
 
@@ -294,11 +295,11 @@ export const Sidebar = () => {
 							</button>
 						</div>
 						<div className={styles.tagContainer}>
-							{excludedKeywords.map((tag) => (
-								<span key={tag} className={styles.tag}>
-									{tag}{" "}
-									<button type="button" className={styles.tagClose}>
-										x
+							{excludedKeywords.map((tag: { id: number; keyword: string }) => (
+								<span key={tag.id} className={styles.tag}>
+									{tag.keyword}{" "}
+									<button type="button" className={styles.tagClose} onClick={()=>deleteExcludedKeyword(tag.id)}>
+										<IoIosClose size={20}/>
 									</button>
 								</span>
 							))}

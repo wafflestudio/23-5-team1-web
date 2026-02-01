@@ -13,9 +13,10 @@ import { useAuth } from "./AuthProvider";
 interface UserDataContextType {
 	bookmarkedEvents: Event[];
 	interestCategories: Category[];
-	excludedKeywords: string[];
+	excludedKeywords: { id: number; keyword: string }[];
 	refreshUserData: () => void;
 	addExcludedKeyword: (keyword: string) => Promise<void>;
+	deleteExcludedKeyword: (id: number) => Promise<void>;
 	toggleBookmark: (event: Event) => Promise<void>;
 }
 
@@ -25,7 +26,7 @@ const UserDataContext = createContext<UserDataContextType | undefined>(
 
 export const UserDataProvider = ({ children }: { children: ReactNode }) => {
 	const { isAuthenticated } = useAuth();
-	const [excludedKeywords, setExcludedKeywords] = useState<string[]>([]);
+	const [excludedKeywords, setExcludedKeywords] = useState<{ id: number; keyword: string }[]>([]);
 	const [bookmarkedEvents, setBookmarkedEvents] = useState<Event[]>([]);
 	const [interestCategories, setInterestCategories] = useState<Category[]>([]);
 
@@ -85,12 +86,23 @@ export const UserDataProvider = ({ children }: { children: ReactNode }) => {
 	const addExcludedKeyword = async (keyword: string) => {
 		try {
 			await userService.addExcludedKeywords(keyword);
-			const excludedData: string[] = await userService.getExcludedKeywords();
+			const excludedData: { id: number; keyword: string }[] = await userService.getExcludedKeywords();
 			setExcludedKeywords(excludedData);
 		} catch (error) {
 			console.error("error in adding excluded keyword", error);
 		}
 	};
+
+	const deleteExcludedKeyword = async (id: number) => {
+		try {
+			await userService.deleteExcludedKeywords(id);
+			const excludedData: { id: number; keyword: string }[] = await userService.getExcludedKeywords();
+			setExcludedKeywords(excludedData);
+
+		} catch (error) {
+			console.error("error in deleting excluded keyword", error);
+		}
+	}
 
 	return (
 		<UserDataContext.Provider
@@ -101,6 +113,7 @@ export const UserDataProvider = ({ children }: { children: ReactNode }) => {
 				refreshUserData: fetchAll,
 				toggleBookmark,
 				addExcludedKeyword,
+				deleteExcludedKeyword,
 			}}
 		>
 			{children}
