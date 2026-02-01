@@ -278,12 +278,12 @@ export const Sidebar = () => {
 				{expandedSections.exclude && (
 					<>
 						<div className={styles.inputContainer}>
-							<input 
-								type="text" 
-								className={styles.excludeInput} 
-								onKeyDown={handleAddKeyword}	
+							<input
+								type="text"
+								className={styles.excludeInput}
+								onKeyDown={handleAddKeyword}
 								value={excludeInput}
-								onChange={(e)=>setExcludeInput(e.currentTarget.value)} 
+								onChange={(e) => setExcludeInput(e.currentTarget.value)}
 							/>
 							<button
 								type="button"
@@ -292,7 +292,6 @@ export const Sidebar = () => {
 							>
 								적용
 							</button>
-							
 						</div>
 						<div className={styles.tagContainer}>
 							{excludedKeywords.map((tag) => (
@@ -304,8 +303,9 @@ export const Sidebar = () => {
 								</span>
 							))}
 						</div>
-						<span className={styles.explanationText}>엔터로 제외할 키워드를 추가해주세요.</span>
-
+						<span className={styles.explanationText}>
+							엔터로 제외할 키워드를 추가해주세요.
+						</span>
 					</>
 				)}
 			</div>

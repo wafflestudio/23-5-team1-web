@@ -42,7 +42,7 @@ const CalendarView = () => {
 		(bucket) => bucket.events,
 	);
 	const MONTH_EVENTS = Array.from(
-		new Map(rawMonthEvents.map((event) => [event.id, event])).values()
+		new Map(rawMonthEvents.map((event) => [event.id, event])).values(),
 	);
 
 	// Day context data doesn't need additional transformation; it is returned as Event[]

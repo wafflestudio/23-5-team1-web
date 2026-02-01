@@ -90,7 +90,7 @@ export const UserDataProvider = ({ children }: { children: ReactNode }) => {
 		} catch (error) {
 			console.error("error in adding excluded keyword", error);
 		}
-	}
+	};
 
 	return (
 		<UserDataContext.Provider

@@ -32,33 +32,34 @@ const SearchInput = () => {
 			setQuery(searchText);
 		}
 		navigate("/search");
-	}
+	};
 
 	return (
 		<button
 			type="button"
 			className={styles.searchContainer}
-			onMouseEnter={()=>setActive(true)}
+			onMouseEnter={() => setActive(true)}
 			// onMouseLeave={()=>setActive(false)}
-			onFocus={()=>setActive(true)}
+			onFocus={() => setActive(true)}
 			onBlur={() => setActive(false)}
 		>
-			<input 
+			<input
 				type="text"
-				className={`${styles.searchInput} ${active ? styles.active : ''}`} 
+				className={`${styles.searchInput} ${active ? styles.active : ""}`}
 				placeholder="검색어를 입력하세요"
 				value={searchText}
-				onChange={(e)=>setSearchText(e.currentTarget.value)}
+				onChange={(e) => setSearchText(e.currentTarget.value)}
 			/>
-			<IoIosSearch 
+			<IoIosSearch
 				onClick={handleSearch}
 				size={20}
-				color="rgba(130, 130, 130, 1)" />
+				color="rgba(130, 130, 130, 1)"
+			/>
 		</button>
-	)
-}
+	);
+};
 
-export const ProfileButton = ({ user }: {user: User | null}) => {
+export const ProfileButton = ({ user }: { user: User | null }) => {
 	return (
 		<button type="button" className={styles.profileButton}>
 			<img
@@ -66,8 +67,8 @@ export const ProfileButton = ({ user }: {user: User | null}) => {
 				src={user?.profileImageUrl || "/assets/defaultProfile.png"}
 			/>
 		</button>
-	)
-}
+	);
+};
 
 const Toolbar: React.FC<ToolbarProps> = ({
 	view,
