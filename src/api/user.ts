@@ -2,6 +2,33 @@ import { transformEvent } from "@calendarUtil/transformEvent";
 import type { Category, EventDTO } from "@types";
 import api from "./axios";
 
+// --- Excluded Keywords ---
+export const getExcludedKeywords = async () => {
+	interface Keywords {
+		id: number;
+		keyword: string;
+		createdAt: string;
+	}
+	const res = await api.get<{ items: Keywords[] }>(
+		"/users/me/excluded-keywords",
+	);
+	const keywords: { id: number; keyword: string }[] = res.data.items.map(
+		(item: Keywords) => ({ id: item.id, keyword: item.keyword }),
+	);
+
+	return keywords;
+};
+
+export const addExcludedKeywords = async (keyword: string) => {
+	await api.post("/users/me/excluded-keywords", {
+		keyword,
+	});
+};
+
+export const deleteExcludedKeywords = async (id: number) => {
+	await api.delete(`/users/me/excluded-keywords/${id}`);
+};
+
 // --- Bookmarks ---
 export const getBookmarks = async (page = 1, size = 20) => {
 	const res = await api.get<{ items: EventDTO[] }>("/users/me/bookmarks", {

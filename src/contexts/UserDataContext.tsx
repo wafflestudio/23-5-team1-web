@@ -13,7 +13,10 @@ import { useAuth } from "./AuthProvider";
 interface UserDataContextType {
 	bookmarkedEvents: Event[];
 	interestCategories: Category[];
+	excludedKeywords: { id: number; keyword: string }[];
 	refreshUserData: () => void;
+	addExcludedKeyword: (keyword: string) => Promise<void>;
+	deleteExcludedKeyword: (id: number) => Promise<void>;
 	toggleBookmark: (event: Event) => Promise<void>;
 }
 
@@ -23,18 +26,20 @@ const UserDataContext = createContext<UserDataContextType | undefined>(
 
 export const UserDataProvider = ({ children }: { children: ReactNode }) => {
 	const { isAuthenticated } = useAuth();
-
+	const [excludedKeywords, setExcludedKeywords] = useState<{ id: number; keyword: string }[]>([]);
 	const [bookmarkedEvents, setBookmarkedEvents] = useState<Event[]>([]);
 	const [interestCategories, setInterestCategories] = useState<Category[]>([]);
 
 	const fetchAll = useCallback(async () => {
 		if (!isAuthenticated) return;
 		try {
-			// Parallel fetch for efficiency
-			const [bookmarksData, interestsData] = await Promise.all([
+			// Parallel fetch
+			const [excludedData, bookmarksData, interestsData] = await Promise.all([
+				userService.getExcludedKeywords(),
 				userService.getBookmarks(1), // Fetch first page/all
 				userService.getInterestCategories(),
 			]);
+			setExcludedKeywords(excludedData);
 			setBookmarkedEvents(bookmarksData);
 			setInterestCategories(interestsData);
 		} catch (error) {
@@ -46,6 +51,7 @@ export const UserDataProvider = ({ children }: { children: ReactNode }) => {
 		if (isAuthenticated) {
 			fetchAll();
 		} else {
+			setExcludedKeywords([]);
 			setBookmarkedEvents([]);
 			setInterestCategories([]);
 		}
@@ -77,13 +83,37 @@ export const UserDataProvider = ({ children }: { children: ReactNode }) => {
 		}
 	};
 
+	const addExcludedKeyword = async (keyword: string) => {
+		try {
+			await userService.addExcludedKeywords(keyword);
+			const excludedData: { id: number; keyword: string }[] = await userService.getExcludedKeywords();
+			setExcludedKeywords(excludedData);
+		} catch (error) {
+			console.error("error in adding excluded keyword", error);
+		}
+	};
+
+	const deleteExcludedKeyword = async (id: number) => {
+		try {
+			await userService.deleteExcludedKeywords(id);
+			const excludedData: { id: number; keyword: string }[] = await userService.getExcludedKeywords();
+			setExcludedKeywords(excludedData);
+
+		} catch (error) {
+			console.error("error in deleting excluded keyword", error);
+		}
+	}
+
 	return (
 		<UserDataContext.Provider
 			value={{
+				excludedKeywords,
 				bookmarkedEvents,
 				interestCategories,
 				refreshUserData: fetchAll,
 				toggleBookmark,
+				addExcludedKeyword,
+				deleteExcludedKeyword,
 			}}
 		>
 			{children}

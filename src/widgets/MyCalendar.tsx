@@ -55,18 +55,11 @@ export const MyCalendar = ({
 			const isPeriodEvent = !event.eventStart; // 기간제 여부
 			const startDate = event.eventStart || event.applyStart;
 			const endDate = event.eventEnd || event.applyEnd;
-
-			let isAllDay: boolean;
-
-			if (currentView === Views.MONTH) {
-				isAllDay = true;
-			} else {
-				isAllDay = isPeriodEvent;
-			}
+			const isAllDay = currentView === Views.MONTH ? true : isPeriodEvent;
 
 			return {
-				start: new Date(startDate),
-				end: new Date(endDate),
+				start: startDate,
+				end: endDate,
 				title: event.title,
 				allDay: isAllDay,
 				resource: { event, isPeriodEvent },

@@ -8,6 +8,10 @@ import { IoIosSearch } from "react-icons/io";
 import { useAuth } from "@contexts/AuthProvider";
 import styles from "@styles/Toolbar.module.css";
 import { useDayView } from "@contexts/DayViewContext";
+import type { User } from "@/util/types";
+import { useState } from "react";
+import { useSearch } from "@contexts/SearchContext";
+import { useNavigate } from "react-router-dom";
 
 interface ToolbarProps {
 	view: View;
@@ -16,6 +20,55 @@ interface ToolbarProps {
 	label: string;
 	date: Date;
 }
+
+const SearchInput = () => {
+	const [active, setActive] = useState<boolean>(false);
+	const [searchText, setSearchText] = useState<string>("");
+	const { setQuery } = useSearch();
+	const navigate = useNavigate();
+
+	const handleSearch = () => {
+		if (searchText.trim()) {
+			setQuery(searchText);
+		}
+		navigate("/search");
+	};
+
+	return (
+		<button
+			type="button"
+			className={styles.searchContainer}
+			onMouseEnter={() => setActive(true)}
+			// onMouseLeave={()=>setActive(false)}
+			onFocus={() => setActive(true)}
+			onBlur={() => setActive(false)}
+		>
+			<input
+				type="text"
+				className={`${styles.searchInput} ${active ? styles.active : ""}`}
+				placeholder="검색어를 입력하세요"
+				value={searchText}
+				onChange={(e) => setSearchText(e.currentTarget.value)}
+			/>
+			<IoIosSearch
+				onClick={handleSearch}
+				size={20}
+				color="rgba(130, 130, 130, 1)"
+			/>
+		</button>
+	);
+};
+
+export const ProfileButton = ({ user }: { user: User | null }) => {
+	return (
+		<button type="button" className={styles.profileButton}>
+			<img
+				alt="user profile"
+				src={user?.profileImageUrl || "/assets/defaultProfile.png"}
+			/>
+		</button>
+	);
+};
 
 const Toolbar: React.FC<ToolbarProps> = ({
 	view,
@@ -55,17 +108,12 @@ const Toolbar: React.FC<ToolbarProps> = ({
 						일
 					</button>
 				</div>
-				{view === Views.DAY && (
+				{/* {view === Views.DAY && (
 					<div className={`${styles.profileRow} ${styles.dayView}`}>
-						<IoIosSearch size={20} color="rgba(130, 130, 130, 1)" />
-						<button type="button" className={styles.profileButton}>
-							<img
-								alt="user profile"
-								src={user?.profileImageUrl || "/assets/defaultProfile.png"}
-							/>
-						</button>
+						<SearchInput />
+						<ProfileButton user={user} />
 					</div>
-				)}
+				)} */}
 			</div>
 
 			{/* 날짜 및 내비게이션 */}
@@ -98,7 +146,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
 				</div>
 
 				<div className={styles.rightGroup}>
-					{/* 주별 뷰 전용 모드 전환 토글 */}
+					{/* 일별 뷰 전용 모드 전환 토글 */}
 					{view === Views.DAY && (
 						<div className={styles.viewToggleGroup}>
 							{/* 리스트 버튼 */}
@@ -133,17 +181,10 @@ const Toolbar: React.FC<ToolbarProps> = ({
 							</button>
 						</div>
 					)}
-					{view !== Views.DAY && (
-						<div className={styles.profileRow}>
-							<IoIosSearch size={20} color="rgba(130, 130, 130, 1)" />
-							<button type="button" className={styles.profileButton}>
-								<img
-									alt="user profile"
-									src={user?.profileImageUrl || "/assets/defaultProfile.png"}
-								/>
-							</button>
-						</div>
-					)}
+					<div className={styles.profileRow}>
+						<SearchInput />
+						<ProfileButton user={user} />
+					</div>
 				</div>
 			</div>
 		</div>

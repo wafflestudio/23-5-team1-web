@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
 	FaAnglesLeft,
 	FaAnglesRight,
@@ -12,6 +12,8 @@ import { useEvents } from "@contexts/EventContext";
 import { useFilter } from "@contexts/FilterContext";
 import styles from "@styles/Sidebar.module.css";
 import type { Category } from "@types";
+import { useUserData } from "@/contexts/UserDataContext";
+import { IoIosClose } from "react-icons/io";
 
 export const Sidebar = () => {
 	type FilterType = "status" | "org" | "category";
@@ -24,7 +26,8 @@ export const Sidebar = () => {
 		globalSetter: React.Dispatch<React.SetStateAction<Category[]>>;
 	}
 
-	const { user } = useAuth();
+	const { user, logout } = useAuth();
+	const { excludedKeywords, addExcludedKeyword, deleteExcludedKeyword } = useUserData();
 	const { categoryGroups, isLoadingMeta } = useEvents();
 	const {
 		globalCategory,
@@ -41,7 +44,7 @@ export const Sidebar = () => {
 	const [category, setCategory] = useState<Category[]>(globalCategory);
 
 	// 제외 키워드
-	const [excludeTags, _setExcludeTags] = useState<string[]>([]);
+	const [excludeInput, setExcludeInput] = useState<string>("");
 
 	// toggle show/hide state
 	const [expandedSections, setExpandedSections] = useState<
@@ -54,6 +57,9 @@ export const Sidebar = () => {
 	});
 	// if the category itself is hidden
 	const [isHidden, setIsHidden] = useState<boolean>(false);
+
+	const ref = useRef<HTMLDivElement>(null);
+
 	// 모집중, 등
 	const STATUS_LIST =
 		categoryGroups.find((g) => g.group.id === 1)?.categories || [];
@@ -138,6 +144,18 @@ export const Sidebar = () => {
 		}
 	};
 
+	const handleAddKeyword = (e: React.KeyboardEvent | React.MouseEvent) => {
+		if (!excludeInput.trim()) return;
+
+		if ("key" in e) {
+			if (e.key !== "Enter" || e.nativeEvent.isComposing) return;
+			e.stopPropagation();
+			e.preventDefault();
+		}
+		addExcludedKeyword(excludeInput);
+		setExcludeInput("");
+	};
+
 	const handleTimetableClick = () => {
 		navigate("/timetable");
 	};
@@ -157,7 +175,7 @@ export const Sidebar = () => {
 	}
 
 	return (
-		<div className={styles.sidebarContainer}>
+		<div className={styles.sidebarContainer} ref={ref}>
 			<div className={styles.headerRow}>
 				<button
 					type="button"
@@ -176,7 +194,6 @@ export const Sidebar = () => {
 			</div>
 
 			<div className={styles.sectionTitle}>필터</div>
-
 			{isLoadingMeta ? (
 				<span className={styles.filterTitle}>필터 로딩중 ...</span>
 			) : (
@@ -265,27 +282,40 @@ export const Sidebar = () => {
 				{expandedSections.exclude && (
 					<>
 						<div className={styles.inputContainer}>
-							<input type="text" className={styles.excludeInput} />
-							<button type="button" className={styles.applyBtn}>
+							<input
+								type="text"
+								className={styles.excludeInput}
+								onKeyDown={handleAddKeyword}
+								value={excludeInput}
+								onChange={(e) => setExcludeInput(e.currentTarget.value)}
+							/>
+							<button
+								type="button"
+								className={styles.applyBtn}
+								onClick={handleAddKeyword}
+							>
 								적용
 							</button>
 						</div>
 						<div className={styles.tagContainer}>
-							{excludeTags.map((tag) => (
-								<span key={tag} className={styles.tag}>
-									{tag}{" "}
-									<button type="button" className={styles.tagClose}>
-										x
+							{excludedKeywords.map((tag: { id: number; keyword: string }) => (
+								<span key={tag.id} className={styles.tag}>
+									{tag.keyword}{" "}
+									<button type="button" className={styles.tagClose} onClick={()=>deleteExcludedKeyword(tag.id)}>
+										<IoIosClose size={20}/>
 									</button>
 								</span>
 							))}
 						</div>
+						<span className={styles.explanationText}>
+							엔터로 제외할 키워드를 추가해주세요.
+						</span>
 					</>
 				)}
 			</div>
 
-			{/* TODO : 찜한 행사 & 시간표 */}
-			<div className={styles.sectionTitle} style={{ marginTop: "40px" }}>
+			{/* TODO : 찜한 행사 */}
+			<div className={styles.sectionTitle} style={{ marginTop: "20px" }}>
 				페이지
 			</div>
 			<button className={styles.pageLink} type="button">
@@ -308,6 +338,8 @@ export const Sidebar = () => {
 				/>
 				<span>시간표</span>
 			</button>
+			{user && <button type='button' onClick={()=>{logout(); ref?.current?.scrollTo(0, 0); }} className={styles.logout}>로그아웃</button>}
 		</div>
+	
 	);
-};
+}

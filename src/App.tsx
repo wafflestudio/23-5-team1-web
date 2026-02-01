@@ -6,6 +6,7 @@ import { DayViewContextProvider } from "@contexts/DayViewContext";
 import { DetailContextProvider } from "./contexts/DetailContext";
 
 import AppRoutes from "./router/AppRoutes";
+import { SearchProvider } from "./contexts/SearchContext";
 
 function App() {
 	return (
@@ -13,11 +14,13 @@ function App() {
 			<EventProvider>
 				<UserDataProvider>
 					<FilterContextProvider>
-						<DayViewContextProvider>
-							<DetailContextProvider>
-								<AppRoutes />
-							</DetailContextProvider>
-						</DayViewContextProvider>
+						<SearchProvider>
+							<DayViewContextProvider>
+								<DetailContextProvider>
+									<AppRoutes />
+								</DetailContextProvider>
+							</DayViewContextProvider>
+						</SearchProvider>
 					</FilterContextProvider>
 				</UserDataProvider>
 			</EventProvider>

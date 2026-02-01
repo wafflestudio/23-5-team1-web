@@ -36,6 +36,8 @@ export const login = async (email: string, password: string) => {
 	});
 
 	TokenService.setTokens(response.data.accessToken, response.data.refreshToken);
+	console.log(`access token : ${response.data.accessToken}`);
+	console.log(`refresh token : ${response.data.refreshToken}`);
 };
 
 export const socialLogin = async (provider: string, idToken: string) => {
@@ -57,19 +59,28 @@ export const checkAuth = async () => {
 	const refreshToken = TokenService.getRefreshToken();
 
 	if (!refreshToken) {
+		console.log("no refresh token");
+
 		return null;
 	}
 
 	try {
-		const { data } = await axios.post(`${API_URL}/auth/refresh`, {
-			refreshToken,
-		});
+		const { data } = await axios.post(
+			`${API_URL}/auth/refresh`,
+			{},
+			{
+				headers: {
+					Authorization: `Bearer ${refreshToken}`,
+				},
+			},
+		);
 
 		TokenService.setTokens(data.accessToken, data.refreshToken);
 
 		const user = await getUser();
 		return user;
 	} catch (error) {
+		console.error("error in authentication with refresh token", error);
 		TokenService.clearTokens();
 		throw error;
 	}

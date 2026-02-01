@@ -85,6 +85,8 @@
 .rightGroup {
 	display: flex;
 	flex-direction: column;
+	align-items: flex-end;
+	gap: 6px;
 }
 
 .rightGroup svg {
@@ -145,7 +147,7 @@
 	flex-flow: row nowrap;
 	align-items: center;
 	justify-content: flex-end;
-	gap: 0.75rem; /* Add gap between search and profile */
+	gap: 0.75rem;
 }
 
 .profileRow.dayView {
@@ -155,13 +157,46 @@
 
 .profileButton {
 	width: 35px;
-	height: 35px; /* Add explicit height */
+	height: 35px;
 	border: none;
 	background: transparent;
 	padding: 0;
 	cursor: pointer;
-	border-radius: 50%; /* Make it circular */
-	overflow: hidden; /* Clip image to circle */
+	border-radius: 50%;
+	overflow: hidden;
+}
+
+.searchContainer {
+	display: flex;
+	align-items: center;
+	height: 40px;
+	padding: 0;
+	border: none;
+	background: transparent;
+}
+
+.searchInput {
+	width: 0;
+	opacity: 0;
+	padding: 0;
+	border: none;
+	outline: none;
+	background: transparent;
+
+	transition: all 0.3s ease-in-out;
+	visibility: hidden;
+}
+
+.active {
+	min-width: fit-content;
+	max-width: 200px;
+	opacity: 1;
+	padding: 8px;
+	border: 1px solid rgb(202, 202, 202);
+	border-radius: 15px;
+	visibility: visible;
+	margin-right: 8px;
+	z-index: 1;
 }
 
 .profileButton img {

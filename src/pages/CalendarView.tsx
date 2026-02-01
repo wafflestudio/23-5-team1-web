@@ -35,17 +35,23 @@ const CalendarView = () => {
 	const [clickedDate, setClickedDate] = useState<Date>(new Date());
 
 	// need to get month data from sidebar
-	const MONTH_EVENTS = Object.values(monthViewData?.byDate || {}).flatMap(
-		(bucket) => bucket.preview,
+	// const MONTH_EVENTS = Object.values(monthViewData?.byDate || {}).flatMap(
+	// 	(bucket) => bucket.preview,
+	// );
+	const rawMonthEvents = Object.values(monthViewData?.byDate || {}).flatMap(
+		(bucket) => bucket.events,
 	);
-	// Day context data doesn't need additional transformation; it is returned as Event[]
+	const MONTH_EVENTS = Array.from(
+		new Map(rawMonthEvents.map((event) => [event.id, event])).values(),
+	);
 
+	// Day context data doesn't need additional transformation; it is returned as Event[]
 	useEffect(() => {
 		setCurrentDate(dayDate);
 	}, [dayDate]);
 
 	useEffect(() => {
-		const loadEvents = async () => {
+		const loadMonthEvents = async () => {
 			const paramMonth: FetchMonthEventArgs = {
 				start: currentDate,
 			};
@@ -56,7 +62,7 @@ const CalendarView = () => {
 
 			await fetchMonthEvents(paramMonth);
 		};
-		loadEvents();
+		loadMonthEvents();
 	}, [currentDate, fetchMonthEvents, globalCategory, globalOrg, globalStatus]);
 
 	useEffect(() => {
