@@ -12,6 +12,8 @@ import { useEvents } from "@contexts/EventContext";
 import { useFilter } from "@contexts/FilterContext";
 import styles from "@styles/Sidebar.module.css";
 import type { Category } from "@types";
+import { useUserData } from "@/contexts/UserDataContext";
+import { addExcludedKeywords } from "@/api/user";
 
 export const Sidebar = () => {
 	type FilterType = "status" | "org" | "category";
@@ -25,6 +27,7 @@ export const Sidebar = () => {
 	}
 
 	const { user } = useAuth();
+	const { excludedKeywords } = useUserData();
 	const { categoryGroups, isLoadingMeta } = useEvents();
 	const {
 		globalCategory,
@@ -41,7 +44,7 @@ export const Sidebar = () => {
 	const [category, setCategory] = useState<Category[]>(globalCategory);
 
 	// 제외 키워드
-	const [excludeTags, _setExcludeTags] = useState<string[]>([]);
+	const [excludeInput, setExcludeInput] = useState<string>("");
 
 	// toggle show/hide state
 	const [expandedSections, setExpandedSections] = useState<
@@ -138,6 +141,17 @@ export const Sidebar = () => {
 		}
 	};
 
+	const handleAddKeyword = (e: React.KeyboardEvent | React.MouseEvent) => {
+		if (!excludeInput.trim()) return;
+
+		if ("key" in e) {
+			if (e.key !== "Enter") return;
+			e.stopPropagation();
+		}
+		addExcludedKeywords(excludeInput);
+		setExcludeInput("");
+	};
+
 	const handleTimetableClick = () => {
 		navigate("/timetable");
 	};
@@ -176,7 +190,6 @@ export const Sidebar = () => {
 			</div>
 
 			<div className={styles.sectionTitle}>필터</div>
-
 			{isLoadingMeta ? (
 				<span className={styles.filterTitle}>필터 로딩중 ...</span>
 			) : (
@@ -265,13 +278,24 @@ export const Sidebar = () => {
 				{expandedSections.exclude && (
 					<>
 						<div className={styles.inputContainer}>
-							<input type="text" className={styles.excludeInput} />
-							<button type="button" className={styles.applyBtn}>
+							<input 
+								type="text" 
+								className={styles.excludeInput} 
+								onKeyDown={handleAddKeyword}	
+								value={excludeInput}
+								onChange={(e)=>setExcludeInput(e.currentTarget.value)} 
+							/>
+							<button
+								type="button"
+								className={styles.applyBtn}
+								onClick={handleAddKeyword}
+							>
 								적용
 							</button>
+							
 						</div>
 						<div className={styles.tagContainer}>
-							{excludeTags.map((tag) => (
+							{excludedKeywords.map((tag) => (
 								<span key={tag} className={styles.tag}>
 									{tag}{" "}
 									<button type="button" className={styles.tagClose}>
@@ -280,6 +304,8 @@ export const Sidebar = () => {
 								</span>
 							))}
 						</div>
+						<span className={styles.explanationText}>엔터로 제외할 키워드를 추가해주세요.</span>
+
 					</>
 				)}
 			</div>
