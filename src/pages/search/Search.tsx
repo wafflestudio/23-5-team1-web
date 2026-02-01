@@ -1,0 +1,137 @@
+import { useSearch } from "@/contexts/SearchContext"
+import { useEffect, useMemo, useState } from "react";
+import SearchToolbar from "./SearchToolbar";
+import { Sidebar } from "@widgets/Sidebar";
+import GalleryView from "@/widgets/Day/Gallery/GalleryView";
+import type { CalendarEvent, Event } from "@/util/types";
+import Table from "@/widgets/Day/Table";
+import styles from "@styles/Search.module.css";
+import { useDetail } from "@/contexts/DetailContext";
+import DetailView from "@/widgets/DetailView";
+import Pagination from "@/widgets/Pagination";
+
+const SearchView = () => {
+    const { query, page, size, setPage, setSize, fetchSearchResult, searchResults } = useSearch();
+    const { showDetail, setShowDetail, clickedEventId } = useDetail();
+    const [viewMode, setViewMode] = useState<"List" | "Grid">("Grid");
+
+    useEffect(() => {
+        if (query) {
+            fetchSearchResult(query, page, size);
+        }
+    }, [fetchSearchResult, query, page, size])
+
+
+    const events: CalendarEvent[] = useMemo(() => {
+        if (!searchResults) return []; 
+
+        return searchResults.items.map((event: Event) => {
+            const isPeriodEvent = !event.eventStart;
+            const startDate = event.eventStart || event.applyStart;
+            const endDate = event.eventEnd || event.applyEnd;
+            const isAllDay = isPeriodEvent;
+
+            return {
+                start: startDate,
+                end: endDate,
+                title: event.title,
+                allDay: isAllDay,
+                resource: { event, isPeriodEvent },
+            };
+        });
+    }, [searchResults]);
+
+    /* pagination logic */
+    const totalPages = searchResults ? Math.ceil(searchResults.total / size) : 0;
+    const PAGE_GROUP_SIZE = 5;
+    const currentGroupStart = Math.floor((page - 1) / PAGE_GROUP_SIZE) * PAGE_GROUP_SIZE + 1;
+    const currentGroupEnd = Math.min(totalPages, currentGroupStart + PAGE_GROUP_SIZE - 1);
+
+    const getPageNumbers = () => {
+        const pageNumbers = [];
+        for (let i = currentGroupStart; i <= currentGroupEnd; i++) {
+            pageNumbers.push(i);
+        }
+        return pageNumbers;
+    };    
+    const handlePageChange = (newPage: number) => {
+        if (newPage >= 1 && newPage <= totalPages) {
+            setPage(newPage);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    };
+    const handlePrevGroup = () => {
+        const newPage = currentGroupStart - 1;
+        if (newPage >= 1) handlePageChange(newPage);
+    };
+
+    const handleNextGroup = () => {
+        const newPage = currentGroupEnd + 1;
+        if (newPage <= totalPages) handlePageChange(newPage);
+    };
+
+    /* for pagination size */
+    const handleSizeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setSize(Number(e.target.value));
+        setPage(1);
+    };
+
+    return (
+        <div className={styles.container}>
+            <div className={styles.sidebarContainer}>
+                <Sidebar />
+            </div>
+            <div className={styles.restContainer}>
+                    <SearchToolbar viewMode={viewMode} setViewMode={setViewMode} />
+                    <div className={styles.dropdownRow}>
+                        {/* TODO: dropdown for size selection */}
+                        <div className={styles.sizeSelectContainer}>
+                            <span className={styles.sizeLabel}>표시 개수:</span>
+                            <select
+                                className={styles.sizeSelect}
+                                value={size}
+                                onChange={handleSizeChange}
+                            >
+                            {/* <option value={1}>1개</option> */}
+                            <option value={5}>5개</option>
+                            <option value={10}>10개</option>
+                            <option value={20}>20개</option>                            
+                        </select>
+                        </div>
+                    </div>
+                    {!searchResults &&
+                        <div className={styles.noResult}>
+                            <span>{query ? '검색 결과가 없습니다.' : '검색어를 입력해보세요!'}</span>    
+                        </div>
+                    }
+                    {viewMode==="List" && (
+                        <Table
+                            theadData={["찜", "제목", "D-day", "카테고리", "날짜", "주체기관"]}
+                            tbodyData={events}
+                        />
+
+                    )}
+                    {viewMode==="Grid" && <GalleryView events={events} />}
+                    {searchResults && searchResults.total > 0 && (
+                        <Pagination 
+                            page={page}
+                            currentGroupStart={currentGroupStart}
+                            currentGroupEnd={currentGroupEnd}
+                            onPrev={handlePrevGroup}
+                            onNext={handleNextGroup}
+                            handlePageChange={handlePageChange}
+                            totalPages={totalPages}
+                            getPageNumbers={getPageNumbers}
+                        />
+                    )}
+            </div>
+            {showDetail && clickedEventId !== undefined && (
+                <div className={styles.sidePanel}>
+                    <DetailView eventId={clickedEventId} onClose={()=>setShowDetail(false)} />
+                </div>
+            )}
+        </div>
+
+    )
+}
+export default SearchView;

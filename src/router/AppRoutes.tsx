@@ -6,6 +6,7 @@ import CompleteSignUp from "../pages/auth/OnBoarding/CompleteSignUp";
 import EmailSignUp from "../pages/auth/Signup/EmailSignUp";
 import CalendarView from "../pages/CalendarView";
 import TimetablePage from "../pages/timetable/TimetablePage";
+import SearchView from "@/pages/search/Search";
 import { TimetableProvider } from "../contexts/TimetableContext";
 
 export default function AppRoutes() {
@@ -27,7 +28,7 @@ export default function AppRoutes() {
 			{/* Main Feature page */}
 			<Route path="/main" element={<CalendarView />} />
 
-			{/* Timetable paage */}
+			{/* Timetable page */}
 			<Route
 				path="/timetable"
 				element={
@@ -36,6 +37,9 @@ export default function AppRoutes() {
 					</TimetableProvider>
 				}
 			/>
+
+			{/* Search page */}
+			<Route path="/search" element={<SearchView />} />
 		</Routes>
 	);
 }

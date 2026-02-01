@@ -189,18 +189,13 @@ export interface EventFilters {
 	orgId?: number;
 }
 
-export interface MonthViewBucket {
-	total: number;
-	preview: Event[];
-}
-
 export interface MonthViewResponseDTO {
 	range: {
 		from: string; // YYYY-MM-DD (Start of the view)
 		to: string; // YYYY-MM-DD (End of the view)
 	};
 
-	byDate: Record<string, { total: number; preview: EventDTO[] }>;
+	byDate: Record<string, { events: EventDTO[] }>;
 }
 
 export interface MonthViewResponse {
@@ -209,7 +204,7 @@ export interface MonthViewResponse {
 		to: Date;
 	};
 
-	byDate: Record<string, MonthViewBucket>;
+	byDate: Record<string, { events: Event[] }>;
 }
 
 export interface MonthViewParams {

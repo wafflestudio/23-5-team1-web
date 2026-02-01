@@ -12,36 +12,36 @@ body {
   overflow: hidden;
   background-color: #ffffff;
   padding: 0;
+  font-family:
+    "Pretendard",
+    -apple-system,
+    BlinkMacSystemFont,
+    system-ui,
+    Roboto,
+    sans-serif;
 }
 
-.calendarContainer {
+.restContainer {
   flex-grow: 1;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   height: 100%;
-  position: relative;
-  overflow: hidden;
-}
-
-.calendarWrapper {
-  flex: 1;
-  height: 100%;
-  padding: 0 20px 0 20px;
+  padding: 20px 44px 20px 44px;
   box-sizing: border-box;
+  /* position: relative; */
   overflow-y: auto;
   transition: flex-basis 0.3s ease;
-  min-width: 0;
 
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
 
-.calendarWrapper::-webkit-scrollbar {
+.restContainer::-webkit-scrollbar {
   display: none;
 }
 
 .sidePanel {
-  max-width: 50%;
+  max-width: 40%;
   height: 100%;
   border-left: 1px solid #e0e0e0;
   background-color: #ffffff;
@@ -66,4 +66,39 @@ body {
   .sidePanel {
     width: 340px;
   }
+}
+
+.noResult {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+.noResult span {
+  font-weight: 500;
+  color: #a3a3a3;
+}
+
+.dropdownRow {
+  display: flex;
+  justify-content: flex-end; /* Align to right */
+  margin-bottom: 1rem;
+  padding-right: 1rem;
+}
+
+.sizeSelectContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.sizeSelect {
+  padding: 4px 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: white;
+  cursor: pointer;
+  outline: none;
 }

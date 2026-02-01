@@ -7,7 +7,6 @@ import type {
 	Event,
 	EventDetail,
 	EventDetailDTO,
-	MonthViewBucket,
 	MonthViewParams,
 	MonthViewResponse,
 	MonthViewResponseDTO,
@@ -25,14 +24,14 @@ export const getMonthEvents = async (
 	const data = res.data;
 
 	const transformedData = Object.entries(data.byDate).reduce(
-		(acc, [dateKey, bucketDTO]) => {
-			acc[dateKey] = {
-				total: bucketDTO.total,
-				preview: bucketDTO.preview.map(transformEvent),
-			};
+		(acc, [dateKey, dayBucket]) => {
+			const rawEvents = dayBucket?.events;
+			acc[dateKey] = Array.isArray(rawEvents)
+				? { events: rawEvents.map(transformEvent) }
+				: { events: [] };
 			return acc;
 		},
-		{} as Record<string, MonthViewBucket>,
+		{} as Record<string, { events: Event[] }>,
 	);
 
 	const response: MonthViewResponse = {
