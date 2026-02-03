@@ -62,7 +62,7 @@ function isValidPeriodEvent(ev: Event): ev is PeriodEvent {
 	return ev.applyStart instanceof Date && ev.applyEnd instanceof Date;
 }
 
-export function CustomWeekView({
+function CustomWeekView({
 	date,
 	localizer,
 	events,

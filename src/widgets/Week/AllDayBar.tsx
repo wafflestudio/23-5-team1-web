@@ -11,7 +11,7 @@ type Props = {
 	onSelectEvent?: (event: CalendarEvent) => void;
 };
 
-export function AllDayBar({ date, localizer, events, onSelectEvent }: Props) {
+function AllDayBar({ date, localizer, events, onSelectEvent }: Props) {
 	const weekDays = useMemo(() => {
 		const firstDayOfWeek = localizer.startOfWeek?.("ko") ?? 0;
 		const start = localizer.startOf(date, "week", firstDayOfWeek);
