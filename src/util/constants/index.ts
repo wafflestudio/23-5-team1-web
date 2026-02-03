@@ -7,6 +7,15 @@ export const CATEGORY_COLORS: Record<number, string> = {
 	6: "#FB7D95",
 };
 
+export const CATEGORY_BUTTON_COLORS: Record<number, string> = {
+	1: "#ffeea962",
+	2: "#69deb15b",
+	3: "#72d3fa62",
+	4: "#629ffb5f",
+	5: "#c398fb62",
+	6: "#fb7d945e",
+};
+
 export const CATEGORY_LIST: Record<number, string> = {
 	1: "교육(특강/세미나)",
 	2: "공모전/경진대회",
