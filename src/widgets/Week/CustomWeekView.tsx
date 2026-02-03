@@ -1,4 +1,5 @@
-import React, { useCallback, useMemo } from "react";
+import type React from "react";
+import { useLayoutEffect, useRef, useState, useCallback, useMemo } from "react";
 import type {
   DateLocalizer,
   NavigateAction,
@@ -10,6 +11,7 @@ import { config, flattenEventsToBlocks } from "../../util/weekly_timetable/layou
 import { WeekGrid } from "./WeekGrid";
 import { PeriodBars } from "./PeriodBar";
 import AllDayBar from "./AllDayBar";
+import styles from "@styles/WeekView.module.css"
 
 interface CustomWeekViewProps {
   date: Date;
@@ -17,6 +19,38 @@ interface CustomWeekViewProps {
   events: CalendarEvent[];
   onSelectEvent?: (event: CalendarEvent) => void;
   [key: string]: unknown;
+}
+
+type Rect = {left: number; width: number};
+
+function useAnchorRect<T extends HTMLElement>(anchorRef: React.RefObject<T | null>) {
+  const [rect, setRect] = useState<Rect>({left: 0, width: 0});
+
+  useLayoutEffect(() => {
+    const el = anchorRef.current;
+    if(!el) return;
+
+    const update = () => {
+      const r = el.getBoundingClientRect();
+      setRect({left: r.left, width: r.width});
+    };
+
+    update();
+
+    window.addEventListener("resize", update);
+    window.addEventListener("scroll", update, {passive: true});
+
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+
+    return () => {
+      window.removeEventListener("resize", update);
+      window.removeEventListener("scroll", update);
+      ro.disconnect();
+    };
+  }, [anchorRef]);
+
+  return rect;
 }
 
 function isValidPeriodEvent(ev: Event) : ev is PeriodEvent {
@@ -78,13 +112,7 @@ export function CustomWeekView({ date, localizer, events, onSelectEvent }: Custo
 
   const handleSelectBlock = useCallback(
     (calendarEventLike: CalendarEvent | Event) => {
-      // 1) WeekGrid가 CalendarEvent를 넘겨주는 경우(혹시 몰라서)
-      if ((calendarEventLike as any)?.resource?.event) {
-        onSelectEvent?.(calendarEventLike as CalendarEvent);
-        return;
-      }
 
-      // 2) WeekGrid가 원본 Event를 넘겨주는 경우(보통 이 케이스)
       const raw = calendarEventLike as Event;
       const found = (events ?? []).find(
         (ce) => ce?.resource?.event?.id === raw.id,
@@ -95,8 +123,6 @@ export function CustomWeekView({ date, localizer, events, onSelectEvent }: Custo
         return;
       }
 
-      // 3) 혹시 매칭이 안 되면 최소한의 CalendarEvent를 만들어 전달(안전장치)
-      // start/end는 WeekGrid가 쓰는 필드 기준으로 추정
       const start = raw.eventStart || raw.applyStart;
       const end = raw.eventEnd || raw.applyEnd;
 
@@ -111,41 +137,51 @@ export function CustomWeekView({ date, localizer, events, onSelectEvent }: Custo
     [events, onSelectEvent],
   );
 
+  const gridRef = useRef<HTMLDivElement>(null);
+  const { left, width } = useAnchorRect(gridRef);
+
   return (
-    <div style={{ height: "100%" }}>
+    <div className={styles.weekView}>
       <AllDayBar 
       date={date}
       localizer={localizer}
       events={allDayCalendarEvents}
       onSelectEvent={onSelectEvent}
-    />
-      <WeekGrid
-        items={timetableEvents}
-        config={config}
-        toBlocks={flattenEventsToBlocks}
-        onSelectBlock={handleSelectBlock}
       />
-      <PeriodBars
-        date={date}
-        items={periodEvents}
-        onClickItem={(ev) => {
-          // period event 클릭 시 동작(상세 열기 등)
-          // onSelectEvent는 CalendarEvent 타입이라면 여기서는 따로 핸들링하거나
-          // Event 기반 상세 오픈 함수를 하나 더 두는 게 깔끔해.
-          console.log("period event clicked:", ev);
-        }}
-      />
+      <div className={styles.timetableLayer} ref={gridRef}>
+        <WeekGrid
+          items={timetableEvents}
+          config={config}
+          toBlocks={flattenEventsToBlocks}
+          onSelectBlock={handleSelectBlock}
+        />
+      </div>
+      <div className={styles.periodLayer} style={{left, width}}>
+        <div className={styles.inner}>
+          <PeriodBars
+          date={date}
+          items={periodEvents}
+          onSelectEvent={handleSelectBlock}
+          />
+        </div>
+      </div>
     </div>
   );
 }
 
-/** ✅ react-big-calendar이 요구하는 ViewStatic 붙이기 */
+// ViewStatic
+
+type ViewOptions = {
+  localizer: DateLocalizer;
+  culture?: string;
+};
+
 // 1) range
-CustomWeekView.range = (date: Date, options: any): Date[] => {
+CustomWeekView.range = (date: Date, options: ViewOptions): Date[] => {
   const localizer = options?.localizer as DateLocalizer;
   const culture = options?.culture as string | undefined;
 
-  // culture가 없을 수도 있으니 안전 처리
+  // culture가 없는 경우
   const firstDayOfWeek = localizer.startOfWeek?.(culture ?? "ko") ?? 0;
 
   const start = localizer.startOf(date, "week", firstDayOfWeek);
@@ -161,7 +197,7 @@ CustomWeekView.range = (date: Date, options: any): Date[] => {
 CustomWeekView.navigate = (
   date: Date,
   action: NavigateAction,
-  options: any,
+  options: ViewOptions,
 ) => {
   const localizer = options?.localizer as DateLocalizer;
 
@@ -176,7 +212,7 @@ CustomWeekView.navigate = (
 };
 
 // 3) title 
-CustomWeekView.title = (date: Date, options: any) => {
+CustomWeekView.title = (date: Date, options: ViewOptions) => {
   const localizer = options?.localizer as DateLocalizer;
   const culture = (options?.culture as string | undefined) ?? "ko";
 
@@ -184,10 +220,10 @@ CustomWeekView.title = (date: Date, options: any) => {
   const start = days[0];
   const end = days[days.length - 1];
 
-  const startLabel = localizer.format(start, "MMM dd", culture);
-  const endLabel = localizer.format(end, "MMM dd", culture);
+  const startLabel = localizer.format(start, "M월 d일", culture);
+  const endLabel = localizer.format(end, "M월 d일", culture);
 
-  return `${startLabel} – ${endLabel}`;
+  return `${startLabel} ~ ${endLabel}`;
 };
 
 export default CustomWeekView as unknown as React.ComponentType<any> & ViewStatic;

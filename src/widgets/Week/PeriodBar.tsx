@@ -1,6 +1,9 @@
 import {useMemo, useCallback} from "react";
-import type { PeriodEvent } from "@/util/types";
+import type { PeriodEvent, Event } from "@/util/types";
 import { clampDate, dayIndexFromWeekStart } from "@/util/weekly_timetable/time";
+import styles from  "@styles/PeriodBar.module.css";
+import { CATEGORY_COLORS } from "@/util/constants";
+import type { CSSProperties } from "react";
 
 type Props = {
     date: Date;
@@ -8,7 +11,7 @@ type Props = {
     laneHeight?: number;
     laneGap?: number;
     bottomOffset?: number;
-    onClickItem?: (ev: PeriodEvent) => void;
+    onSelectEvent?: (event: Event) => void;
 };
 
 type Bar = {
@@ -16,9 +19,11 @@ type Bar = {
     title: string;
     startIdx: number;
     endIdx: number;
-    showLeftArrow: boolean;
-    showRightArrow: boolean;
     raw: PeriodEvent;
+};
+
+type CSSVarStyle = CSSProperties & {
+  [key: `--${string}`]: string;
 };
 
 function startOfWeekSunday(d: Date) {
@@ -34,6 +39,11 @@ function endOfWeekSaturday(d: Date) {
     end.setDate(end.getDate() + 6);
     end.setHours(23, 59, 59, 999);
     return end;
+}
+
+function truncate30(s: string) {
+  if (!s) return "";
+  return s.length > 30 ? `${s.slice(0, 30)}…` : s;
 }
 
 function assignLanes(bars: Bar[]) {
@@ -68,7 +78,7 @@ export function PeriodBars({
     laneHeight = 22,
     laneGap = 6,
     bottomOffset = 8,
-    onClickItem,
+    onSelectEvent,
 }: Props) {
     const weekStart = useMemo(() => startOfWeekSunday(date), [date]);
     const weekEnd = useMemo(() => endOfWeekSaturday(date), [date]);
@@ -80,8 +90,8 @@ export function PeriodBars({
                 const start = ev.applyStart;
                 const end = ev.applyEnd;
 
-                const showLeftArrow = start.getTime() < weekStart.getTime();
-                const showRightArrow = end.getTime() > weekEnd.getTime();
+                const showLeftArrow = start.getTime() >= weekStart.getTime();
+                const showRightArrow = end.getTime() <= weekEnd.getTime();
 
                 const clampedStart = clampDate(start, weekStart, weekEnd);
                 const clampedEnd = clampDate(end, weekStart, weekEnd);
@@ -110,91 +120,59 @@ export function PeriodBars({
 
     const handleClick = useCallback(
         (ev:PeriodEvent) => {
-            onClickItem?.(ev);
+            onSelectEvent?.(ev);
         },
-        [onClickItem],
+        [onSelectEvent],
     );
 
     return (
     <div
+      className={styles.container}
       style={{
-        position: "absolute",
-        left: 0,
-        right: 0,
         bottom: bottomOffset,
         height: laneCount * laneHeight + Math.max(0, laneCount - 1) * laneGap,
-        pointerEvents: "none", // 바 자체만 클릭 가능하게 하려면 버튼에만 pointerEvents 켜기
-        zIndex: 20,
       }}
     >
+
       {barsWithLane.map((b) => {
+        const dayGap = 10;
+        const sidePad = 10;
+        const span = b.endIdx - b.startIdx + 1;
+
         const leftPct = (b.startIdx / 7) * 100;
-        const widthPct = ((b.endIdx - b.startIdx + 1) / 7) * 100;
+        const widthPct = (span / 7) * 100;
+
+        const leftPx = sidePad + b.startIdx * dayGap;
+        const widthPx = (span - 1) * dayGap - sidePad * 2;
+
+        const displayTitle = truncate30(b.title);
+
+        const categoryId = b.raw.eventTypeId;
+        const color = CATEGORY_COLORS[categoryId] ?? "#999";
+
+        const style: CSSVarStyle = {
+          left: `calc(${leftPct}% + ${leftPx}px)`,
+          width: `calc(${widthPct}% + ${widthPx}px)`,
+          bottom: b.lane * (laneHeight + laneGap),
+          height: laneHeight,
+
+          "--period-line": color,
+          "--period-text": color,
+        };
 
         return (
           <button
             key={String(b.id)}
             type="button"
             onClick={() => handleClick(b.raw)}
-            style={{
-              position: "absolute",
-              left: `${leftPct}%`,
-              width: `${widthPct}%`,
-              bottom: b.lane * (laneHeight + laneGap),
-              height: laneHeight,
-              border: "none",
-              background: "transparent",
-              padding: 0,
-              margin: 0,
-              pointerEvents: "auto",
-              cursor: "pointer",
-            }}
+            className={styles.bar}
+            style={style}
             title={b.title}
           >
-            <div
-              style={{
-                height: 3,
-                borderRadius: 999,
-                background: "currentColor",
-                opacity: 0.95,
-                marginTop: 10,
-              }}
-            />
-            <div
-              style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                right: 0,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                color: "currentColor",
-                fontSize: 14,
-                fontWeight: 600,
-                lineHeight: "22px",
-              }}
-            >
-              <span style={{ width: 18, textAlign: "left" }}>
-                {b.showLeftArrow ? "←" : ""}
-              </span>
+            <div className={styles.line} />
 
-              <span
-                style={{
-                  flex: 1,
-                  textAlign: "center",
-                  overflow: "hidden",
-                  whiteSpace: "nowrap",
-                  textOverflow: "ellipsis",
-                  padding: "0 6px",
-                }}
-              >
-                {b.title}
-              </span>
-
-              <span style={{ width: 18, textAlign: "right" }}>
-                {b.showRightArrow ? "→" : ""}
-              </span>
+            <div className={`${styles.label}`}>
+              <span className={styles.title}>{displayTitle}</span>
             </div>
           </button>
         );
