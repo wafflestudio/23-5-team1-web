@@ -22,13 +22,20 @@
   border: 0;
   cursor: pointer;
 
-  /* 너 프로젝트 톤에 맞게 */
-  background: rgba(70, 140, 255, 0.55);
   color: #111;
-  font-weight: 600;
+  font-weight: 550;
   font-size: 14px;
 
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.itemText {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  min-width: 0;
 }
