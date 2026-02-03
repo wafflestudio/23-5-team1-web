@@ -10,7 +10,7 @@ import { formatAmPmFromMinutes } from "../../util/weekly_timetable/time";
 import { MdCancel } from "react-icons/md";
 import styles from "@styles/Timetable.module.css";
 
-export type WeekGridProps = {
+export type TimetableProps = {
   timetableId: number;
   items: GetCoursesResponse[];
   config: GridConfig;
@@ -33,7 +33,7 @@ export function TimetableGrid({
   toBlocks,
   onRemoveBlock,
   dayLabels = DAY_LABELS_KO,
-}: WeekGridProps) {
+}: TimetableProps) {
   const blocks = useMemo(() => toBlocks(items, config), [items, config, toBlocks]);
   const totalHeight = config.endHour * 60 * config.ppm;
 
