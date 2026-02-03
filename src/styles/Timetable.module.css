@@ -1,0 +1,307 @@
+.page {
+  display: grid;
+  position: relative;
+  height: 100vh;
+  background: #fff;
+}
+
+.pageClosed {
+  grid-template-columns: 260px 1fr;
+}
+
+.pageOpen {
+  grid-template-columns: 260px 1fr 360px;
+}
+
+.main {
+  overflow: auto;
+}
+
+.addButton {
+  position: fixed;
+  right: 100px;
+  top: 250px;
+  z-index: 1000;
+
+  font-weight: 500;
+  color: #e6e6e6;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 10px 12px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+
+  background: #ff0031;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.leftSidebar {
+  border-right: 1px solid #eee;
+  padding: 16px;
+}
+
+.sidebarBox {
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 12px;
+  min-height: 120px;
+}
+
+.mainContent {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.title {
+  margin: 0 0 0 80px;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.content {
+  overflow: auto;
+  padding: 0 8px 8px 8px;
+}
+
+.panel {
+  border-left: 1px solid #eee;
+  padding: 16px;
+}
+
+.panelTitle {
+  margin: 8px 0 16px;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.label {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 6px;
+}
+
+.field input,
+.field select {
+  width: 95%;
+  border: 1px solid #e6e6e6;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 14px;
+  outline: none;
+}
+
+.dayButtons {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.dayBtn {
+  border: 1px solid #e6e6e6;
+  background: #fff;
+  border-radius: 10px;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.isActive {
+  border-color: #111;
+}
+
+.timeRange {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.timeRange select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: none;
+  background: #f2f2f2;
+
+  font-size: 15px;
+  font-weight: 600;
+  color: #1677ff;
+
+  cursor: pointer;
+}
+
+.timeRange select:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(22, 119, 255, 0.25);
+}
+
+.tilde {
+  color: #888;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.link {
+  margin-top: 8px;
+  background: none;
+  border: none;
+  color: #d00;
+  cursor: pointer;
+  padding: 0;
+}
+
+.timeslotDelete {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.error {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #d00;
+}
+
+.save {
+  margin-top: 12px;
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 999px;
+  border: none;
+  background: #e60023;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.save:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Grid */
+
+.gridWrap {
+  min-width: 860px;
+}
+
+.headerRow {
+  display: grid;
+  grid-template-columns: 80px repeat(7, 1fr);
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 2;
+  border-bottom: 1px solid #eee;
+}
+
+.timeGutterHeader {
+  height: 44px;
+}
+
+.dayHeader {
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #444;
+  font-weight: 600;
+}
+
+.body {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+}
+
+.timeGutter {
+  position: relative;
+  border-right: 1px solid #eee;
+}
+
+.hourLabel {
+  position: absolute;
+  left: 10px;
+  transform: translateY(-50%);
+  font-size: 11px;
+  color: #777;
+}
+
+.days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  position: relative;
+}
+
+.dayCol {
+  position: relative;
+  border-right: 1px solid #f0f0f0;
+}
+
+.lines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(242, 242, 242, 0.2);
+}
+
+.block {
+  position: absolute;
+  display: grid;
+  grid-template-columns: 1fr;
+  padding: 8px;
+  border: none;
+  border-radius: 10px;
+  background: #d9d9d9;
+  color: #111;
+  align-content: start;
+  align-items: start;
+  text-align: left;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.blockRemove {
+  justify-self: end;
+  color: #333;
+}
+
+.blockTitle {
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.blockTime {
+  font-size: 11px;
+  color: #333;
+  opacity: 0.85;
+}
