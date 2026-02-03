@@ -50,10 +50,13 @@ const CalendarView = () => {
 		new Map(rawMonthEvents.map((event) => [event.id, event])).values(),
 	);
 
-	const WEEK_EVENTS = Object.values(weekViewData?.byDate || {}).flatMap(
+	const rawWEEK_EVENTS = Object.values(weekViewData?.byDate || {}).flatMap(
 		(bucket) => bucket.events,
 	);
-	// Day context data doesn't need additional transformation; it is returned as Event[]
+
+	const WEEK_EVENTS = Array.from(
+		new Map(rawWEEK_EVENTS.map((event) => [event.id, event])).values(),
+	);
 
 	// Day context data doesn't need additional transformation; it is returned as Event[]
 	useEffect(() => {

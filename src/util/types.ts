@@ -73,6 +73,11 @@ export interface CalendarEvent {
 	};
 }
 
+export type PeriodEvent = Event & {
+	applyStart: Date;
+	applyEnd: Date;
+};
+
 export interface Category {
 	id: number;
 	groupId: number; // 1: 모집현황, 2: 주체기관, 3: 프로그램 유형

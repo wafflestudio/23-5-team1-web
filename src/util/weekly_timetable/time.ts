@@ -6,6 +6,10 @@ export function clamp(n: number, min: number, max: number) {
 	return Math.max(min, Math.min(n, max));
 }
 
+export function clampDate(d: Date, min: Date, max: Date) {
+  return new Date(Math.min(Math.max(d.getTime(), min.getTime()), max.getTime()));
+}
+
 // function snapToStep(min: number, step = STEP_MIN) {
 // 	return Math.round(min / step) * step;
 // }
@@ -38,6 +42,19 @@ export function buildTimeOptions(step = STEP_MIN) {
 		out.push({ value: m, label: formatAmPmFromMinutes(m) });
 	}
 	return out;
+}
+
+export function toMinutesOfDay(date: Date): number {
+	return date.getHours() * 60 + date.getMinutes();
+}
+
+export function dayIndexFromWeekStart(weekStart: Date, d: Date) {
+	const dd = new Date(d);
+	dd.setHours(0, 0, 0, 0);
+	const ws = new Date(weekStart);
+	ws.setHours(0, 0, 0, 0);
+	const diffDays = Math.round((dd.getTime() - ws.getTime()) / 86400000);
+	return Math.min(6, Math.max(0, diffDays));
 }
 
 export const dayToDayOfWeek = (day: Day): DayOfWeek => {
