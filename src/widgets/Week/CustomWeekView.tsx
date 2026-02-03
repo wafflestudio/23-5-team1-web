@@ -121,7 +121,6 @@ export function CustomWeekView({
 				)
 				.map((ce) => ce.resource.event)
 				.filter(isValidPeriodEvent);
-			console.log(WEEK_EVENTS);
 			return {
 				allDayCalendarEvents,
 				timetableEvents: timetable,
@@ -166,8 +165,9 @@ export function CustomWeekView({
 				events={allDayCalendarEvents}
 				onSelectEvent={onSelectEvent}
 			/>
-			<div className={styles.timetableLayer} ref={gridRef}>
+			<div className={styles.timetableLayer}>
 				<WeekGrid
+					ref={gridRef}
 					items={timetableEvents}
 					config={config}
 					toBlocks={flattenEventsToBlocks}
@@ -180,6 +180,8 @@ export function CustomWeekView({
 						date={date}
 						items={periodEvents}
 						onSelectEvent={handleSelectBlock}
+						left={left}
+						width={width}
 					/>
 				</div>
 			</div>

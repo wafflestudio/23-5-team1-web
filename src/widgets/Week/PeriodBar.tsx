@@ -8,6 +8,8 @@ import type { CSSProperties } from "react";
 type Props = {
 	date: Date;
 	items: PeriodEvent[];
+  left: number;
+  width: number;
 	laneHeight?: number;
 	laneGap?: number;
 	bottomOffset?: number;
@@ -41,9 +43,9 @@ function endOfWeekSaturday(d: Date) {
 	return end;
 }
 
-function truncate30(s: string) {
+function truncate20(s: string) {
 	if (!s) return "";
-	return s.length > 30 ? `${s.slice(0, 30)}…` : s;
+	return s.length > 20 ? `${s.slice(0, 20)}…` : s;
 }
 
 function assignLanes(bars: Bar[]) {
@@ -77,6 +79,8 @@ function assignLanes(bars: Bar[]) {
 export function PeriodBars({
 	date,
 	items,
+  left,
+  width,
 	laneHeight = 22,
 	laneGap = 6,
 	bottomOffset = 8,
@@ -133,27 +137,25 @@ export function PeriodBars({
 			style={{
 				bottom: bottomOffset,
 				height: laneCount * laneHeight + Math.max(0, laneCount - 1) * laneGap,
+        left: left,
+        width: width,
 			}}
 		>
 			{barsWithLane.map((b) => {
-				const dayGap = 10;
-				const sidePad = 10;
+        console.log(left);
 				const span = b.endIdx - b.startIdx + 1;
 
-				const leftPct = (b.startIdx / 7) * 100;
-				const widthPct = (span / 7) * 100;
+				const leftPct = b.startIdx * ((width-80)/7) + 80;
+				const widthPct = span * ((width-80)/7);
 
-				const leftPx = sidePad + b.startIdx * dayGap;
-				const widthPx = (span - 1) * dayGap - sidePad * 2;
-
-				const displayTitle = truncate30(b.title);
+				const displayTitle = truncate20(b.title);
 
 				const categoryId = b.raw.eventTypeId;
 				const color = CATEGORY_COLORS[categoryId] ?? "#999";
 
 				const style: CSSVarStyle = {
-					left: `calc(${leftPct}% + ${leftPx}px)`,
-					width: `calc(${widthPct}% + ${widthPx}px)`,
+					left: `${leftPct}px`,
+					width: `${widthPct}px`,
 					bottom: b.lane * (laneHeight + laneGap),
 					height: laneHeight,
 
