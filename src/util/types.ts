@@ -108,6 +108,7 @@ export interface InterestCategories {
 export interface Memo {
 	id: number;
 	eventId: number;
+	eventTitle: string;
 	content: string;
 	tags: string[];
 }

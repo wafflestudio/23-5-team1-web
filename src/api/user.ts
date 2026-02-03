@@ -1,5 +1,5 @@
 import { transformEvent } from "@calendarUtil/transformEvent";
-import type { Category, EventDTO } from "@types";
+import type { Category, EventDTO, Memo, User } from "@types";
 import api from "./axios";
 
 // --- Excluded Keywords ---
@@ -62,6 +62,29 @@ export const addInterestCategories = async (
 
 export const removeInterestCategory = async (categoryId: number) => {
 	await api.delete(`/users/me/interest-categories/${categoryId}`);
+};
+
+// --- Memos ---
+export const getMemos = async (_user: User) => {
+	const res = await api.get<{
+		memos: {
+			id: number;
+			eventId: number;
+			eventTitle: string;
+			content: string;
+			tags: string[];
+			createdAt: string;
+		}[];
+	}>("/memos");
+	const memos: Memo[] = res.data.memos.map((m) => ({
+		id: m.id,
+		eventId: m.eventId,
+		eventTitle: m.eventTitle,
+		content: m.content,
+		tags: m.tags,
+	}));
+
+	return memos;
 };
 
 export const addMemo = async (eventId: number, content: string) => {
