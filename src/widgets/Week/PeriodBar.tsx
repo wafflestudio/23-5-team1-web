@@ -8,8 +8,8 @@ import type { CSSProperties } from "react";
 type Props = {
 	date: Date;
 	items: PeriodEvent[];
-  left: number;
-  width: number;
+	left: number;
+	width: number;
 	laneHeight?: number;
 	laneGap?: number;
 	bottomOffset?: number;
@@ -79,8 +79,8 @@ function assignLanes(bars: Bar[]) {
 export function PeriodBars({
 	date,
 	items,
-  left,
-  width,
+	left,
+	width,
 	laneHeight = 22,
 	laneGap = 6,
 	bottomOffset = 8,
@@ -137,16 +137,16 @@ export function PeriodBars({
 			style={{
 				bottom: bottomOffset,
 				height: laneCount * laneHeight + Math.max(0, laneCount - 1) * laneGap,
-        left: left,
-        width: width,
+				left: left,
+				width: width,
 			}}
 		>
 			{barsWithLane.map((b) => {
-        console.log(left);
+				console.log(left);
 				const span = b.endIdx - b.startIdx + 1;
 
-				const leftPct = b.startIdx * ((width-80)/7) + 80;
-				const widthPct = span * ((width-80)/7);
+				const leftPct = b.startIdx * ((width - 80) / 7) + 80;
+				const widthPct = span * ((width - 80) / 7);
 
 				const displayTitle = truncate20(b.title);
 
