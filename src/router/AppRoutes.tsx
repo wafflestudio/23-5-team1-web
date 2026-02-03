@@ -20,12 +20,12 @@ export default function AppRoutes() {
 			<Route path="/auth/complete" element={<CompleteSignUp />} />
 
 			{/* OAuth Redirect */}
-			<Route path="/oauth/kakao" element={<LoginHandler provider="kakao" />} />
+			<Route path="/login/callback/kakao" element={<LoginHandler provider="KAKAO" />} />
 			<Route
-				path="/oauth/google"
-				element={<LoginHandler provider="google" />}
+				path="/login/callback/google"
+				element={<LoginHandler provider="GOOGLE" />}
 			/>
-			<Route path="/oauth/naver" element={<LoginHandler provider="naver" />} />
+			<Route path="/login/callback/naver" element={<LoginHandler provider="NAVER" />} />
 
 			{/* Main Feature page */}
 			<Route path="/main" element={<CalendarView />} />
