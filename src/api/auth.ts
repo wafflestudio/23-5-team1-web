@@ -40,8 +40,12 @@ export const login = async (email: string, password: string) => {
 	console.log(`refresh token : ${response.data.refreshToken}`);
 };
 
-export const socialLogin = async (provider: string, idToken: string) => {
-	const res = await api.post<AuthTokens>("/auth/social", { provider, idToken });
+export const socialLogin = async (
+	provider: string, 
+	code: string,
+	codeVerifier?: string,
+) => {
+	const res = await api.post<AuthTokens>("/auth/social", { provider, code, codeVerifier });
 	TokenService.setTokens(res.data.accessToken, res.data.refreshToken);
 };
 
