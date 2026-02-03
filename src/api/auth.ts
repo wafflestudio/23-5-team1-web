@@ -41,11 +41,15 @@ export const login = async (email: string, password: string) => {
 };
 
 export const socialLogin = async (
-	provider: string, 
+	provider: string,
 	code: string,
 	codeVerifier?: string,
 ) => {
-	const res = await api.post<AuthTokens>("/auth/social", { provider, code, codeVerifier });
+	const res = await api.post<AuthTokens>("/auth/social", {
+		provider,
+		code,
+		codeVerifier,
+	});
 	TokenService.setTokens(res.data.accessToken, res.data.refreshToken);
 };
 

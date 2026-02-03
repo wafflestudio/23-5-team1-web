@@ -44,7 +44,7 @@ export type LayoutedBlock = WeekGridBlock & {
 	widthPct: number;
 	opacity: number;
 	zIndex: number;
-}
+};
 
 function minutesToTop(min: number, cfg: GridConfig) {
 	const startMin = cfg.startHour * 60;
@@ -123,7 +123,6 @@ export function flattenEventsToBlocks(
 	return blocks;
 }
 
-
 // 겹침 체크
 export function hasOverlap(existing: TimeSlot[], next: TimeSlot) {
 	return existing.some(
@@ -145,7 +144,7 @@ export const config: GridConfig = {
 };
 
 export function layoutDayBlocksLane(blocks: WeekGridBlock[]): LayoutedBlock[] {
-	if (blocks.length === 0) return[];
+	if (blocks.length === 0) return [];
 
 	// sorting
 	const sorted = [...blocks].sort((a, b) => {
@@ -160,7 +159,7 @@ export function layoutDayBlocksLane(blocks: WeekGridBlock[]): LayoutedBlock[] {
 	for (const b of sorted) {
 		let placed = false;
 
-		for(let i = 0; i < laneEnd.length; i++) {
+		for (let i = 0; i < laneEnd.length; i++) {
 			if (b.startMin >= laneEnd[i]) {
 				laneEnd[i] = b.endMin;
 				laneIndexMap.set(b.blockId, i);
@@ -199,7 +198,7 @@ export function layoutDayBlocksLane(blocks: WeekGridBlock[]): LayoutedBlock[] {
 		const peakOverlap = peakMap.get(b.blockId) ?? 1;
 
 		// 기본값
-		let widthPct = 100;  //이후에 config 값으로 바꾸기
+		let widthPct = 100; //이후에 config 값으로 바꾸기
 		let leftPct = 0;
 		let opacity = 1;
 		let zIndex = 2;
@@ -216,7 +215,7 @@ export function layoutDayBlocksLane(blocks: WeekGridBlock[]): LayoutedBlock[] {
 				leftPct = laneIndex * 50;
 				opacity = 1;
 				zIndex = 3;
-			}else {
+			} else {
 				widthPct = 100;
 				leftPct = 0;
 				opacity = 0.5;
