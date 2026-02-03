@@ -133,10 +133,6 @@ export function hasOverlap(existing: TimeSlot[], next: TimeSlot) {
 	);
 }
 
-export function WeekViewoverlap(a: WeekGridBlock, b: WeekGridBlock) {
-	return a.startMin < b.endMin && b.startMin < a.endMin;
-}
-
 export const config: GridConfig = {
 	startHour: 0,
 	endHour: 24,
