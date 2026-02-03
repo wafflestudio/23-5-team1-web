@@ -43,6 +43,7 @@ interface EventContextType {
 	organizations: Category[];
 
 	isLoadingMonth: boolean;
+	isLoadingWeek: boolean;
 	isLoadingDay: boolean;
 	isLoadingSearch: boolean;
 	isLoadingMeta: boolean;
@@ -78,6 +79,7 @@ export const EventProvider: React.FC<{ children: ReactNode }> = ({
 	const [organizations, setOrganizations] = useState<Category[]>([]);
 
 	const [isLoadingMonth, setIsLoadingMonth] = useState(false);
+	const [isLoadingWeek, setIsLoadingWeek] = useState(false);
 	const [isLoadingDay, setIsLoadingDay] = useState(false);
 	const [isLoadingSearch, setIsLoadingSearch] = useState(false);
 	const [isLoadingMeta, setIsLoadingMeta] = useState(false);
@@ -142,11 +144,16 @@ export const EventProvider: React.FC<{ children: ReactNode }> = ({
 	);
 
 	const fetchWeekEvents = useCallback(
-		async ({ from, to }: FetchWeekEventArgs) => {
+		async ({ from, to, statusId, eventTypeId, orgId }: FetchWeekEventArgs) => {
 			const params: MonthViewParams = {
 				from: from,
 				to: to,
+				statusId,
+				eventTypeId,
+				orgId,
 			};
+			setIsLoadingWeek(true);
+			setError(null);
 			try {
 				const data = await getMonthEvents(params);
 				setWeekViewData(data);
@@ -154,7 +161,7 @@ export const EventProvider: React.FC<{ children: ReactNode }> = ({
 				console.error(err);
 				setError("failed fo fetch week events");
 			} finally {
-				setIsLoadingMonth(false);
+				setIsLoadingWeek(false);
 			}
 		},
 		[],
@@ -232,6 +239,7 @@ export const EventProvider: React.FC<{ children: ReactNode }> = ({
 		categoryGroups,
 		organizations,
 		isLoadingMonth,
+		isLoadingWeek,
 		isLoadingDay,
 		isLoadingSearch,
 		isLoadingMeta,

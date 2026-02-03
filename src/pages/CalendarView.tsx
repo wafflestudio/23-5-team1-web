@@ -50,12 +50,12 @@ const CalendarView = () => {
 		new Map(rawMonthEvents.map((event) => [event.id, event])).values(),
 	);
 
-	const rawWEEK_EVENTS = Object.values(weekViewData?.byDate || {}).flatMap(
+	const rawWEEKEVENTS = Object.values(weekViewData?.byDate || {}).flatMap(
 		(bucket) => bucket.events,
 	);
 
 	const WEEK_EVENTS = Array.from(
-		new Map(rawWEEK_EVENTS.map((event) => [event.id, event])).values(),
+		new Map(rawWEEKEVENTS.map((event) => [event.id, event])).values(),
 	);
 
 	// Day context data doesn't need additional transformation; it is returned as Event[]
@@ -73,6 +73,7 @@ const CalendarView = () => {
 			if (globalOrg) paramMonth.orgId = globalOrg.map((g) => g.id);
 			if (globalStatus) paramMonth.statusId = globalStatus.map((g) => g.id);
 
+			console.log("paramMonth", paramMonth);
 			await fetchMonthEvents(paramMonth);
 		};
 		loadMonthEvents();
@@ -104,6 +105,7 @@ const CalendarView = () => {
 			if (globalOrg) paramWeek.orgId = globalOrg.map((g) => g.id);
 			if (globalStatus) paramWeek.statusId = globalStatus.map((g) => g.id);
 
+			console.log("paramWeek", paramWeek);
 			await fetchWeekEvents(paramWeek);
 			
 		}
