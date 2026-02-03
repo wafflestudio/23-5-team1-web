@@ -14,7 +14,11 @@ interface AuthContextType {
 	isLoading: boolean;
 	login: (email: string, password: string) => Promise<void>;
 	signup: (email: string, password: string) => Promise<void>;
-	socialLogin: (provider: string, code: string, codeVerifier?: string) => Promise<void>;
+	socialLogin: (
+		provider: string,
+		code: string,
+		codeVerifier?: string,
+	) => Promise<void>;
 	logout: () => Promise<void>;
 }
 
@@ -65,7 +69,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		}
 	};
 
-	const socialLogin = async (provider: string, code: string, codeVerifier?: string,) => {
+	const socialLogin = async (
+		provider: string,
+		code: string,
+		codeVerifier?: string,
+	) => {
 		try {
 			await auth.socialLogin(provider, code, codeVerifier);
 			const userData = await auth.getUser();

@@ -1,191 +1,189 @@
 .dayCol {
-  position: relative;
-  flex: 1;
+	position: relative;
+	flex: 1;
 }
 
 .block {
-    position: absolute;
-    box-sizing: border-box;
-    border: none;
-    outline: none;
-    box-shadow: none;
-    background-clip: padding-box;
-    overflow: hidden;
+	position: absolute;
+	box-sizing: border-box;
+	border: none;
+	outline: none;
+	box-shadow: none;
+	background-clip: padding-box;
+	overflow: hidden;
 }
 
 .blockTitle {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  font-weight: 550;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	font-weight: 550;
 }
 
 .block:focus-visible {
-  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.15);
+	box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.15);
 }
 
-
 .title {
-  margin: 0 0 0 80px;
-  font-size: 24px;
-  font-weight: 500;
+	margin: 0 0 0 80px;
+	font-size: 24px;
+	font-weight: 500;
 }
 
 .content {
-  overflow: auto;
-  padding: 0 8px 8px;
+	overflow: auto;
+	padding: 0 8px 8px;
 }
 
 .panel {
-  border-left: 1px solid #eee;
-  padding: 16px;
+	border-left: 1px solid #eee;
+	padding: 16px;
 }
 
 .panelTitle {
-  margin: 8px 0 16px;
-  font-size: 22px;
-  font-weight: 800;
+	margin: 8px 0 16px;
+	font-size: 22px;
+	font-weight: 800;
 }
 
 .field {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin-bottom: 14px;
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	margin-bottom: 14px;
 }
 
 .label {
-  font-size: 12px;
-  color: #666;
-  margin-bottom: 6px;
+	font-size: 12px;
+	color: #666;
+	margin-bottom: 6px;
 }
 
 .field input,
 .field select {
-  width: 95%;
-  border: 1px solid #e6e6e6;
-  border-radius: 10px;
-  padding: 10px 12px;
-  font-size: 14px;
-  outline: none;
+	width: 95%;
+	border: 1px solid #e6e6e6;
+	border-radius: 10px;
+	padding: 10px 12px;
+	font-size: 14px;
+	outline: none;
 }
 
 .dayButtons {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 10px;
-  flex-wrap: wrap;
+	display: flex;
+	gap: 6px;
+	margin-bottom: 10px;
+	flex-wrap: wrap;
 }
 
 .dayBtn {
-  border: 1px solid #e6e6e6;
-  background: #fff;
-  border-radius: 10px;
-  padding: 6px 10px;
-  cursor: pointer;
+	border: 1px solid #e6e6e6;
+	background: #fff;
+	border-radius: 10px;
+	padding: 6px 10px;
+	cursor: pointer;
 }
 
 .dayBtn.is-active {
-  border-color: #111;
+	border-color: #111;
 }
 
 .tilde {
-  color: #888;
-  font-size: 14px;
-  font-weight: 500;
+	color: #888;
+	font-size: 14px;
+	font-weight: 500;
 }
 
 .link {
-  margin-top: 8px;
-  background: none;
-  border: none;
-  color: #d00;
-  cursor: pointer;
-  padding: 0;
+	margin-top: 8px;
+	background: none;
+	border: none;
+	color: #d00;
+	cursor: pointer;
+	padding: 0;
 }
 
 .timeslot-delete {
-  display: flex;
-  justify-content: flex-end;
+	display: flex;
+	justify-content: flex-end;
 }
-
 
 /* Grid */
 
 .gridWrap {
-  min-width: 860px;
+	min-width: 860px;
 }
 
 .headerRow {
-  display: grid;
-  grid-template-columns: 80px repeat(7, 1fr);
-  position: sticky;
-  top: 0;
-  background: #fff;
-  z-index: 2;
-  border-bottom: 1px solid #eee;
+	display: grid;
+	grid-template-columns: 80px repeat(7, 1fr);
+	position: sticky;
+	top: 0;
+	background: #fff;
+	z-index: 2;
+	border-bottom: 1px solid #eee;
 }
 
 .timeGutterHeader {
-  height: 44px;
+	height: 44px;
 }
 
 .dayHeader {
-  height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #444;
-  font-weight: 600;
+	height: 44px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #444;
+	font-weight: 600;
 }
 
 .body {
-  display: grid;
-  grid-template-columns: 80px 1fr;
+	display: grid;
+	grid-template-columns: 80px 1fr;
 }
 
 .timeGutter {
-  position: relative;
-  border-right: 1px solid #eee;
+	position: relative;
+	border-right: 1px solid #eee;
 }
 
 .hourLabel {
-  position: absolute;
-  left: 10px;
-  transform: translateY(-50%);
-  font-size: 11px;
-  color: #777;
+	position: absolute;
+	left: 10px;
+	transform: translateY(-50%);
+	font-size: 11px;
+	color: #777;
 }
 
 .days {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  position: relative;
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+	position: relative;
 }
 
 .dayCol {
-  position: relative;
-  border-right: 1px solid #f0f0f0;
+	position: relative;
+	border-right: 1px solid #f0f0f0;
 }
 
 .lines {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
 }
 
 .line {
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: rgba(242, 242, 242, 0.2);
+	position: absolute;
+	left: 0;
+	right: 0;
+	height: 1px;
+	background: rgba(242, 242, 242, 0.2);
 }
 
 .blockTime {
-  font-size: 11px;
-  color: #333;
-  opacity: 0.85;
+	font-size: 11px;
+	color: #333;
+	opacity: 0.85;
 }
