@@ -27,13 +27,7 @@ const Days: Day[] = [0, 1, 2, 3, 4, 5, 6];
 
 export const WeekGrid = forwardRef<HTMLDivElement, WeekGridProps>(
 	function WeekGrid(
-		{
-			items,
-			config,
-			toBlocks,
-			onSelectBlock,
-			dayLabels = DAY_LABELS_KO,
-		},
+		{ items, config, toBlocks, onSelectBlock, dayLabels = DAY_LABELS_KO },
 		ref,
 	) {
 		const blocks = useMemo(
@@ -118,7 +112,6 @@ export const WeekGrid = forwardRef<HTMLDivElement, WeekGridProps>(
 		);
 	},
 );
-
 
 function DayColumn({
 	height,
