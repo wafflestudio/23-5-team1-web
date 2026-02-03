@@ -5,10 +5,11 @@ import type {
   ViewStatic,
 } from "react-big-calendar";
 
-import type { Event, CalendarEvent } from "../../util/types";
+import type { Event, CalendarEvent, PeriodEvent } from "../../util/types";
 import { config, flattenEventsToBlocks } from "../../util/weekly_timetable/layout";
-import { WeekGrid } from "../../pages/components/WeekGrid";
-
+import { WeekGrid } from "./WeekGrid";
+import { PeriodBars } from "./PeriodBar";
+import AllDayBar from "./AllDayBar";
 
 interface CustomWeekViewProps {
   date: Date;
@@ -18,13 +19,62 @@ interface CustomWeekViewProps {
   [key: string]: unknown;
 }
 
-export function CustomWeekView({ events, onSelectEvent }: CustomWeekViewProps) {
+function isValidPeriodEvent(ev: Event) : ev is PeriodEvent {
+  return ev.applyStart instanceof Date && ev.applyEnd instanceof Date;
+}
 
-  const weekEvents: Event[] = useMemo(() => {
-    return (events ?? [])
-      .map((ce) => ce?.resource?.event)
-      .filter((e): e is Event => Boolean(e));
+export function CustomWeekView({ date, localizer, events, onSelectEvent }: CustomWeekViewProps) {
+  const WEEK_EVENTS = useMemo(() => {
+    return events.map((cevent: CalendarEvent) => {
+      let isAllDay = false;
+      const sameMinute = Math.floor(cevent.start.getTime() / 60000) === Math.floor(cevent.end.getTime() / 60000);
+
+      if(cevent.start && cevent.end) {
+        const startDay = new Date(
+          cevent.start.getFullYear(),
+          cevent.start.getMonth(),
+          cevent.start.getDate(),
+        );
+        const endDay = new Date(
+          cevent.end.getFullYear(),
+          cevent.end.getMonth(),
+          cevent.end.getDate(),
+        );
+        const differentDate = startDay.getTime() !== endDay.getTime();
+        isAllDay = Boolean(cevent.allDay) || differentDate || sameMinute;
+      }
+
+      return {
+        ...cevent,
+        allDay: isAllDay,
+      };
+    });
   }, [events]);
+
+  const {allDayCalendarEvents, timetableEvents, periodEvents} = useMemo(() => {
+    const src = WEEK_EVENTS ?? [];
+    const allDayCalendarEvents = src
+      .filter((ce) => ce?.allDay === true && ce.resource.isPeriodEvent === false);
+    const timetable = src
+      .filter((ce) => ce?.resource?.event && ce.resource.isPeriodEvent === false && ce.allDay === false);
+
+    const period = src
+      .filter(
+        (ce): ce is CalendarEvent & {
+          resource: { event: Event; isPeriodEvent: true };
+        } =>
+          Boolean(ce?.resource?.event) &&
+          ce.resource.isPeriodEvent === true,
+      )
+      .map((ce) => ce.resource.event)
+      .filter(isValidPeriodEvent);
+    console.log(WEEK_EVENTS);
+    return {
+      allDayCalendarEvents,
+      timetableEvents: timetable,
+      periodEvents: period,
+    };
+  }, [WEEK_EVENTS]);
 
   const handleSelectBlock = useCallback(
     (calendarEventLike: CalendarEvent | Event) => {
@@ -63,11 +113,27 @@ export function CustomWeekView({ events, onSelectEvent }: CustomWeekViewProps) {
 
   return (
     <div style={{ height: "100%" }}>
-      <WeekGrid<Event>
-        items={weekEvents}
+      <AllDayBar 
+      date={date}
+      localizer={localizer}
+      events={allDayCalendarEvents}
+      onSelectEvent={onSelectEvent}
+    />
+      <WeekGrid
+        items={timetableEvents}
         config={config}
         toBlocks={flattenEventsToBlocks}
         onSelectBlock={handleSelectBlock}
+      />
+      <PeriodBars
+        date={date}
+        items={periodEvents}
+        onClickItem={(ev) => {
+          // period event 클릭 시 동작(상세 열기 등)
+          // onSelectEvent는 CalendarEvent 타입이라면 여기서는 따로 핸들링하거나
+          // Event 기반 상세 오픈 함수를 하나 더 두는 게 깔끔해.
+          console.log("period event clicked:", ev);
+        }}
       />
     </div>
   );

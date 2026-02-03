@@ -2,10 +2,10 @@ import type {
 	Course,
 	Day,
 	TimeSlot,
-	Event,
 	GetCoursesResponse,
+	CalendarEvent,
 } from "../types";
-import { dayOfWeekToDay } from "./time";
+import { dayOfWeekToDay, toMinutesOfDay } from "./time";
 
 export type GridConfig = {
 	startHour: number; // 화면 시작 시간
@@ -13,15 +13,16 @@ export type GridConfig = {
 	ppm: number; // pixels per minute
 };
 
-export type WeekGridBlock<T> = {
-	id: number;
+export type WeekGridBlock = {
+	blockId: number;
+	sourceId: number;
 	day: Day;
 	top: number;
 	height: number;
 	title: string;
 	startMin: number;
 	endMin: number;
-	raw: T;
+	raw: CalendarEvent;
 };
 
 export type TimetableGridBlock<T> = {
@@ -77,29 +78,42 @@ export function flattenCoursesToBlocks(
 }
 
 export function flattenEventsToBlocks(
-	events: Event[],
+	cevents: CalendarEvent[],
 	cfg: GridConfig,
-): WeekGridBlock<Event>[] {
-	const blocks: WeekGridBlock<Event>[] = [];
-	events.forEach((event) => {
-		if (!event.eventStart || !event.eventEnd) return;
+): WeekGridBlock[] {
+	const blocks: WeekGridBlock[] = [];
+
+	cevents.forEach((cevent, idx) => {
+		const start = cevent.resource.event.eventStart;
+		const end = cevent.resource.event.eventEnd;
+
+		if (!start || !end) return;
+
+		// if (
+		// 	start.getFullYear() !== end.getFullYear() ||
+		// 	start.getMonth() !== end.getMonth() ||
+		// 	start.getDate() !== end.getDate()
+		// ) return;
+
+		const startMin = toMinutesOfDay(start);
+		const endMin = toMinutesOfDay(end);
+
 		blocks.push({
-			id: event.id,
-			title: event.title,
-			day: toDay(event.eventStart.getDay()),
-			top: minutesToTop(event.eventStart.getMinutes(), cfg),
-			height: durationToHeight(
-				event.eventStart.getMinutes(),
-				event.eventEnd.getMinutes(),
-				cfg,
-			),
-			startMin: event.eventStart.getMinutes(),
-			endMin: event.eventEnd.getMinutes(),
-			raw: event,
+			blockId: idx,
+			sourceId: cevent.resource.event.id,
+			title: cevent.title,
+			day: toDay(start.getDay()),
+			top: minutesToTop(startMin, cfg),
+			height: durationToHeight(startMin, endMin, cfg),
+			startMin,
+			endMin,
+			raw: cevent,
 		});
 	});
+
 	return blocks;
 }
+
 
 // 겹침 체크
 export function hasOverlap(existing: TimeSlot[], next: TimeSlot) {

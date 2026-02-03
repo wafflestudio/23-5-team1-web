@@ -1,0 +1,34 @@
+.allDayWrap {
+  /* 사진처럼 위쪽에 얇은 영역 */
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-auto-rows: 28px;
+  gap: 6px;
+  padding: 0 8px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 28px;
+  border-radius: 8px;
+  border: 0;
+  cursor: pointer;
+
+  /* 너 프로젝트 톤에 맞게 */
+  background: rgba(70, 140, 255, 0.55);
+  color: #111;
+  font-weight: 600;
+  font-size: 14px;
+
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

@@ -7,7 +7,7 @@ import Toolbar from "./Toolbar";
 import MonthEvent from "./Month/MonthEvent";
 import DayEvent from "./Day/DayEvent";
 import CustomDayView from "./Day/CustomDayView";
-import { CustomWeekView } from "./Week/CustomWeekView";
+import CustomWeekView from "./Week/CustomWeekView";
 import { useEvents } from "@/contexts/EventContext";
 
 const eventPropGetter = () => {
@@ -26,8 +26,8 @@ interface MyCalendarProps {
 
 export const MyCalendar = ({
 	monthEvents,
-	dayEvents,
 	weekEvents,
+	dayEvents,
 	onShowMoreClick,
 	onSelectEvent,
 }: MyCalendarProps) => {

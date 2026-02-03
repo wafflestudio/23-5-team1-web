@@ -6,7 +6,7 @@ import {
 	flattenCoursesToBlocks,
 	config,
 } from "../../util/weekly_timetable/layout";
-import { TimetableGrid } from "../components/TimetableGrid";
+import { TimetableGrid } from "./TimetableGrid";
 import "./timetable.css";
 import { SlArrowLeft } from "react-icons/sl";
 import { TimeTableSidebar } from "./TimeTableSidebar";

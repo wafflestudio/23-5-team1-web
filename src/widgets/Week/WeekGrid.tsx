@@ -6,22 +6,23 @@ import type {
 } from "../../util/weekly_timetable/layout";
 import { formatAmPmFromMinutes } from "../../util/weekly_timetable/time";
 
-export type WeekGridProps<T> = {
-	items: T[];
+export type WeekGridProps = {
+	items: CalendarEvent[];
 	config: GridConfig;
-	toBlocks: (items: T[], config: GridConfig) => WeekGridBlock<T>[];
+	toBlocks: (items: CalendarEvent[], config: GridConfig) => WeekGridBlock[];
 	onSelectBlock?: (event: CalendarEvent) => void;
 	dayLabels?: Record<Day, string>;
 };
 
 const Days: Day[] = [0, 1, 2, 3, 4, 5, 6];
 
-export function WeekGrid<T>({
+export function WeekGrid({
 	items,
 	config,
 	toBlocks,
+	onSelectBlock,
 	dayLabels = DAY_LABELS_KO,
-}: WeekGridProps<T>) {
+}: WeekGridProps) {
 	const blocks = useMemo(
 		() => toBlocks(items, config),
 		[items, config, toBlocks],
@@ -37,7 +38,7 @@ export function WeekGrid<T>({
 		return list;
 	}, [config]);
 	const blocksByDay = useMemo(() => {
-		const map: Record<Day, WeekGridBlock<T>[]> = {
+		const map: Record<Day, WeekGridBlock[]> = {
 			0: [],
 			1: [],
 			2: [],
@@ -72,12 +73,12 @@ export function WeekGrid<T>({
 
 				<div className="tt-days" style={{ height: totalHeight }}>
 					{Days.map((d) => (
-						<DayColumn<T>
+						<DayColumn
 							key={d}
 							height={totalHeight}
 							blocks={blocksByDay[d]}
 							config={config}
-							//onSelectBlock={onSelectBlock}
+							onSelectBlock={onSelectBlock}
 						/>
 					))}
 				</div>
@@ -86,26 +87,26 @@ export function WeekGrid<T>({
 	);
 }
 
-function DayColumn<T>({
+function DayColumn({
 	height,
 	blocks,
 	config,
 	onSelectBlock,
 }: {
 	height: number;
-	blocks: WeekGridBlock<T>[];
+	blocks: WeekGridBlock[];
 	config: GridConfig;
-	onSelectBlock?: (id: number, item: T) => void;
+	onSelectBlock?: (event: CalendarEvent) => void;
 }) {
 	return (
 		<div>
 			<GridLines height={height} cfg={config} />
 			{blocks.map((b) => (
 				<button
-					key={b.id}
+					key={b.blockId}
 					className="tt-block"
 					style={{ top: b.top, height: b.height }}
-					onClick={() => onSelectBlock?.(b.id, b.raw)}
+					onClick={() => onSelectBlock?.(b.raw)}
 					type="button"
 				>
 					<div className="tt-blockTitle">{b.title}</div>
