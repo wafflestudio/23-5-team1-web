@@ -322,7 +322,7 @@ export const Sidebar = () => {
 			<div className={styles.sectionTitle} style={{ marginTop: "20px" }}>
 				페이지
 			</div>
-			<button className={styles.pageLink} type="button">
+			<button className={styles.pageLink} type="button" onClick={()=>navigate('/my/bookmark')}>
 				<img
 					className={styles.icon}
 					src="/assets/bookmark.svg"
