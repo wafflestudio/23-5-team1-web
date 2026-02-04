@@ -6,7 +6,8 @@ import {
 	useState,
 } from "react";
 import * as auth from "@api/auth";
-import type { User } from "@types";
+import type { Provider, User } from "@types";
+import { TokenService } from "@/api/tokenService";
 
 interface AuthContextType {
 	user: User | null;
@@ -15,7 +16,7 @@ interface AuthContextType {
 	login: (email: string, password: string) => Promise<void>;
 	signup: (email: string, password: string) => Promise<void>;
 	socialLogin: (
-		provider: string,
+		provider: Provider,
 		code: string,
 		codeVerifier?: string,
 	) => Promise<void>;
@@ -71,12 +72,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	};
 
 	const socialLogin = async (
-		provider: string,
+		provider: Provider,
 		code: string,
 		codeVerifier?: string,
 	) => {
 		try {
 			await auth.socialLogin(provider, code, codeVerifier);
+			if (!TokenService.getAccessToken()) {
+				throw new Error("Social login did not set access token");
+			}
 			const userData = await auth.getUser();
 			setUser(userData);
 			setIsAuthenticated(true);
