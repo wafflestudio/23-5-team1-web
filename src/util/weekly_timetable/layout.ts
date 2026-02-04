@@ -2,10 +2,10 @@ import type {
 	Course,
 	Day,
 	TimeSlot,
-	Event,
 	GetCoursesResponse,
+	CalendarEvent,
 } from "../types";
-import { dayOfWeekToDay } from "./time";
+import { dayOfWeekToDay, toMinutesOfDay } from "./time";
 
 export type GridConfig = {
 	startHour: number; // 화면 시작 시간
@@ -13,15 +13,16 @@ export type GridConfig = {
 	ppm: number; // pixels per minute
 };
 
-export type WeekGridBlock<T> = {
-	id: number;
+export type WeekGridBlock = {
+	blockId: number;
+	sourceId: number;
 	day: Day;
 	top: number;
 	height: number;
 	title: string;
 	startMin: number;
 	endMin: number;
-	raw: T;
+	raw: CalendarEvent;
 };
 
 export type TimetableGridBlock<T> = {
@@ -34,6 +35,15 @@ export type TimetableGridBlock<T> = {
 	startMin: number;
 	endMin: number;
 	raw: T;
+};
+
+export type LayoutedBlock = WeekGridBlock & {
+	laneIndex: number;
+	peakOverlap: number;
+	leftPct: number;
+	widthPct: number;
+	opacity: number;
+	zIndex: number;
 };
 
 function minutesToTop(min: number, cfg: GridConfig) {
@@ -77,27 +87,39 @@ export function flattenCoursesToBlocks(
 }
 
 export function flattenEventsToBlocks(
-	events: Event[],
+	cevents: CalendarEvent[],
 	cfg: GridConfig,
-): WeekGridBlock<Event>[] {
-	const blocks: WeekGridBlock<Event>[] = [];
-	events.forEach((event) => {
-		if (!event.eventStart || !event.eventEnd) return;
+): WeekGridBlock[] {
+	const blocks: WeekGridBlock[] = [];
+
+	cevents.forEach((cevent, idx) => {
+		const start = cevent.resource.event.eventStart;
+		const end = cevent.resource.event.eventEnd;
+
+		if (!start || !end) return;
+
+		// if (
+		// 	start.getFullYear() !== end.getFullYear() ||
+		// 	start.getMonth() !== end.getMonth() ||
+		// 	start.getDate() !== end.getDate()
+		// ) return;
+
+		const startMin = toMinutesOfDay(start);
+		const endMin = toMinutesOfDay(end);
+
 		blocks.push({
-			id: event.id,
-			title: event.title,
-			day: toDay(event.eventStart.getDay()),
-			top: minutesToTop(event.eventStart.getMinutes(), cfg),
-			height: durationToHeight(
-				event.eventStart.getMinutes(),
-				event.eventEnd.getMinutes(),
-				cfg,
-			),
-			startMin: event.eventStart.getMinutes(),
-			endMin: event.eventEnd.getMinutes(),
-			raw: event,
+			blockId: idx,
+			sourceId: cevent.resource.event.id,
+			title: cevent.title,
+			day: toDay(start.getDay()),
+			top: minutesToTop(startMin, cfg),
+			height: durationToHeight(startMin, endMin, cfg),
+			startMin,
+			endMin,
+			raw: cevent,
 		});
 	});
+
 	return blocks;
 }
 
@@ -116,3 +138,95 @@ export const config: GridConfig = {
 	endHour: 24,
 	ppm: 0.9,
 };
+
+export function layoutDayBlocksLane(blocks: WeekGridBlock[]): LayoutedBlock[] {
+	if (blocks.length === 0) return [];
+
+	// sorting
+	const sorted = [...blocks].sort((a, b) => {
+		if (a.startMin !== b.startMin) return a.startMin - b.startMin;
+		return a.endMin - b.endMin;
+	});
+
+	// lane 배치
+	const laneEnd: number[] = [];
+	const laneIndexMap = new Map<number, number>(); //blockId, LaneIndex
+
+	for (const b of sorted) {
+		let placed = false;
+
+		for (let i = 0; i < laneEnd.length; i++) {
+			if (b.startMin >= laneEnd[i]) {
+				laneEnd[i] = b.endMin;
+				laneIndexMap.set(b.blockId, i);
+				placed = true;
+				break;
+			}
+		}
+
+		if (!placed) {
+			laneEnd.push(b.endMin);
+			laneIndexMap.set(b.blockId, laneEnd.length - 1);
+		}
+	}
+
+	const peakMap = new Map<number, number>(); //blockId, peakOverlap
+	for (const a of sorted) {
+		let peak = 1;
+		for (const t of sorted) {
+			const time = t.startMin;
+			if (time < a.startMin || time >= a.endMin) continue;
+
+			let alive = 0;
+			for (const x of sorted) {
+				if (x.startMin <= time && time < x.endMin) alive++;
+			}
+			peak = Math.max(peak, alive);
+		}
+		peakMap.set(a.blockId, peak);
+	}
+
+	//2개까지만 분할 3개 이상이면 overlap
+	const result: LayoutedBlock[] = [];
+
+	for (const b of sorted) {
+		const laneIndex = laneIndexMap.get(b.blockId) ?? 0;
+		const peakOverlap = peakMap.get(b.blockId) ?? 1;
+
+		// 기본값
+		let widthPct = 100; //이후에 config 값으로 바꾸기
+		let leftPct = 0;
+		let opacity = 1;
+		let zIndex = 2;
+
+		if (peakOverlap === 2) {
+			//2개 겹침
+			widthPct = 50;
+			leftPct = (laneIndex % 2) * 50;
+			opacity = 1;
+			zIndex = 3;
+		} else if (peakOverlap >= 3) {
+			if (laneIndex <= 1) {
+				widthPct = 50;
+				leftPct = laneIndex * 50;
+				opacity = 1;
+				zIndex = 3;
+			} else {
+				widthPct = 100;
+				leftPct = 0;
+				opacity = 0.5;
+				zIndex = 1;
+			}
+		}
+		result.push({
+			...b,
+			laneIndex,
+			peakOverlap,
+			leftPct,
+			widthPct,
+			opacity,
+			zIndex,
+		});
+	}
+	return result;
+}

@@ -26,7 +26,9 @@ const UserDataContext = createContext<UserDataContextType | undefined>(
 
 export const UserDataProvider = ({ children }: { children: ReactNode }) => {
 	const { isAuthenticated } = useAuth();
-	const [excludedKeywords, setExcludedKeywords] = useState<{ id: number; keyword: string }[]>([]);
+	const [excludedKeywords, setExcludedKeywords] = useState<
+		{ id: number; keyword: string }[]
+	>([]);
 	const [bookmarkedEvents, setBookmarkedEvents] = useState<Event[]>([]);
 	const [interestCategories, setInterestCategories] = useState<Category[]>([]);
 
@@ -86,7 +88,8 @@ export const UserDataProvider = ({ children }: { children: ReactNode }) => {
 	const addExcludedKeyword = async (keyword: string) => {
 		try {
 			await userService.addExcludedKeywords(keyword);
-			const excludedData: { id: number; keyword: string }[] = await userService.getExcludedKeywords();
+			const excludedData: { id: number; keyword: string }[] =
+				await userService.getExcludedKeywords();
 			setExcludedKeywords(excludedData);
 		} catch (error) {
 			console.error("error in adding excluded keyword", error);
@@ -96,13 +99,13 @@ export const UserDataProvider = ({ children }: { children: ReactNode }) => {
 	const deleteExcludedKeyword = async (id: number) => {
 		try {
 			await userService.deleteExcludedKeywords(id);
-			const excludedData: { id: number; keyword: string }[] = await userService.getExcludedKeywords();
+			const excludedData: { id: number; keyword: string }[] =
+				await userService.getExcludedKeywords();
 			setExcludedKeywords(excludedData);
-
 		} catch (error) {
 			console.error("error in deleting excluded keyword", error);
 		}
-	}
+	};
 
 	return (
 		<UserDataContext.Provider

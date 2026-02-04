@@ -6,8 +6,8 @@ import {
 	flattenCoursesToBlocks,
 	config,
 } from "../../util/weekly_timetable/layout";
-import { TimetableGrid } from "../components/TimetableGrid";
-import "./timetable.css";
+import { TimetableGrid } from "./TimetableGrid";
+import styles from "@styles/Timetable.module.css";
 import { SlArrowLeft } from "react-icons/sl";
 import { TimeTableSidebar } from "./TimeTableSidebar";
 import TimeTableToolbar from "./TimeTableToolbar";
@@ -34,7 +34,7 @@ export default function TimetablePage() {
 		deleteTimetable,
 		loadCourses,
 		addCustomCourse,
-		//updateCustomCourse,
+		// updateCustomCourse,
 		deleteCourse,
 	} = useTimetable();
 
@@ -51,18 +51,18 @@ export default function TimetablePage() {
 		loadCourses(currentTimetable.id);
 	}, [currentTimetable, loadCourses]);
 
+	const [isClicked, setIsClicked] = useState(false);
+
 	useEffect(() => {
 		if (!currentTimetable) {
-			console.log("시간표 없음");
 			setIsClicked(false);
 			setTableName("");
 			return;
 		}
-		setTableName(currentTimetable?.name ?? "");
+		setTableName(currentTimetable.name ?? "");
 	}, [currentTimetable]);
 
 	const hasTimetable = !!currentTimetable;
-
 	const visibleCourses = hasTimetable ? (courses ?? []) : [];
 
 	const allSlots = useMemo(
@@ -70,13 +70,13 @@ export default function TimetablePage() {
 		[visibleCourses],
 	);
 
-	const [isClicked, setIsClicked] = useState(false);
-
 	if (isLoading) return <div>로딩 중...</div>;
 
 	return (
 		<div
-			className={`tt-page ${isClicked ? "tt-page--open" : "tt-page--closed"}`}
+			className={`${styles.page} ${
+				isClicked ? styles.pageOpen : styles.pageClosed
+			}`}
 		>
 			<TimeTableSidebar
 				timetables={timetables}
@@ -92,7 +92,7 @@ export default function TimetablePage() {
 				onDelete={deleteTimetable}
 			/>
 
-			<main>
+			<main className={styles.main}>
 				<TimeTableToolbar
 					timetableName={tableName}
 					year={year}
@@ -102,6 +102,7 @@ export default function TimetablePage() {
 					onYearChange={setYear}
 					years={years}
 				/>
+
 				{!hasTimetable ? (
 					<div style={{ padding: 16 }}>
 						<div style={{ fontSize: 16, fontWeight: 700, marginBottom: 8 }}>
@@ -112,30 +113,29 @@ export default function TimetablePage() {
 						</div>
 					</div>
 				) : (
-					<div>
-						<TimetableGrid
-							timetableId={currentTimetable?.id ?? 0}
-							items={courses ?? []}
-							config={config}
-							toBlocks={flattenCoursesToBlocks}
-							onRemoveBlock={deleteCourse}
-						/>
-					</div>
+					<TimetableGrid
+						timetableId={currentTimetable.id}
+						items={courses ?? []}
+						config={config}
+						toBlocks={flattenCoursesToBlocks}
+						onRemoveBlock={deleteCourse}
+					/>
 				)}
 			</main>
+
 			{hasTimetable && !isClicked && (
 				<button
 					type="button"
-					className="tt-addButton"
+					className={styles.addButton}
 					onClick={() => setIsClicked(true)}
 				>
-					{" "}
 					<SlArrowLeft /> 수업 추가
 				</button>
 			)}
+
 			{hasTimetable && isClicked && (
 				<AddClassPanel
-					timetableId={currentTimetable?.id}
+					timetableId={currentTimetable.id}
 					onAdd={addCustomCourse}
 					allSlots={allSlots}
 					year={year}

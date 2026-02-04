@@ -27,7 +27,8 @@ export const Sidebar = () => {
 	}
 
 	const { user, logout } = useAuth();
-	const { excludedKeywords, addExcludedKeyword, deleteExcludedKeyword } = useUserData();
+	const { excludedKeywords, addExcludedKeyword, deleteExcludedKeyword } =
+		useUserData();
 	const { categoryGroups, isLoadingMeta } = useEvents();
 	const {
 		globalCategory,
@@ -301,8 +302,12 @@ export const Sidebar = () => {
 							{excludedKeywords.map((tag: { id: number; keyword: string }) => (
 								<span key={tag.id} className={styles.tag}>
 									{tag.keyword}{" "}
-									<button type="button" className={styles.tagClose} onClick={()=>deleteExcludedKeyword(tag.id)}>
-										<IoIosClose size={20}/>
+									<button
+										type="button"
+										className={styles.tagClose}
+										onClick={() => deleteExcludedKeyword(tag.id)}
+									>
+										<IoIosClose size={20} />
 									</button>
 								</span>
 							))}
@@ -338,8 +343,18 @@ export const Sidebar = () => {
 				/>
 				<span>시간표</span>
 			</button>
-			{user && <button type='button' onClick={()=>{logout(); ref?.current?.scrollTo(0, 0); }} className={styles.logout}>로그아웃</button>}
+			{user && (
+				<button
+					type="button"
+					onClick={() => {
+						logout();
+						ref?.current?.scrollTo(0, 0);
+					}}
+					className={styles.logout}
+				>
+					로그아웃
+				</button>
+			)}
 		</div>
-	
 	);
-}
+};

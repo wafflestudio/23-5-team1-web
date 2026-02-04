@@ -7,17 +7,21 @@ import type {
 	CalendarEvent,
 	FetchDayEventArgs,
 	FetchMonthEventArgs,
+	FetchWeekEventArgs,
 } from "@types";
 import DetailView from "@widgets/DetailView";
 import MonthSideView from "@widgets/Month/MonthSideView/MonthSideView";
 import { MyCalendar } from "@widgets/MyCalendar";
 import { Sidebar } from "@widgets/Sidebar";
 import { useDetail } from "@contexts/DetailContext";
+import { formatDateToYYYYMMDD } from "../util/Calendar/dateFormatter";
 
 const CalendarView = () => {
 	const {
 		monthViewData,
 		fetchMonthEvents,
+		weekViewData,
+		fetchWeekEvents,
 		dayViewEvents,
 		fetchDayEvents,
 		dayDate,
@@ -45,6 +49,14 @@ const CalendarView = () => {
 		new Map(rawMonthEvents.map((event) => [event.id, event])).values(),
 	);
 
+	const rawWEEKEVENTS = Object.values(weekViewData?.byDate || {}).flatMap(
+		(bucket) => bucket.events,
+	);
+
+	const WEEK_EVENTS = Array.from(
+		new Map(rawWEEKEVENTS.map((event) => [event.id, event])).values(),
+	);
+
 	// Day context data doesn't need additional transformation; it is returned as Event[]
 	useEffect(() => {
 		setCurrentDate(dayDate);
@@ -60,11 +72,43 @@ const CalendarView = () => {
 			if (globalOrg) paramMonth.orgId = globalOrg.map((g) => g.id);
 			if (globalStatus) paramMonth.statusId = globalStatus.map((g) => g.id);
 
+			console.log("paramMonth", paramMonth);
 			await fetchMonthEvents(paramMonth);
 		};
 		loadMonthEvents();
 	}, [currentDate, fetchMonthEvents, globalCategory, globalOrg, globalStatus]);
 
+	useEffect(() => {
+		const getWeekRangeByDate = (date: Date) => {
+			const from = new Date(date);
+			const day = from.getDay();
+			from.setDate(from.getDate() - day);
+
+			const to = new Date(from);
+			to.setDate(to.getDate() + 6);
+
+			return {
+				from: formatDateToYYYYMMDD(from),
+				to: formatDateToYYYYMMDD(to),
+			};
+		};
+		const loadWeekEvents = async () => {
+			const { from, to } = getWeekRangeByDate(currentDate);
+			const paramWeek: FetchWeekEventArgs = {
+				from: from,
+				to: to,
+			};
+
+			if (globalCategory)
+				paramWeek.eventTypeId = globalCategory.map((g) => g.id);
+			if (globalOrg) paramWeek.orgId = globalOrg.map((g) => g.id);
+			if (globalStatus) paramWeek.statusId = globalStatus.map((g) => g.id);
+
+			console.log("paramWeek", paramWeek);
+			await fetchWeekEvents(paramWeek);
+		};
+		loadWeekEvents();
+	}, [currentDate, fetchWeekEvents, globalCategory, globalOrg, globalStatus]);
 	useEffect(() => {
 		const loadDayEvents = async () => {
 			const paramDay: FetchDayEventArgs = {
@@ -118,6 +162,7 @@ const CalendarView = () => {
 				<div className={styles.calendarWrapper}>
 					<MyCalendar
 						monthEvents={MONTH_EVENTS}
+						weekEvents={WEEK_EVENTS}
 						dayEvents={dayViewEvents}
 						onShowMoreClick={onShowMoreClick}
 						onSelectEvent={onSelectEvent}

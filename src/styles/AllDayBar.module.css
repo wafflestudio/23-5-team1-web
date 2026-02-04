@@ -1,0 +1,41 @@
+.allDayWrap {
+	/* 사진처럼 위쪽에 얇은 영역 */
+	padding: 6px 0;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.grid {
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+	grid-auto-rows: 28px;
+	gap: 6px;
+	padding: 0 8px;
+}
+
+.item {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	height: 28px;
+	border-radius: 8px;
+	border: 0;
+	cursor: pointer;
+
+	color: #111;
+	font-weight: 550;
+	font-size: 14px;
+
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	min-width: 0;
+}
+
+.itemText {
+	display: block;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	min-width: 0;
+}

@@ -17,7 +17,7 @@ import type {
 } from "../../util/types";
 import { DAY_LABELS_KO } from "../../util/types";
 import { buildTimeOptions, STEP_MIN } from "../../util/weekly_timetable/time";
-import "./timetable.css";
+import styles from "@styles/Timetable.module.css";
 
 type Props = {
 	timetableId?: number;
@@ -77,7 +77,7 @@ export function AddClassPanel({
 	}, [title]);
 
 	const hasConflict = useMemo(() => {
-		if (!isTimeRangeValid) return false; // 시간 자체가 말이 안 되면 겹침 검사 의미 없음
+		if (!isTimeRangeValid) return false;
 		return slot.some((s) => hasOverlap(allSlots, s));
 	}, [slot, allSlots, isTimeRangeValid]);
 
@@ -96,14 +96,14 @@ export function AddClassPanel({
 
 		const item: Course = {
 			id: nextIdRef.current,
-			year: year,
-			semester: semester,
+			year,
+			semester,
 			courseTitle: title,
-			source: "CUSTOM", // 이후 강의 크롤링 가능하면 수정해야 함
+			source: "CUSTOM",
 			timeSlots: slot.map(({ rowId, ...rest }) => rest),
 			courseNumber: undefined,
 			lectureNumber: undefined,
-			credit: credit,
+			credit,
 			instructor: professor || undefined,
 		};
 
@@ -112,17 +112,18 @@ export function AddClassPanel({
 		onAdd(timetableId, body);
 		nextIdRef.current += 1;
 
-		//reset
+		// reset
 		setTitle("");
 		setProfessor("");
 		setSlot([emptyRow()]);
 	};
 
 	return (
-		<aside className="tt-panel">
+		<aside className={styles.panel}>
 			<SlArrowRight onClick={() => setIsClicked(false)} />
 			<h2>새 수업 추가</h2>
-			<label className="tt-field input">
+
+			<label className={styles.field}>
 				<div>과목명 (필수)</div>
 				<input
 					value={title}
@@ -131,7 +132,7 @@ export function AddClassPanel({
 				/>
 			</label>
 
-			<label className="tt-field input">
+			<label className={styles.field}>
 				<div>교수명 (선택)</div>
 				<input
 					value={professor}
@@ -140,7 +141,7 @@ export function AddClassPanel({
 				/>
 			</label>
 
-			<label className="tt-field input">
+			<label className={styles.field}>
 				<div>학점 (선택)</div>
 				<input
 					type="number"
@@ -159,27 +160,32 @@ export function AddClassPanel({
 				<div>
 					<div>시간 (필수)</div>
 				</div>
+
 				{slot.map((t) => (
 					<div key={t.rowId}>
-						<div className="timeslot-delete">
+						<div className={styles.timeslotDelete}>
 							<TiDelete onClick={() => removeRow(t.rowId)} />
 						</div>
-						<div className="tt-dayButtons">
-							{DAYS.map((d) => (
-								<button
-									key={d}
-									type="button"
-									className={`tt-dayBtn ${dayOfWeekToDay(t.dayOfweek) === d ? "is-active" : ""}`}
-									onClick={() =>
-										updateRow(t.rowId, { dayOfweek: dayToDayOfWeek(d) })
-									}
-								>
-									{DAY_LABELS_KO[d]}
-								</button>
-							))}
+
+						<div className={styles.dayButtons}>
+							{DAYS.map((d) => {
+								const active = dayOfWeekToDay(t.dayOfweek) === d;
+								return (
+									<button
+										key={d}
+										type="button"
+										className={`${styles.dayBtn} ${active ? styles.isActive : ""}`}
+										onClick={() =>
+											updateRow(t.rowId, { dayOfweek: dayToDayOfWeek(d) })
+										}
+									>
+										{DAY_LABELS_KO[d]}
+									</button>
+								);
+							})}
 						</div>
 
-						<div className="tt-timeRange">
+						<div className={styles.timeRange}>
 							<select
 								value={t.startAt}
 								onChange={(e) =>
@@ -192,7 +198,8 @@ export function AddClassPanel({
 									</option>
 								))}
 							</select>
-							<span className="tt-tilde">~</span>
+
+							<span className={styles.tilde}>~</span>
 
 							<select
 								value={t.endAt}
@@ -210,23 +217,24 @@ export function AddClassPanel({
 					</div>
 				))}
 
-				<button className="tt-link" type="button" onClick={() => addRow()}>
+				<button className={styles.link} type="button" onClick={addRow}>
 					+ 시간 추가
 				</button>
 
 				{!isTimeRangeValid && (
-					<div className="tt-error">
-						{" "}
+					<div className={styles.error}>
 						시간 범위가 잘못되었습니다. (종료가 시작보다 늦어야 하고 5분
-						단위여야 합니다. )
+						단위여야 합니다.)
 					</div>
 				)}
+
 				{!isTitleValid && (
-					<div className="tt-error">과목 이름은 필수입니다.</div>
+					<div className={styles.error}>과목 이름은 필수입니다.</div>
 				)}
 			</div>
+
 			<button
-				className="tt-save"
+				className={styles.save}
 				type="button"
 				disabled={!canSave}
 				onClick={handleSave}

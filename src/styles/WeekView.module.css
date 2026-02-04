@@ -1,0 +1,24 @@
+.weekView {
+	position: relative;
+}
+
+.timetableLayer {
+	position: relative;
+	z-index: 10;
+}
+
+.periodLayer {
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 20;
+	pointer-events: none;
+	padding-bottom: env(safe-area-inset-bottom, 0px);
+	overflow: hidden;
+}
+
+.inner {
+	position: relative;
+	pointer-events: none;
+}

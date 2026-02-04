@@ -11,8 +11,9 @@ import type {
 } from "../../util/weekly_timetable/layout";
 import { formatAmPmFromMinutes } from "../../util/weekly_timetable/time";
 import { MdCancel } from "react-icons/md";
+import styles from "@styles/Timetable.module.css";
 
-export type WeekGridProps = {
+export type TimetableProps = {
 	timetableId: number;
 	items: GetCoursesResponse[];
 	config: GridConfig;
@@ -35,12 +36,13 @@ export function TimetableGrid({
 	toBlocks,
 	onRemoveBlock,
 	dayLabels = DAY_LABELS_KO,
-}: WeekGridProps) {
+}: TimetableProps) {
 	const blocks = useMemo(
 		() => toBlocks(items, config),
 		[items, config, toBlocks],
 	);
 	const totalHeight = config.endHour * 60 * config.ppm;
+
 	const hourMarks = useMemo(() => {
 		const list: { hour: number; top: number; label: string }[] = [];
 		for (let h = config.startHour; h <= config.endHour; h++) {
@@ -50,6 +52,7 @@ export function TimetableGrid({
 		}
 		return list;
 	}, [config]);
+
 	const blocksByDay = useMemo(() => {
 		const map: Record<Day, TimetableGridBlock<Course>[]> = {
 			0: [],
@@ -65,26 +68,30 @@ export function TimetableGrid({
 	}, [blocks]);
 
 	return (
-		<div className="tt-gridWrap">
-			<div className="tt-headerRow">
-				<div className="tt-timeGutterHeader" />
+		<div className={styles.gridWrap}>
+			<div className={styles.headerRow}>
+				<div className={styles.timeGutterHeader} />
 				{Days.map((d) => (
-					<div key={d} className="tt-dayHeader">
+					<div key={d} className={styles.dayHeader}>
 						{dayLabels[d]}
 					</div>
 				))}
 			</div>
 
-			<div className="tt-body">
-				<div className="tt-timeGutter" style={{ height: totalHeight }}>
+			<div className={styles.body}>
+				<div className={styles.timeGutter} style={{ height: totalHeight }}>
 					{hourMarks.map((m) => (
-						<div key={m.hour} className="tt-hourLabel" style={{ top: m.top }}>
+						<div
+							key={m.hour}
+							className={styles.hourLabel}
+							style={{ top: m.top }}
+						>
 							{m.label}
 						</div>
 					))}
 				</div>
 
-				<div className="tt-days" style={{ height: totalHeight }}>
+				<div className={styles.days} style={{ height: totalHeight }}>
 					{Days.map((d) => (
 						<DayColumn<Course>
 							key={d}
@@ -92,7 +99,7 @@ export function TimetableGrid({
 							height={totalHeight}
 							blocks={blocksByDay[d]}
 							config={config}
-							//onSelectBlock={onSelectBlock}
+							// onSelectBlock={onSelectBlock}
 							onRemoveBlock={onRemoveBlock}
 						/>
 					))}
@@ -118,24 +125,30 @@ function DayColumn<T>({
 	onRemoveBlock?: (timetableId: number, enrollId: number) => Promise<void>;
 }) {
 	return (
-		<div>
+		<div className={styles.dayCol} style={{ height }}>
 			<GridLines height={height} cfg={config} />
+
 			{blocks.map((b) => (
 				<button
 					key={b.id}
-					className="tt-block"
+					className={styles.block}
 					style={{ top: b.top, height: b.height }}
 					onClick={() => onSelectBlock?.(b.id, b.raw)}
 					type="button"
 				>
 					{onRemoveBlock && (
 						<MdCancel
-							className="tt-blockRemove"
-							onClick={() => onRemoveBlock(timetableId, b.enrollId)}
+							className={styles.blockRemove}
+							onClick={(e) => {
+								e.stopPropagation();
+								void onRemoveBlock(timetableId, b.enrollId);
+							}}
 						/>
 					)}
-					<div className="tt-blockTitle">{b.title}</div>
-					<div className="tt-blockTime">
+
+					<div className={styles.blockTitle}>{b.title}</div>
+
+					<div className={styles.blockTime}>
 						{formatAmPmFromMinutes(b.startMin)} -{" "}
 						{formatAmPmFromMinutes(b.endMin)}
 					</div>
@@ -148,12 +161,13 @@ function DayColumn<T>({
 function GridLines({ height, cfg }: { height: number; cfg: GridConfig }) {
 	const stepPx = cfg.ppm * 30;
 	const count = Math.floor(height / stepPx);
+
 	return (
-		<div className="tt-lines">
+		<div className={styles.lines}>
 			{Array.from({ length: count }).map((_, i) => (
 				<div
 					key={i * stepPx}
-					className="tt-line"
+					className={styles.line}
 					style={{ top: i * 30 * cfg.ppm }}
 				/>
 			))}

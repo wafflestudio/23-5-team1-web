@@ -7,6 +7,7 @@ import Toolbar from "./Toolbar";
 import MonthEvent from "./Month/MonthEvent";
 import DayEvent from "./Day/DayEvent";
 import CustomDayView from "./Day/CustomDayView";
+import CustomWeekView from "./Week/CustomWeekView";
 import { useEvents } from "@/contexts/EventContext";
 
 const eventPropGetter = () => {
@@ -17,6 +18,7 @@ const eventPropGetter = () => {
 
 interface MyCalendarProps {
 	monthEvents: Event[];
+	weekEvents: Event[];
 	dayEvents: Event[];
 	onShowMoreClick: (date: Date, view: string) => void;
 	onSelectEvent: (event: CalendarEvent) => void;
@@ -24,6 +26,7 @@ interface MyCalendarProps {
 
 export const MyCalendar = ({
 	monthEvents,
+	weekEvents,
 	dayEvents,
 	onShowMoreClick,
 	onSelectEvent,
@@ -43,12 +46,14 @@ export const MyCalendar = ({
 			case Views.MONTH:
 				return monthEvents;
 			/* TODO : make week data */
+			case Views.WEEK:
+				return weekEvents;
 			case Views.DAY:
 				return dayEvents;
 			default:
 				return monthEvents;
 		}
-	}, [currentView, monthEvents, dayEvents]);
+	}, [currentView, monthEvents, weekEvents, dayEvents]);
 
 	const CALENDER_EVENTS = useMemo(() => {
 		return currentEvents.map((event: Event) => {
@@ -134,7 +139,7 @@ export const MyCalendar = ({
 				onView={(view) => setCurrentView(view)}
 				views={{
 					month: true,
-					week: true,
+					week: CustomWeekView,
 					day: CustomDayView,
 				}}
 				onNavigate={onNavigate}
