@@ -21,7 +21,10 @@ interface AuthContextType {
 		codeVerifier?: string,
 	) => Promise<void>;
 	logout: () => Promise<void>;
-	updateUser: (username?: string | undefined, profileImageUrl?: string | undefined) => Promise<void>;
+	updateUsername: (username: string) => Promise<void>;
+	clearProfileImg: () => Promise<void>;
+	setProfileImg: (file: File) => Promise<void>;
+	updateUser: (username: string, file: File | null) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -37,7 +40,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	useEffect(() => {
 		const initAuth = async () => {
 			try {
-				const restoredUser = await auth.checkAuth();
+				const restoredUser = await auth.refresh();
 
 				if (restoredUser) {
 					setUser(restoredUser);
@@ -78,7 +81,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	) => {
 		try {
 			await auth.socialLogin(provider, code, codeVerifier);
-			if (!TokenService.getAccessToken()) {
+			if (!TokenService.getToken()) {
 				throw new Error("Social login did not set access token");
 			}
 			const userData = await auth.getUser();
@@ -121,17 +124,59 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	};
 
 	/**
-	 * Update user
+	 * Update username
 	 */
-	const updateUser = async (username?: string, profileImageUrl?: string,) => {
+	const updateUsername = async (username: string) => {
 		try {
-			const updatedUser: User = await auth.updateUser(username, profileImageUrl);
+			await auth.updateUsername(username);
+			const updatedUser = await auth.getUser();
 			setUser(updatedUser);
 		} catch (error) {
-			console.error("server error at profile edit", error);
-		} 
+			console.error("server error at username edit", error);
+		}
 	}
 
+	/**
+	 * clear profileImg
+	 */
+	const clearProfileImg = async () => {
+		try {
+			await auth.clearProfileImg();
+			const updatedUser = await auth.getUser();
+			setUser(updatedUser);
+		} catch (error) {
+			console.error("server error at clearing profile image", error);
+		}
+	}
+
+	/**
+	 * post profileimg
+	 */
+	const setProfileImg = async (file: File) => {
+		try {
+			await auth.uploadProfileImg(file);
+			const updatedUser = await auth.getUser();
+			setUser(updatedUser);
+		} catch (error) {
+			console.error("server error at setting profile image", error);
+		}
+	}
+
+	const updateUser = async (username: string, file: File | null) => {
+		try {
+			await auth.updateUsername(username);
+			if (file) {
+				await auth.uploadProfileImg(file);
+			} else {
+				await auth.clearProfileImg();
+			}
+			const updatedUser = await auth.getUser();
+			setUser(updatedUser);
+		} catch (error) {
+			console.error("server error at updating user", error);
+		}
+	}
+	
 	return (
 		<AuthContext.Provider
 			value={{
@@ -142,7 +187,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 				signup,
 				socialLogin,
 				logout,
-				updateUser,
+				updateUsername,
+				clearProfileImg,
+				setProfileImg,
+				updateUser
 			}}
 		>
 			{children}

@@ -5,7 +5,7 @@ import type {
 	SocialLoginRequestBody,
 	User,
 } from "@types";
-import api, { API_URL } from "./axios";
+import api from "./axios";
 import { TokenService } from "./tokenService";
 
 export const getUser = async (): Promise<User> => {
@@ -14,15 +14,28 @@ export const getUser = async (): Promise<User> => {
 	return res.data;
 };
 
-export const updateUser = async (
-	username?: string,
-	profileImageUrl?: string,
-) => {
-	const response = await api.patch("/users/me", {
+export const updateUsername = async (username: string) => {
+	await api.patch("/users/me", {
 		username,
-		profileImageUrl,
 	});
-	return response.data as User;
+};
+
+export const clearProfileImg = async () => {
+	await api.patch("/users/me", {
+		profileImageUrl: null,
+	});
+};
+
+export const uploadProfileImg = async (file: File) => {
+	const fd = new FormData();
+	fd.append("file", file);
+
+	const { data } = await axios.post<{ url: string }>(
+		"/users/me/profile-image",
+		fd,
+	);
+
+	return data;
 };
 
 export const signup = async (email: string, password: string) => {
@@ -31,7 +44,7 @@ export const signup = async (email: string, password: string) => {
 		password,
 	});
 
-	TokenService.setTokens(response.data.accessToken, response.data.refreshToken);
+	TokenService.setToken(response.data.accessToken);
 };
 
 export const login = async (email: string, password: string) => {
@@ -40,7 +53,7 @@ export const login = async (email: string, password: string) => {
 		password,
 	});
 
-	TokenService.setTokens(response.data.accessToken, response.data.refreshToken);
+	TokenService.setToken(response.data.accessToken);
 };
 
 export const socialLogin = async (
@@ -67,7 +80,7 @@ export const socialLogin = async (
 		};
 	}
 	const res = await api.post<AuthTokens>("/auth/login/social", body);
-	TokenService.setTokens(res.data.accessToken, res.data.refreshToken);
+	TokenService.setToken(res.data.accessToken);
 };
 
 export const logout = async () => {
@@ -82,6 +95,9 @@ export const logout = async () => {
 export const refresh = async () => {
 	const res = await api.post<AuthTokens>("/auth/refresh");
 	TokenService.setToken(res.data.accessToken);
+	const user = await getUser();
+
+	return user;
 };
 
 // health check

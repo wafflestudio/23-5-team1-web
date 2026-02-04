@@ -1,6 +1,5 @@
 export interface AuthTokens {
 	accessToken: string;
-	refreshToken: string | null;
 }
 
 export interface User {
@@ -110,12 +109,17 @@ export interface InterestCategories {
 	sortOrder: number;
 }
 
+export interface MemoTag {
+	id: number;
+	content: string;
+}
+
 export interface Memo {
 	id: number;
 	eventId: number;
 	eventTitle: string;
 	content: string;
-	tags: string[];
+	tags: MemoTag[];
 	createdAt: Date;
 }
 

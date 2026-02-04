@@ -26,7 +26,7 @@ api.interceptors.request.use(
 			return config;
 		}
 
-		const token = TokenService.getAccessToken();
+		const token = TokenService.getToken();
 		if (token && token.trim().length > 0) {
 			config.headers.Authorization = `Bearer ${token}`;
 		} else {
@@ -58,20 +58,10 @@ api.interceptors.response.use(
 			originalRequest._retry = true;
 
 			try {
-				const refreshToken = TokenService.getRefreshToken();
-				if (!refreshToken) throw new Error("No refresh token");
+				const { data } = await axios.post(`${API_URL}/auth/refresh`);
 
-				const { data } = await axios.post(
-					`${API_URL}/auth/refresh`,
-					{},
-					{
-						headers: {
-							Authorization: `Bearer ${refreshToken}`,
-						},
-					},
-				);
 				// update storage
-				TokenService.setTokens(data.accessToken /*, data.refreshToken*/);
+				TokenService.setToken(data.accessToken);
 
 				// update header
 				originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
