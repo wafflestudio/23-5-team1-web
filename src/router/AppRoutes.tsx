@@ -7,9 +7,9 @@ import EmailSignUp from "../pages/auth/Signup/EmailSignUp";
 import CalendarView from "../pages/CalendarView";
 import TimetablePage from "../pages/timetable/TimetablePage";
 import SearchView from "@/pages/search/Search";
-import { TimetableProvider } from "../contexts/TimetableContext";
 import BookmarksPage from "@/pages/bookmark/Bookmark";
 import MemoPage from "@/pages/memo/Memo";
+import MyPage from "@/pages/MyPage";
 
 export default function AppRoutes() {
 	return (
@@ -32,21 +32,17 @@ export default function AppRoutes() {
 
 			{/* Timetable page */}
 			<Route
-				path="/timetable"
-				element={
-					<TimetableProvider>
-						<TimetablePage />
-					</TimetableProvider>
-				}
+				path="/timetable" element={<TimetablePage />}
 			/>
 
 			{/* Search page */}
 			<Route path="/search" element={<SearchView />} />
 			
 			{/* Mypage & bookmark & memo */}
+			<Route path='/my' element={<MyPage />} />
 			<Route path='/my/bookmark' element={<BookmarksPage />} />
 			<Route path='/my/memo' element={<MemoPage />} />
-			{/* <Route path='/my' element={<MyPage />} /> */}
+			
 		</Routes>
 	);
 }

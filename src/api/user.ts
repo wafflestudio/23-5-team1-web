@@ -82,6 +82,7 @@ export const getMemos = async (_user: User) => {
 		eventTitle: m.eventTitle,
 		content: m.content,
 		tags: m.tags,
+		createdAt: new Date(m.createdAt),
 	}));
 
 	return memos;

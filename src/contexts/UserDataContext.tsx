@@ -7,17 +7,20 @@ import {
 	useState,
 } from "react";
 import * as userService from "@api/user";
-import type { Category, Event } from "@types";
+import type { Category, Event, Memo } from "@types";
 import { useAuth } from "./AuthProvider";
 
 interface UserDataContextType {
 	bookmarkedEvents: Event[];
 	interestCategories: Category[];
 	excludedKeywords: { id: number; keyword: string }[];
+	eventMemos: Memo[];
 	refreshUserData: () => void;
 	addExcludedKeyword: (keyword: string) => Promise<void>;
 	deleteExcludedKeyword: (id: number) => Promise<void>;
 	toggleBookmark: (event: Event) => Promise<void>;
+	// addMemo:
+	// deleteMemo:
 }
 
 const UserDataContext = createContext<UserDataContextType | undefined>(
@@ -29,6 +32,7 @@ export const UserDataProvider = ({ children }: { children: ReactNode }) => {
 	const [excludedKeywords, setExcludedKeywords] = useState<{ id: number; keyword: string }[]>([]);
 	const [bookmarkedEvents, setBookmarkedEvents] = useState<Event[]>([]);
 	const [interestCategories, setInterestCategories] = useState<Category[]>([]);
+	const [eventMemos, _setEventMemos] = useState<Memo[]>([]);
 
 	const fetchAll = useCallback(async () => {
 		if (!isAuthenticated) return;
@@ -110,6 +114,7 @@ export const UserDataProvider = ({ children }: { children: ReactNode }) => {
 				excludedKeywords,
 				bookmarkedEvents,
 				interestCategories,
+				eventMemos,
 				refreshUserData: fetchAll,
 				toggleBookmark,
 				addExcludedKeyword,

@@ -35,7 +35,7 @@ main {
 
 .bookmarksHeader {
   display: flex;
-  width: 80%;
+  width: 100%;
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
@@ -53,6 +53,7 @@ main {
 }
 
 .bookmarksPage .bookmarksHeader {
+  width: 80%;
   justify-content: center;
 }
 
@@ -86,7 +87,8 @@ main {
 .cardsColumn {
   display: grid;
   width: 80%;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: 1fr 1fr;
+  /* grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); */
   gap: 40px 45px;
   padding: 30px 0 60px 0;
   overflow-y: auto;
@@ -108,14 +110,13 @@ main {
 .cardsRow {
   display: flex;
   flex-direction: row;
-  gap: 12px;
+  gap: 14px;
 
   /* Horizontal Scrolling Logic */
   overflow-x: auto;
   scroll-behavior: smooth;
 
-  padding: 0 20px;
-  padding-bottom: 10px;
+  padding: 10px 20px;
 
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -125,7 +126,7 @@ main {
   display: none;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 476px) {
   .bookmarksHeader,
   .cardsColumn {
     width: 92%;

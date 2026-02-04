@@ -9,7 +9,9 @@ const Navigationbar = () => {
             width: '80%',
             padding: "20px 80px",
             justifyContent: 'center',
-            alignContent: 'start'
+            alignContent: 'start',
+            zIndex: 20,
+            outline: 'none',
         }}>
             <button 
                 type='button' 
@@ -17,11 +19,11 @@ const Navigationbar = () => {
             style={{ 
                 background: "none",
                 borderWidth: 0,
-                width: "100%",
                 display: "flex",
                 flexDirection: "row",
                 gap: "5px",
                 alignContent: 'center',
+                cursor: 'pointer'
             }}>
                 <img src="/assets/logo.png" style={{ width: 35, aspectRatio: 1 }} alt="calendar icon with snu mark on it"/>
                 <div style={{ fontSize: 25, fontWeight: 500 }}>행샤</div>

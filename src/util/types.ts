@@ -111,6 +111,7 @@ export interface Memo {
 	eventTitle: string;
 	content: string;
 	tags: string[];
+	createdAt: Date;
 }
 
 // 시간표 전체
