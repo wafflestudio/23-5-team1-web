@@ -105,6 +105,7 @@ main {
   font-weight: 400;
   color: #888888;
   align-self: center;
+  white-space: pre-line;
 }
 
 .cardsRow {

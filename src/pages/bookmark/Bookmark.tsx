@@ -42,37 +42,37 @@ const BookmarksPage = () => {
 
     return (
         <main>
-        <div className={styles.bookmarksPage}>
-            <Navigationbar />
-            <div className={styles.bookmarksHeader}>
-                <FaChevronLeft className={styles.backBtn} color="ABABAB" size={18} onClick={()=>navigate('/my')} />
-                <div className={styles.row}>
-                    <span>내 찜 목록</span>
-                    <img src="/assets/Bookmarked.svg" alt="filled bookmark icon" />
+            <div className={styles.bookmarksPage}>
+                <Navigationbar />
+                <div className={styles.bookmarksHeader}>
+                    <FaChevronLeft className={styles.backBtn} color="ABABAB" size={18} onClick={()=>navigate('/my')} />
+                    <div className={styles.row}>
+                        <span>내 찜 목록</span>
+                        <img src="/assets/Bookmarked.svg" alt="filled bookmark icon" />
+                    </div>
                 </div>
-            </div>
-            <div className={styles.cardsColumn}>
-                {bookmarkedEvents && bookmarkedEvents.length > 0 && bookmarkedEvents.map(e => (
-                    // biome-ignore lint/a11y/useSemanticElements: Cannot use button because it contains nested interactive elements
-					<div
-						role="button"
-						key={e.id}
-						tabIndex={0}
-						onClick={onDetailClick}
-						onKeyDown={(e) => e.key === "Enter" && onDetailClick()}
-						className={styles.cardButton}
-					>
-						<GalleryCard key={e.id} event={e} />
-					</div>
-                ))}
-            </div>
-            {(!bookmarkedEvents || bookmarkedEvents.length===0) && <span className={styles.noneText}>{`아직 찜된 행사가 없습니다.\n관심있는 행사를 찜해보세요!`}</span>}
-        </div>
-            {showDetail && clickedEventId !== undefined && (
-                <div className={styles.sidePanel}>
-                    <DetailView eventId={clickedEventId} onClose={()=> setShowDetail(false)} />
+                <div className={styles.cardsColumn}>
+                    {bookmarkedEvents && bookmarkedEvents.length > 0 && bookmarkedEvents.map(e => (
+                        // biome-ignore lint/a11y/useSemanticElements: Cannot use button because it contains nested interactive elements
+                        <div
+                            role="button"
+                            key={e.id}
+                            tabIndex={0}
+                            onClick={onDetailClick}
+                            onKeyDown={(e) => e.key === "Enter" && onDetailClick()}
+                            className={styles.cardButton}
+                        >
+                            <GalleryCard key={e.id} event={e} />
+                        </div>
+                    ))}
                 </div>
-            )}
+                {(!bookmarkedEvents || bookmarkedEvents.length===0) && <span className={styles.noneText}>{`아직 찜된 행사가 없습니다.\n관심있는 행사를 찜해보세요!`}</span>}
+            </div>
+                {showDetail && clickedEventId !== undefined && (
+                    <div className={styles.sidePanel}>
+                        <DetailView eventId={clickedEventId} onClose={()=> setShowDetail(false)} />
+                    </div>
+                )}
         </main>
     )
 };
