@@ -43,4 +43,4 @@ jobs:
           AWS_REGION: ap-northeast-2
         run: |
           aws s3 sync ./dist s3://haengsha-waffle-s3-bucket --delete
-          aws cloudfront create-invalidation --distribution-id E14W0H7RTR1POP --paths "/*"\
+          aws cloudfront create-invalidation --distribution-id E14W0H7RTR1POP --paths "/*"
