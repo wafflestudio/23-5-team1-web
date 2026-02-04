@@ -13,10 +13,26 @@ const api = axios.create({
 
 api.interceptors.request.use(
 	(config) => {
-		const token = TokenService.getAccessToken();
-		if (token) {
-			config.headers.Authorization = `Bearer ${token}`;
+		const url = config.url ?? "";
+
+		const isAuthApi =
+			url.includes("/auth/login/social") ||
+			url.includes("/auth/login") ||
+			url.includes("/auth/register") ||
+			url.includes("/auth/refresh");
+
+		if (isAuthApi) {
+			delete config.headers.Authorization;
+			return config;
 		}
+
+		const token = TokenService.getAccessToken();
+		if (token && token.trim().length > 0) {
+			config.headers.Authorization = `Bearer ${token}`;
+		} else {
+			delete config.headers.Authorization;
+		}
+
 		return config;
 	},
 	(error) => Promise.reject(error),
