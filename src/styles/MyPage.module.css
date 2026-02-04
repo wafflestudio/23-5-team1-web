@@ -44,12 +44,40 @@ main {
   margin-bottom: 30px;
 }
 
-.profileRow > img {
-  width: 120px;
-  aspect-ratio: 1;
+.profileImgWrapper {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  margin: 0 auto;
+}
+
+.profileImgWrapper img {
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
   object-fit: cover;
   border: 1px solid #f0f0f0;
+}
+
+.editInput {
+  display: none;
+}
+
+.editButton {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: white;
+  border: 0.5px solid #bebebe;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .nameEmailCol {
@@ -76,7 +104,7 @@ main {
   line-height: 1.2;
 }
 
-.backBtn {
+.editBtn {
   cursor: pointer;
   margin-left: auto;
 }
@@ -87,7 +115,7 @@ main {
   align-items: center;
   width: 100%;
 
-  padding: 18px 20px;
+  padding: 10px 20px;
 
   background-color: #ffffff;
   border: 1px solid #d0d0d0;

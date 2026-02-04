@@ -16,6 +16,7 @@ interface AuthContextType {
 	signup: (email: string, password: string) => Promise<void>;
 	socialLogin: (provider: string, token: string) => Promise<void>;
 	logout: () => Promise<void>;
+	updateUser: (username?: string | undefined, profileImageUrl?: string | undefined) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -106,6 +107,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		}
 	};
 
+	/**
+	 * Update user
+	 */
+	const updateUser = async (username?: string, profileImageUrl?: string,) => {
+		try {
+			const updatedUser: User = await auth.updateUser(username, profileImageUrl);
+			setUser(updatedUser);
+		} catch (error) {
+			console.error("server error at profile edit", error);
+		} 
+	}
+
 	return (
 		<AuthContext.Provider
 			value={{
@@ -116,6 +129,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 				signup,
 				socialLogin,
 				logout,
+				updateUser,
 			}}
 		>
 			{children}

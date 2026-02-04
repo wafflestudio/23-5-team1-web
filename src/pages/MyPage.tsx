@@ -3,24 +3,65 @@ import Navigationbar from "@/widgets/Navigationbar"
 import styles from "@styles/MyPage.module.css"
 import { BookmarkWidget } from "./bookmark/Bookmark"
 import { MemoWidget } from "./memo/Memo"
-import { FaChevronRight } from "react-icons/fa6"
 import { useNavigate } from "react-router-dom"
 import { useTimetable } from "@/contexts/TimetableContext"
+import { useState } from "react"
+import { RiPencilFill } from "react-icons/ri"
+import { FaCamera } from "react-icons/fa6"
+import { IoMdDoneAll } from "react-icons/io"
 
 const ProfileCard = () => {
-    const { user } = useAuth();
+    const { user, updateUser } = useAuth();
     const { timetables } = useTimetable();
+    const [profilePreviewUrl, setProfilePreviewUrl] = useState<string>(user ? user.profileImageUrl : '/assets/defaultProfile.png');
+    const [, setIsDefaultProfile] = useState<boolean>(false);
+    const [username, setUsername] = useState<string>(user ? user.username : '유저');
+    const [isEditmode, setIsEditmode] = useState<boolean>(false);
     const navigate = useNavigate();
+
+    const handleImageError = () => {
+        setProfilePreviewUrl('/assets/defaultProfile.png');
+    };
+
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        setProfilePreviewUrl(URL.createObjectURL(file));
+        setIsDefaultProfile(false);
+    };
+    
+    const handleChangesSave = () => {
+        setIsEditmode(false);
+        if (username.trim() && username !== user?.username) {
+            updateUser(username, profilePreviewUrl);
+        } else {
+            setUsername(user?.username || '');
+        }
+    }
 
     return (
             <div className={styles.profileContainer}>
                 <div className={styles.profileRow}>
-                    <img src={user?.profileImageUrl} alt="profile img" />
+                    <div className={styles.profileImgWrapper}>
+                        <img src={profilePreviewUrl} alt="profile img" onError={handleImageError} />
+                        {isEditmode && <label htmlFor="profile-image" className={styles.editButton}>
+                            <input id="profile-image" className={styles.editInput} type="file" accept="image/*" onChange={handleImageChange} />
+                            <FaCamera color="ABABAB" size={13} />
+                        </label>}
+                    </div>
                     <div className={styles.nameEmailCol}>
-                        <span className={styles.nameText}>{user?.username}</span>
+                        {isEditmode ? 
+                        <input 
+                            className={styles.nameInput} 
+                            type='text' 
+                            value={username} 
+                            placeholder="이름을 입력하세요"  
+                            onChange={(e) => setUsername(e.currentTarget.value)}/>  
+                        : <span className={styles.nameText}>{user?.username}</span>}
                         <span className={styles.emailText}>{user?.email}</span>
                     </div>
-                    <FaChevronRight className={styles.backBtn} color="ABABAB" size={18} onClick={()=>navigate('/my/profile')} />
+                    {isEditmode ? 
+                    <IoMdDoneAll onClick={handleChangesSave} className={styles.editBtn} size={20} color="ABABAB" /> :  <RiPencilFill className={styles.editBtn} color="ABABAB" size={24} onClick={()=>setIsEditmode(true)} />}
                 </div>
                 <button type='button' className={styles.timeTableBtn} onClick={() => navigate('/timetable')}>
                     {timetables && timetables.length > 0 ? 
