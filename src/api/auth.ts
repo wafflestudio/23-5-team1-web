@@ -79,36 +79,9 @@ export const logout = async () => {
 	}
 };
 
-// Call on App mount!
-export const checkAuth = async () => {
-	const refreshToken = TokenService.getRefreshToken();
-
-	if (!refreshToken) {
-		console.log("no refresh token");
-
-		return null;
-	}
-
-	try {
-		const { data } = await axios.post(
-			`${API_URL}/auth/refresh`,
-			{},
-			{
-				headers: {
-					Authorization: `Bearer ${refreshToken}`,
-				},
-			},
-		);
-
-		TokenService.setTokens(data.accessToken, data.refreshToken);
-
-		const user = await getUser();
-		return user;
-	} catch (error) {
-		console.error("error in authentication with refresh token", error);
-		TokenService.clearTokens();
-		throw error;
-	}
+export const refresh = async () => {
+	const res = await api.post<AuthTokens>("/auth/refresh");
+	TokenService.setToken(res.data.accessToken);
 };
 
 // health check
