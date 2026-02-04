@@ -36,8 +36,6 @@ export const login = async (email: string, password: string) => {
 	});
 
 	TokenService.setTokens(response.data.accessToken, response.data.refreshToken);
-	console.log(`access token : ${response.data.accessToken}`);
-	console.log(`refresh token : ${response.data.refreshToken}`);
 };
 
 export const socialLogin = async (
@@ -45,7 +43,7 @@ export const socialLogin = async (
 	code: string,
 	codeVerifier?: string,
 ) => {
-	const res = await api.post<AuthTokens>("/auth/social", {
+	const res = await api.post<AuthTokens>("/auth/login/social", {
 		provider,
 		code,
 		codeVerifier,

@@ -57,7 +57,7 @@ const LoginHandler = ({ provider }: { provider: Provider }) => {
 				sessionStorage.removeItem("naver_oauth_state");
 				sessionStorage.removeItem("kakao_oauth_state");
 
-				navigate("/main", { replace: true });
+				navigate("/auth/complete", { replace: true });
 			} catch (e) {
 				console.error(e);
 
