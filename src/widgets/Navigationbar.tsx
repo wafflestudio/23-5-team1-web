@@ -23,7 +23,8 @@ const Navigationbar = () => {
                 flexDirection: "row",
                 gap: "5px",
                 alignContent: 'center',
-                cursor: 'pointer'
+                cursor: 'pointer',
+                outline: 'none'
             }}>
                 <img src="/assets/logo.png" style={{ width: 35, aspectRatio: 1 }} alt="calendar icon with snu mark on it"/>
                 <div style={{ fontSize: 25, fontWeight: 500 }}>행샤</div>

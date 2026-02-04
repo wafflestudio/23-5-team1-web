@@ -3,11 +3,9 @@ import styles from '@styles/Memo.module.css';
 import type { Memo } from "@/util/types";
 import { formatDateDotParsed } from "@/util/Calendar/dateFormatter";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
-import { useState } from "react";
-import { HiOutlinePencilAlt } from "react-icons/hi";
-import { IoMdDoneAll } from "react-icons/io";
 import Navigationbar from "@/widgets/Navigationbar";
 import { useNavigate } from "react-router-dom";
+import MemoPageCard from "./MemoPageCard";
 
 const MemoWidgetCard = ({ memo }: { memo: Memo }) => {
     return (
@@ -22,27 +20,6 @@ const MemoWidgetCard = ({ memo }: { memo: Memo }) => {
     )
 }
 
-const MemoPageCard = ({ memo }: { memo: Memo }) => {
-    const [editMode, setEditMode] = useState<boolean>(false);
-
-    return (
-        <div className={styles.cardContainer}>
-            <span className={styles.memoDate}>{formatDateDotParsed(memo.createdAt)}</span>
-            <div className={styles.cardWrapper}>
-                <textarea 
-                    className={`${styles.memoTextarea} ${editMode ? styles.activeTextarea : ''}`}
-                    value={styles.memoText}
-                    disabled={!editMode}
-                />
-                <span className={styles.memoTitle}>{memo.eventTitle}</span>
-                <ul className={styles.chips}>
-                    {memo.tags.map(t => <li key={t.id} className={styles.chip}>{t.content}</li>)}
-                </ul>
-                {!editMode ? <HiOutlinePencilAlt onClick={()=>setEditMode(true)} className={styles.editIcon} size={20} color="ABABAB" /> : <IoMdDoneAll onClick={()=>{setEditMode(false) /* TODO : Send PATCH request */}} className={styles.editIcon} size={20} color="ABABAB" />}
-            </div>
-        </div>
-    )
-}
 
 export const MemoWidget = () => {
     const { eventMemos } = useUserData();

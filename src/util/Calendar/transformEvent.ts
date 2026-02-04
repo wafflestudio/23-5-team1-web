@@ -6,7 +6,7 @@ export const transformEvent = (dto: EventDTO): Event => {
 		...dto,
 		// handle invalid img
 		imageUrl: dto.imageUrl.includes("extra.snu.ac.kr/comm/cmfile/")
-			? "/assets/DefaultThumbnail23ratio.png"
+			? "/assets/DefaultThumbnail.png"
 			: dto.imageUrl,
 		eventTypeId:
 			dto.eventTypeId && dto.eventTypeId <= 9 && dto.eventTypeId >= 4

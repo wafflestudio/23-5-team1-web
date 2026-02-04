@@ -10,7 +10,6 @@ import { TokenService } from "./tokenService";
 
 export const getUser = async (): Promise<User> => {
 	const res = await api.get<User>("/users/me");
-	console.log(res.data);
 	return res.data;
 };
 

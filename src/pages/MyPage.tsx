@@ -34,7 +34,7 @@ const ProfileCard = () => {
     
     const handleChangesSave = () => {
         setIsEditmode(false);
-        if (username.trim() && username !== user?.username) {
+        if (username.trim()) {
             updateUser(username, imgFile);
         } else {
             setUsername(user?.username || '');

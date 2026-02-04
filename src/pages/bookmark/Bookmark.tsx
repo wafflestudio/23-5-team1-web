@@ -1,6 +1,5 @@
 import { useUserData } from "@/contexts/UserDataContext";
 import styles from '@styles/Bookmarks.module.css';
-import CardView from "@/widgets/Month/MonthSideView/CardView";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 import Navigationbar from "@/widgets/Navigationbar";
 import { useNavigate } from "react-router-dom";
@@ -23,7 +22,7 @@ export const BookmarkWidget = () => {
             </div>
             <div className={styles.cardsRow}>
                 {bookmarkedEvents.map(e => (
-                    <CardView key={e.id} event={e} />
+                    <GalleryCard key={e.id} event={e} />
                 ))}
             </div>
             {(!bookmarkedEvents || bookmarkedEvents.length===0) && <span className={styles.noneText}>{`아직 찜된 행사가 없습니다.\n관심있는 행사를 찜해보세요!`}</span>}

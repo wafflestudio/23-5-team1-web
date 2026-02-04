@@ -1,0 +1,110 @@
+/* MemoPageCard.module.css */
+
+.cardContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.memoDate {
+  font-size: 14px;
+  color: #888888;
+  margin-bottom: 8px;
+  margin-left: 4px; /* Slight alignment adjustment */
+}
+
+.cardWrapper {
+  position: relative; /* Needed for absolute positioning of the icon */
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  padding-bottom: 20px;
+
+  /* Add a subtle shadow or border if needed to match the 'card' look */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f0f0f0;
+}
+
+/* --- Textarea Styling (The Core Logic) --- */
+.memoTextarea {
+  width: 100%;
+  min-height: 120px; /* Give it enough height for the content */
+
+  font-family: inherit;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #111111;
+
+  resize: none; /* Hide drag handle */
+  outline: none;
+  transition: all 0.2s ease;
+
+  /* DEFAULT STATE (View Mode / Disabled) */
+  background-color: transparent;
+  border: 1px solid transparent; /* Invisible border to prevent layout jump when switching */
+  padding: 0;
+  margin-bottom: 16px;
+}
+
+/* Force disabled textarea to look like normal text */
+.memoTextarea:disabled {
+  color: #111111; /* Override browser grey-out */
+  opacity: 1;
+  cursor: default;
+  -webkit-text-fill-color: #111111; /* Safari fix */
+}
+
+/* ACTIVE STATE (Edit Mode) */
+.activeTextarea {
+  border: 1px solid #bbbbbb; /* The border shown in Group 27 */
+  border-radius: 8px;
+  padding: 12px; /* Add breathing room inside the box */
+  background-color: #ffffff;
+}
+
+/* ----------------------------------------- */
+
+.memoTitle {
+  font-size: 14px;
+  font-weight: 500;
+  color: #999999;
+  margin-bottom: 12px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  padding-right: 30px; /* Prevent tags from overlapping the edit icon */
+}
+
+.chip {
+  padding: 6px 12px;
+  background-color: #eaeaea;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #666666;
+}
+
+/* Position the icon at the bottom right */
+.editIcon {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+.editIcon:active {
+  transform: scale(0.9);
+}

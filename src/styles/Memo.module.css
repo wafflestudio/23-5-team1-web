@@ -126,7 +126,7 @@ main {
   justify-content: center;
 }
 
-.headerLeft {
+.memosLeft {
   display: flex;
   align-items: center;
   gap: 8px;
