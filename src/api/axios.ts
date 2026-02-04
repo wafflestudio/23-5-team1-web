@@ -38,14 +38,23 @@ api.interceptors.request.use(
 	(error) => Promise.reject(error),
 );
 
-// accessToken & refreshToken configuration
 api.interceptors.response.use(
 	(response) => response,
 	async (error) => {
 		const originalRequest = error.config;
+		const url = originalRequest?.url ?? "";
 
-		// if error == 401 : retry with refreshToken
-		if (error.response.status === 401 && !originalRequest._retry) {
+		const isAuthApi =
+			url.includes("/auth/login/social") ||
+			url.includes("/auth/login") ||
+			url.includes("/auth/register") ||
+			url.includes("/auth/refresh");
+			
+		if (isAuthApi) {
+			return Promise.reject(error);
+		}
+
+		if (error.response?.status === 401 && !originalRequest._retry) {
 			originalRequest._retry = true;
 
 			try {
@@ -73,7 +82,6 @@ api.interceptors.response.use(
 				// refresh failed :
 				TokenService.clearTokens();
 				console.error("Session expired. Please sign in again");
-				// TODO : navigate back to login page
 				return Promise.reject(refreshError);
 			}
 		}
