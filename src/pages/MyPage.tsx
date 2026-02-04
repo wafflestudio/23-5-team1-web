@@ -56,9 +56,11 @@ const ProfileCard = () => {
                             type='text' 
                             value={username} 
                             placeholder="이름을 입력하세요"  
-                            onChange={(e) => setUsername(e.currentTarget.value)}/>  
+                            onChange={(e) => setUsername(e.currentTarget.value)}
+                            onKeyDown={(e: React.KeyboardEvent)=> {if (e.key === "Enter" && !e.nativeEvent.isComposing) { e.stopPropagation(); e.preventDefault(); handleChangesSave(); }}}
+                        />  
                         : <span className={styles.nameText}>{user?.username}</span>}
-                        <span className={styles.emailText}>{user?.email}</span>
+                        <span className={`${styles.emailText} ${isEditmode ? styles.edit : ''}`}>{user?.email}</span>
                     </div>
                     {isEditmode ? 
                     <IoMdDoneAll onClick={handleChangesSave} className={styles.editBtn} size={20} color="ABABAB" /> :  <RiPencilFill className={styles.editBtn} color="ABABAB" size={24} onClick={()=>setIsEditmode(true)} />}

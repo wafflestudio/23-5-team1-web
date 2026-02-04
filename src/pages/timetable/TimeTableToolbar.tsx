@@ -2,6 +2,7 @@ import type { Semester } from "../../util/types";
 import { IoIosSearch } from "react-icons/io";
 import { useAuth } from "../../contexts/AuthProvider";
 import styles from "../../styles/Toolbar.module.css";
+import { useNavigate } from "react-router-dom";
 
 interface TimeTableToolbarProps {
 	timetableName: string;
@@ -23,6 +24,7 @@ const TimeTableToolbar = ({
 	years,
 }: TimeTableToolbarProps) => {
 	const { user } = useAuth();
+	const navigate = useNavigate();
 	const yearOptions =
 		years ??
 		Array.from({ length: 7 }, (_, i) => new Date().getFullYear() - 3 + i);
@@ -64,7 +66,7 @@ const TimeTableToolbar = ({
 
 				<div className={styles.profileRow}>
 					<IoIosSearch size={20} color="rgba(130, 130, 130, 1)" />
-					<button type="button" className={styles.profileButton}>
+					<button type="button" className={styles.profileButton} onClick={() => navigate('/my')}>
 						<img
 							alt="user profile"
 							src={user?.profileImageUrl || "/assets/defaultProfile.png"}

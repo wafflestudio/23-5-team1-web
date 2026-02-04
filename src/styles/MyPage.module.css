@@ -104,9 +104,29 @@ main {
   line-height: 1.2;
 }
 
+.edit.emailText {
+  margin-left: 10px;
+}
+
 .editBtn {
   cursor: pointer;
   margin-left: auto;
+}
+
+.nameInput {
+  width: min(440px, 100%);
+  border-radius: 10px;
+  border: 1px solid #e6e6e6;
+  background: #fff;
+  padding: 10px;
+  font-size: 15px;
+  margin-bottom: 6px;
+  outline: none;
+}
+
+.nameInput::placeholder {
+  color: #8f8f8f;
+  font-weight: 700;
 }
 
 .timeTableBtn {
