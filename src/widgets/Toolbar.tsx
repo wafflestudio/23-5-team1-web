@@ -185,7 +185,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
 					)}
 					<div className={styles.profileRow}>
 						<SearchInput />
-						<ProfileButton user={user} />
+						{user && <ProfileButton user={user} />}
 					</div>
 				</div>
 			</div>

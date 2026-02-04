@@ -14,6 +14,7 @@ const ProfileCard = () => {
     const { user, updateUser } = useAuth();
     const { timetables } = useTimetable();
     const [profilePreviewUrl, setProfilePreviewUrl] = useState<string>(user ? user.profileImageUrl : '/assets/defaultProfile.png');
+    const [imgFile, setImgFile] = useState<File | null>(null);
     const [, setIsDefaultProfile] = useState<boolean>(false);
     const [username, setUsername] = useState<string>(user ? user.username : '유저');
     const [isEditmode, setIsEditmode] = useState<boolean>(false);
@@ -26,6 +27,7 @@ const ProfileCard = () => {
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
+        setImgFile(file);
         setProfilePreviewUrl(URL.createObjectURL(file));
         setIsDefaultProfile(false);
     };
@@ -33,7 +35,7 @@ const ProfileCard = () => {
     const handleChangesSave = () => {
         setIsEditmode(false);
         if (username.trim() && username !== user?.username) {
-            updateUser(username, profilePreviewUrl);
+            updateUser(username, imgFile);
         } else {
             setUsername(user?.username || '');
         }
