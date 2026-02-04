@@ -85,11 +85,8 @@ export const socialLogin = async (
 
 export const logout = async () => {
 	// delete tokens
-	try {
-		await api.post("/auth/logout");
-	} finally {
-		TokenService.clearTokens();
-	}
+	await api.post("/auth/logout");
+	TokenService.clearTokens();
 };
 
 export const refresh = async () => {
