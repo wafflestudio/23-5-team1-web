@@ -285,3 +285,20 @@ export interface ApiErrorResponse {
 	code: string;
 	message: string;
 }
+
+export type Provider = "GOOGLE" | "KAKAO" | "NAVER";
+
+export type GoogleSocialLoginBody = {
+	provider: "GOOGLE";
+	code: string;
+	codeVerifier: string;
+};
+
+export type OtherSocialLoginBody = {
+	provider: "KAKAO" | "NAVER";
+	code: string;
+};
+
+export type SocialLoginRequestBody =
+	| GoogleSocialLoginBody
+	| OtherSocialLoginBody;
