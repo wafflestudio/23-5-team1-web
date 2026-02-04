@@ -49,7 +49,7 @@ api.interceptors.response.use(
 			url.includes("/auth/login") ||
 			url.includes("/auth/register") ||
 			url.includes("/auth/refresh");
-			
+
 		if (isAuthApi) {
 			return Promise.reject(error);
 		}
