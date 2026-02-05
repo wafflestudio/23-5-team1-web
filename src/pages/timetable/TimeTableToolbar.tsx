@@ -66,7 +66,11 @@ const TimeTableToolbar = ({
 
 				<div className={styles.profileRow}>
 					<IoIosSearch size={20} color="rgba(130, 130, 130, 1)" />
-					<button type="button" className={styles.profileButton} onClick={() => navigate('/my')}>
+					<button
+						type="button"
+						className={styles.profileButton}
+						onClick={() => navigate("/my")}
+					>
 						<img
 							alt="user profile"
 							src={user?.profileImageUrl || "/assets/defaultProfile.png"}

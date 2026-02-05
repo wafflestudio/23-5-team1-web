@@ -64,7 +64,7 @@ export default function ProfileSetting() {
 						type="text"
 						placeholder="푱푱한 토끼"
 						value={name}
-						onChange={(e)=>setName(e.currentTarget.value)}
+						onChange={(e) => setName(e.currentTarget.value)}
 					/>
 
 					<button className={styles.submit} type="submit">

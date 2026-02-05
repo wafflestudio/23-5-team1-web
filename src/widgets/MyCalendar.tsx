@@ -62,7 +62,10 @@ export const MyCalendar = ({
 			if (!event.eventStart || !event.eventEnd) {
 				// 기본 : eventStart 혹은 eventEnd가 없으면 기간제 행사 처리
 				isPeriodEvent = true;
-			} else if (event.title.includes("공모전") || event.title.includes("인턴십")) {
+			} else if (
+				event.title.includes("공모전") ||
+				event.title.includes("인턴십")
+			) {
 				// 인턴십, 공모전 : 신청형 기간제 행사임에도 eventStart, eventEnd 데이터가 들어있는 경우 있음
 				// -> 일괄적으로 기간제 행사 처리
 				isPeriodEvent = true;
@@ -71,9 +74,9 @@ export const MyCalendar = ({
 				isPeriodEvent = true;
 			} else {
 				// 이외 : eventStart & eventEnd가 있음
-				isPeriodEvent = false
+				isPeriodEvent = false;
 			}
-			
+
 			const startDate = event.eventStart || event.applyStart;
 			const endDate = event.eventEnd || event.applyEnd;
 			const isAllDay = currentView === Views.MONTH ? true : isPeriodEvent;

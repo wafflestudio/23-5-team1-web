@@ -63,7 +63,11 @@ export const ProfileButton = ({ user }: { user: User | null }) => {
 	const navigate = useNavigate();
 
 	return (
-		<button type="button" className={styles.profileButton} onClick={()=>navigate('/my')}>
+		<button
+			type="button"
+			className={styles.profileButton}
+			onClick={() => navigate("/my")}
+		>
 			<img
 				alt="user profile"
 				src={user?.profileImageUrl || "/assets/defaultProfile.png"}

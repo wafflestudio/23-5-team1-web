@@ -37,18 +37,15 @@ export default function AppRoutes() {
 			<Route path="/main" element={<CalendarView />} />
 
 			{/* Timetable page */}
-			<Route
-				path="/timetable" element={<TimetablePage />}
-			/>
+			<Route path="/timetable" element={<TimetablePage />} />
 
 			{/* Search page */}
 			<Route path="/search" element={<SearchView />} />
-			
+
 			{/* Mypage & bookmark & memo */}
-			<Route path='/my' element={<MyPage />} />
-			<Route path='/my/bookmark' element={<BookmarksPage />} />
-			<Route path='/my/memo' element={<MemoPage />} />
-			
+			<Route path="/my" element={<MyPage />} />
+			<Route path="/my/bookmark" element={<BookmarksPage />} />
+			<Route path="/my/memo" element={<MemoPage />} />
 		</Routes>
 	);
 }

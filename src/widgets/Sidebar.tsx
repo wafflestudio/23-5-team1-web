@@ -241,9 +241,13 @@ export const Sidebar = () => {
 										<button
 											key={option.id}
 											type="button"
-											style={option.groupId===3 ? {
-												backgroundColor: CATEGORY_BUTTON_COLORS[idx + 1],
-											} : {}}
+											style={
+												option.groupId === 3
+													? {
+															backgroundColor: CATEGORY_BUTTON_COLORS[idx + 1],
+														}
+													: {}
+											}
 											className={`${styles.toggleItem} ${
 												isChecked ? styles.active : ""
 											}`}
@@ -327,7 +331,11 @@ export const Sidebar = () => {
 			<div className={styles.sectionTitle} style={{ marginTop: "20px" }}>
 				페이지
 			</div>
-			<button className={styles.pageLink} type="button" onClick={()=>navigate('/my/bookmark')}>
+			<button
+				className={styles.pageLink}
+				type="button"
+				onClick={() => navigate("/my/bookmark")}
+			>
 				<img
 					className={styles.icon}
 					src="/assets/bookmark.svg"

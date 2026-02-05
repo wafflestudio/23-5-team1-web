@@ -13,15 +13,11 @@ import parse from "html-react-parser";
 import { useDetail } from "@/contexts/DetailContext";
 import DetailMemo from "./DetailMemo";
 
-const DetailView = ({
-	eventId,
-}: {
-	eventId: number;
-}) => {
+const DetailView = ({ eventId }: { eventId: number }) => {
 	const [event, setEvent] = useState<EventDetail>();
 	const { fetchEventById } = useEvents();
 	const { setShowDetail } = useDetail();
-	
+
 	// for scrolling to top on re-render
 	const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -41,11 +37,11 @@ const DetailView = ({
 				setIsMemoExpanded(false);
 			}
 		}
-    
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-	    };
+
+		document.addEventListener("mousedown", handleClickOutside);
+		return () => {
+			document.removeEventListener("mousedown", handleClickOutside);
+		};
 	}, []);
 
 	// load events
@@ -57,7 +53,7 @@ const DetailView = ({
 		loadEvent();
 		// scroll to top of component
 		if (scrollRef.current) {
-			scrollRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+			scrollRef.current.scrollTo({ top: 0, behavior: "smooth" });
 		}
 	}, [eventId, fetchEventById]);
 
@@ -97,9 +93,6 @@ const DetailView = ({
 		}
 	};
 
-
-
-
 	return (
 		<div className={styles.container} ref={scrollRef}>
 			<button type="button" className={styles.foldBtn}>
@@ -107,7 +100,7 @@ const DetailView = ({
 					width={18}
 					height={18}
 					color="rgba(171, 171, 171, 1)"
-					onClick={()=>setShowDetail(false)}
+					onClick={() => setShowDetail(false)}
 				/>
 			</button>
 
@@ -171,7 +164,11 @@ const DetailView = ({
 
 			{/* ----- Memo & Tag Section ----- */}
 			<div ref={memoWrapperRef}>
-			<DetailMemo eventId={eventId} isMemoExpanded={isMemoExpanded} setIsMemoExpanded={setIsMemoExpanded} />
+				<DetailMemo
+					eventId={eventId}
+					isMemoExpanded={isMemoExpanded}
+					setIsMemoExpanded={setIsMemoExpanded}
+				/>
 			</div>
 		</div>
 	);

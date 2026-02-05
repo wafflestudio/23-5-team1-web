@@ -134,7 +134,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		} catch (error) {
 			console.error("server error at username edit", error);
 		}
-	}
+	};
 
 	/**
 	 * clear profileImg
@@ -147,7 +147,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		} catch (error) {
 			console.error("server error at clearing profile image", error);
 		}
-	}
+	};
 
 	/**
 	 * post profileimg
@@ -160,7 +160,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		} catch (error) {
 			console.error("server error at setting profile image", error);
 		}
-	}
+	};
 
 	const updateUser = async (username: string, file: File | null) => {
 		try {
@@ -175,8 +175,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		} catch (error) {
 			console.error("server error at updating user", error);
 		}
-	}
-	
+	};
+
 	return (
 		<AuthContext.Provider
 			value={{
@@ -190,7 +190,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 				updateUsername,
 				clearProfileImg,
 				setProfileImg,
-				updateUser
+				updateUser,
 			}}
 		>
 			{children}

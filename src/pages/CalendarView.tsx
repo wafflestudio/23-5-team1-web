@@ -146,7 +146,7 @@ const CalendarView = () => {
 		setShowSideMonth(false);
 	};
 
-	// clicking outside of sideview (that is not event or anything else) created 
+	// clicking outside of sideview (that is not event or anything else) created
 	const sidePanelRef = useRef<HTMLDivElement>(null);
 
 	// detect outside clicks
@@ -154,21 +154,20 @@ const CalendarView = () => {
 		function handleClickOutside(event: MouseEvent) {
 			if (!sidePanelRef.current) return;
 
-            // Check if click target is inside the side panel
+			// Check if click target is inside the side panel
 			const isInside = sidePanelRef.current.contains(event.target as Node);
-            // If clicked OUTSIDE, close both panels
+			// If clicked OUTSIDE, close both panels
 			if (!isInside) {
 				setShowSideMonth(false);
-                setShowDetail(false);
+				setShowDetail(false);
 			}
 		}
 		document.addEventListener("mousedown", handleClickOutside);
-	
+
 		return () => {
 			document.removeEventListener("mousedown", handleClickOutside);
 		};
 	}, [setShowDetail]);
-
 
 	return (
 		<div className={styles.container}>
@@ -187,16 +186,16 @@ const CalendarView = () => {
 				</div>
 				{showSideMonth && (
 					<div className={styles.sidePanel} ref={sidePanelRef}>
-						<MonthSideView
-							day={clickedDate}
-							onClose={handleCloseSideMonth}
-						/>
+						<MonthSideView day={clickedDate} onClose={handleCloseSideMonth} />
 					</div>
 				)}
 
 				{showDetail && clickedEventId !== undefined && (
-					<div className={`${styles.sidePanel} ${styles.detailPanel}`} ref={sidePanelRef}>
-						<DetailView eventId={clickedEventId}/>
+					<div
+						className={`${styles.sidePanel} ${styles.detailPanel}`}
+						ref={sidePanelRef}
+					>
+						<DetailView eventId={clickedEventId} />
 					</div>
 				)}
 			</div>

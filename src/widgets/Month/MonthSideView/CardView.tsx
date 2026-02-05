@@ -6,9 +6,7 @@ import { getDDay } from "@calendarUtil/getDday";
 import { CATEGORY_COLORS, CATEGORY_LIST } from "@constants";
 import type { Event } from "@types";
 
-const CardView = ({ event }: { 
-	event: Event; 
-}) => {
+const CardView = ({ event }: { event: Event }) => {
 	const [isBookmarked, setIsBookmarked] = useState<boolean>(
 		event.isBookmarked || false,
 	);

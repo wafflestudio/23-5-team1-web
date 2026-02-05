@@ -43,7 +43,7 @@ const MonthSideView = ({
 	const handleDetailClick = (id: number) => {
 		setShowDetail(true);
 		setClickedEventId(id);
-	}
+	};
 
 	return (
 		<div className={styles.mainWrapper}>

@@ -1,230 +1,230 @@
 .memoContent {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: 10px;
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	gap: 10px;
 
-  margin-top: auto;
-  padding: 12px 12px 14px;
+	margin-top: auto;
+	padding: 12px 12px 14px;
 
-  border-radius: 14px;
-  background: #ffffff;
+	border-radius: 14px;
+	background: #ffffff;
 
-  color: #333333;
+	color: #333333;
 }
 
 .memoContent.active {
-  border: 1px solid #d9d9d9;
+	border: 1px solid #d9d9d9;
 }
 
 .memoHeader {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+	display: flex;
+	align-items: center;
+	gap: 10px;
 }
 
 .memoIconBtn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
 
-  width: 24px;
-  height: 24px;
-  border-radius: 8px;
+	width: 24px;
+	height: 24px;
+	border-radius: 8px;
 
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 0;
+	background: transparent;
+	border: none;
+	cursor: pointer;
+	padding: 0;
 }
 
 .memoIconBtn:hover {
-  background: #f6f6f6;
+	background: #f6f6f6;
 }
 
 .memoTriggerText {
-  background: transparent;
-  border: none;
-  padding: 0;
-  cursor: pointer;
+	background: transparent;
+	border: none;
+	padding: 0;
+	cursor: pointer;
 
-  color: #6b6b6b;
-  font-size: 13px;
-  font-weight: 500;
+	color: #6b6b6b;
+	font-size: 13px;
+	font-weight: 500;
 }
 
 .memoSaveBtn {
-  margin-left: auto;
+	margin-left: auto;
 
-  background: transparent;
-  border: none;
-  padding: 0;
-  cursor: pointer;
+	background: transparent;
+	border: none;
+	padding: 0;
+	cursor: pointer;
 
-  color: #737373;
-  font-size: 14px;
-  font-weight: 600;
-  white-space: nowrap;
+	color: #737373;
+	font-size: 14px;
+	font-weight: 600;
+	white-space: nowrap;
 }
 
 .memoSaveBtn:disabled {
-  cursor: default;
-  opacity: 0.6;
+	cursor: default;
+	opacity: 0.6;
 }
 
 .memoBody {
-  width: 100%;
+	width: 100%;
 }
 
 .memoInput {
-  width: 100%;
-  box-sizing: border-box;
+	width: 100%;
+	box-sizing: border-box;
 
-  border: 1px solid #d0d0d0;
-  border-radius: 12px;
-  padding: 10px 12px;
+	border: 1px solid #d0d0d0;
+	border-radius: 12px;
+	padding: 10px 12px;
 
-  font-size: 14px;
-  line-height: 1.5;
-  color: #111111;
-  outline: none;
+	font-size: 14px;
+	line-height: 1.5;
+	color: #111111;
+	outline: none;
 
-  background: #ffffff;
+	background: #ffffff;
 }
 
 .memoInput::placeholder {
-  color: #b0b0b0;
+	color: #b0b0b0;
 }
 
 .memoInput:focus {
-  border-color: #9a9a9a;
+	border-color: #9a9a9a;
 }
 
 .memoInput:disabled {
-  background: #fafafa;
-  color: #777777;
+	background: #fafafa;
+	color: #777777;
 }
 
 /* textarea 전용 보정 */
 textarea.memoInput {
-  resize: none;
-  min-height: 92px;
+	resize: none;
+	min-height: 92px;
 }
 
 /* ---- Tag Section ---- */
 
 .tagSection {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
 }
 
 .tagRow {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+	display: flex;
+	align-items: center;
+	gap: 8px;
 }
 
 .tagInput {
-  flex: 1;
-  box-sizing: border-box;
+	flex: 1;
+	box-sizing: border-box;
 
-  border: 1px solid #d0d0d0;
-  border-radius: 12px;
-  padding: 10px 12px;
+	border: 1px solid #d0d0d0;
+	border-radius: 12px;
+	padding: 10px 12px;
 
-  font-size: 14px;
-  line-height: 1.4;
-  outline: none;
+	font-size: 14px;
+	line-height: 1.4;
+	outline: none;
 }
 
 .tagInput::placeholder {
-  color: #6b6b6b;
+	color: #6b6b6b;
 }
 
 .tagInput:focus {
-  border-color: #9a9a9a;
+	border-color: #9a9a9a;
 }
 
 .tagAddBtn {
-  border: 1px solid #d0d0d0;
-  border-radius: 12px;
-  padding: 10px 12px;
+	border: 1px solid #d0d0d0;
+	border-radius: 12px;
+	padding: 10px 12px;
 
-  font-size: 13px;
-  font-weight: 500;
-  background: #ffffff;
-  cursor: pointer;
-  white-space: nowrap;
+	font-size: 13px;
+	font-weight: 500;
+	background: #ffffff;
+	cursor: pointer;
+	white-space: nowrap;
 }
 
 .tagAddBtn:hover:not(:disabled) {
-  background: #f7f7f7;
+	background: #f7f7f7;
 }
 
 .tagAddBtn:disabled {
-  cursor: default;
-  opacity: 0.8;
+	cursor: default;
+	opacity: 0.8;
 }
 
 /* chips */
 .tagChips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
 }
 
 .tagChip {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
 
-  padding: 7px 10px;
-  border-radius: 999px;
-  border: 1px solid #e9e9e9;
-  background: #eeeeee;
+	padding: 7px 10px;
+	border-radius: 999px;
+	border: 1px solid #e9e9e9;
+	background: #eeeeee;
 
-  font-size: 13px;
-  font-weight: 500;
-  color: #333333;
+	font-size: 13px;
+	font-weight: 500;
+	color: #333333;
 }
 
 .tagChipText {
-  line-height: 1;
+	line-height: 1;
 }
 
 .tagChipRemove {
-  border: none;
-  background: transparent;
-  cursor: pointer;
+	border: none;
+	background: transparent;
+	cursor: pointer;
 
-  width: 18px;
-  height: 18px;
-  border-radius: 6px;
+	width: 18px;
+	height: 18px;
+	border-radius: 6px;
 
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
 
-  color: #777777;
-  font-size: 14px;
-  line-height: 1;
-  padding: 0;
+	color: #777777;
+	font-size: 14px;
+	line-height: 1;
+	padding: 0;
 }
 
 .tagChipRemove:hover {
-  background: #eeeeee;
+	background: #eeeeee;
 }
 
 /* helper / error */
 .helperText {
-  font-size: 12px;
-  font-weight: 500;
-  color: #8a8a8a;
+	font-size: 12px;
+	font-weight: 500;
+	color: #8a8a8a;
 }
 
 .errorText {
-  margin-top: 2px;
-  font-size: 12px;
-  color: #dc3c3c;
+	margin-top: 2px;
+	font-size: 12px;
+	color: #dc3c3c;
 }

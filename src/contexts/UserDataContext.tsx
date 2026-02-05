@@ -20,7 +20,11 @@ interface UserDataContextType {
 	deleteExcludedKeyword: (id: number) => Promise<void>;
 	toggleBookmark: (event: Event) => Promise<void>;
 	getMemoByTag: (tagId: number) => Promise<Memo[]>;
-	addMemo: (eventId: number, content: string, tagNames: string[]) => Promise<void>;
+	addMemo: (
+		eventId: number,
+		content: string,
+		tagNames: string[],
+	) => Promise<void>;
 	deleteMemo: (id: number) => Promise<void>;
 	editMemoContent: (id: number, content: string) => Promise<Memo | null>;
 	editMemoTag: (id: number, tags: string[]) => Promise<Memo | null>;
@@ -43,12 +47,13 @@ export const UserDataProvider = ({ children }: { children: ReactNode }) => {
 		if (!isAuthenticated) return;
 		try {
 			// Parallel fetch
-			const [excludedData, bookmarksData, interestsData, memoData] = await Promise.all([
-				userService.getExcludedKeywords(),
-				userService.getBookmarks(1), // Fetch first page/all
-				userService.getInterestCategories(),
-				userService.getMemos(),
-			]);
+			const [excludedData, bookmarksData, interestsData, memoData] =
+				await Promise.all([
+					userService.getExcludedKeywords(),
+					userService.getBookmarks(1), // Fetch first page/all
+					userService.getInterestCategories(),
+					userService.getMemos(),
+				]);
 			setExcludedKeywords(excludedData);
 			setBookmarkedEvents(bookmarksData);
 			setInterestCategories(interestsData);
@@ -126,7 +131,7 @@ export const UserDataProvider = ({ children }: { children: ReactNode }) => {
 			console.error("error in getting memos by Tag", error);
 			return [];
 		}
-	}
+	};
 
 	const addMemo = async (eventId: number, content: string, tags: string[]) => {
 		try {
@@ -147,31 +152,31 @@ export const UserDataProvider = ({ children }: { children: ReactNode }) => {
 		} catch (error) {
 			console.error("error in deleting memos", error);
 		}
-	}
+	};
 
 	const editMemoContent = async (id: number, content: string) => {
 		try {
 			const newMemo: Memo = await userService.editMemoContent(id, content);
-			const updatedMemos: Memo[] = await userService.getMemos()
+			const updatedMemos: Memo[] = await userService.getMemos();
 			setEventMemos(updatedMemos);
 			return newMemo;
 		} catch (error) {
 			console.error("error in editing memo content", error);
 			return null;
 		}
-	}
+	};
 
 	const editMemoTag = async (id: number, tagNames: string[]) => {
 		try {
 			const newMemo: Memo = await userService.editMemoTags(id, tagNames);
-			const updatedMemos: Memo[] = await userService.getMemos()
+			const updatedMemos: Memo[] = await userService.getMemos();
 			setEventMemos(updatedMemos);
 			return newMemo;
 		} catch (error) {
 			console.error("error in editing memo tag list", error);
 			return null;
 		}
-	}
+	};
 
 	return (
 		<UserDataContext.Provider
