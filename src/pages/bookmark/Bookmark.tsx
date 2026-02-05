@@ -41,6 +41,7 @@ const BookmarksPage = () => {
 
     return (
         <main>
+            <div className={styles.container}>
             <div className={styles.bookmarksPage}>
                 <Navigationbar />
                 <div className={styles.bookmarksHeader}>
@@ -66,13 +67,14 @@ const BookmarksPage = () => {
                     ))}
                 </div>
                 {(!bookmarkedEvents || bookmarkedEvents.length===0) && <span className={styles.noneText}>{`아직 찜된 행사가 없습니다.\n관심있는 행사를 찜해보세요!`}</span>}
-            </div>
-                {showDetail && clickedEventId !== undefined && (
-                    <div className={styles.sidePanel}>
-                        <DetailView eventId={clickedEventId} onClose={()=> setShowDetail(false)} />
-                    </div>
-                )}
-        </main>
+            </div>             
+            {showDetail && clickedEventId !== undefined && (
+                <div className={styles.sidePanel}>
+                    <DetailView eventId={clickedEventId} onClose={()=> setShowDetail(false)} />
+                </div>
+            )}
+        </div>
+    </main>
     )
 };
 
