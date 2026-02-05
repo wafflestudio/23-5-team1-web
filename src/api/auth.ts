@@ -1,4 +1,3 @@
-import axios from "axios";
 import type {
 	AuthTokens,
 	Provider,
@@ -29,7 +28,7 @@ export const uploadProfileImg = async (file: File) => {
 	const fd = new FormData();
 	fd.append("file", file);
 
-	const { data } = await axios.post<{ url: string }>(
+	const { data } = await api.post<{ url: string }>(
 		"/users/me/profile-image",
 		fd,
 	);
