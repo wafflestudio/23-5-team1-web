@@ -120,7 +120,7 @@ export const TimeTableSidebar = ({
 										value={newName}
 										onChange={(e) => setNewName(e.target.value)}
 										onKeyDown={(e) => {
-											if (e.key === "Enter") {
+											if (e.key === "Enter" && !e.nativeEvent.isComposing) {
 												onRename(tt.id, { name: newName });
 											}
 											if (e.key === "Escape") {

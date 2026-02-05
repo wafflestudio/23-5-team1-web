@@ -47,7 +47,7 @@ const SearchToolbar = ({ viewMode, setViewMode }: SearchToolbarProps) => {
 							value={queryState}
 							onChange={(e) => setQueryState(e.currentTarget.value)}
 							onKeyDown={(e) => {
-								if (e.key === "Enter") setQuery(queryState);
+								if (e.key === "Enter" && !e.nativeEvent.isComposing) setQuery(queryState);
 							}}
 						/>
 						{queryState && (
