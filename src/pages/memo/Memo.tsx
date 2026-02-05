@@ -6,6 +6,8 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 import Navigationbar from "@/widgets/Navigationbar";
 import { useNavigate } from "react-router-dom";
 import MemoPageCard from "./MemoPageCard";
+import { useState } from "react";
+import Modal from "@/widgets/Modal";
 
 const MemoWidgetCard = ({ memo }: { memo: Memo }) => {
     return (
@@ -14,7 +16,7 @@ const MemoWidgetCard = ({ memo }: { memo: Memo }) => {
             <span className={styles.memoTitle}>{memo.eventTitle}</span>
             <span className={styles.memoDate}>{formatDateDotParsed(memo.createdAt)}</span>
             <ul className={styles.chips}>
-                {memo.tags.map(t => <li key={t.id} className={styles.chip}>{t.content}</li>)}
+                {memo.tags.map(t => <li key={t.id} className={styles.chip}>{t.name}</li>)}
             </ul>
         </div>
     )
@@ -44,8 +46,14 @@ export const MemoWidget = () => {
 };
 
 const MemoPage = () => {
-    const { eventMemos } = useUserData();
+    const { eventMemos, deleteMemo } = useUserData();
+    const [deletingMemoId, setDeletingMemoId] = useState<number | null>(null);
     const navigate = useNavigate();
+
+    const handleDelete = async () => {
+        if (deletingMemoId) await deleteMemo(deletingMemoId)
+        setDeletingMemoId(null);
+    }
 
     return (
         <main>
@@ -60,13 +68,27 @@ const MemoPage = () => {
                 </div>
                 <div className={styles.cardsColumn}>
                     {eventMemos.map((m: Memo) => (
-                        <MemoPageCard memo={m} key={m.id} />
+                        <MemoPageCard memo={m} onDelete={setDeletingMemoId} key={m.id} />
                     ))}
                 </div>
                 {(!eventMemos || eventMemos.length===0) && <span className={styles.noneText}>{`아직 메모가 없습니다.\n다녀온 행사나 관심있는 행사에 대한 메모를 작성해보세요!`}</span>}
             </div>
+                    {deletingMemoId &&
+                <Modal
+                    content="메모를 정말로 삭제하시겠습니까?"
+            
+                    leftText="삭제"
+                    onLeftClick={handleDelete}
+            
+                    rightText="취소"
+                    onRightClick={()=>setDeletingMemoId(null)}
+
+                    onClose={()=>setDeletingMemoId(null)}
+                />
+            }
         </main>
-    )
+
+    );
 }
 
 export default MemoPage;

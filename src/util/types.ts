@@ -111,7 +111,7 @@ export interface InterestCategories {
 
 export interface MemoTag {
 	id: number;
-	content: string;
+	name: string;
 }
 
 export interface Memo {

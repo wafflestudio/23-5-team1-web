@@ -77,6 +77,7 @@ body {
   overflow: hidden;
   padding: 0;
   margin: 0;
+  position: relative;
 }
 
 main {
@@ -154,10 +155,9 @@ main {
 }
 
 .cardsColumn {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   width: 80%;
-  grid-template-columns: 1fr 1fr;
-  /* grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); */
   gap: 40px 45px;
   padding: 30px 0 60px 0;
   overflow-y: auto;
