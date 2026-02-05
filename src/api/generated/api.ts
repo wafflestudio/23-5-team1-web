@@ -395,7 +395,7 @@ export interface ApiConfig<SecurityDataType = unknown> {
 	baseApiParams?: Omit<RequestParams, "baseUrl" | "cancelToken" | "signal">;
 	securityWorker?: (
 		securityData: SecurityDataType | null,
-	) => Promise<RequestParams | void> | RequestParams | void;
+	) => Promise<RequestParams | undefined> | RequestParams | void;
 	customFetch?: typeof fetch;
 }
 
@@ -414,7 +414,7 @@ export enum ContentType {
 	Text = "text/plain",
 }
 
-export class HttpClient<SecurityDataType = unknown> {
+class HttpClient<SecurityDataType = unknown> {
 	public baseUrl: string = "/";
 	private securityData: SecurityDataType | null = null;
 	private securityWorker?: ApiConfig<SecurityDataType>["securityWorker"];
@@ -515,7 +515,7 @@ export class HttpClient<SecurityDataType = unknown> {
 			headers: {
 				...(this.baseApiParams.headers || {}),
 				...(params1.headers || {}),
-				...((params2 && params2.headers) || {}),
+				...(params2?.headers || {}),
 			},
 		};
 	}
@@ -624,7 +624,7 @@ export class HttpClient<SecurityDataType = unknown> {
  *
  * 학내 행사 캘린더 서비스 API 명세서
  */
-export class Api<SecurityDataType> extends HttpClient<SecurityDataType> {
+class Api<SecurityDataType> extends HttpClient<SecurityDataType> {
 	api = {
 		/**
 		 * No description

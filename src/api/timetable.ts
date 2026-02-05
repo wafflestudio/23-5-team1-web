@@ -153,6 +153,7 @@ export const deleteCourse = async (
 	await api.delete(`/timetables/${timetableId}/enrolls/${enrollId}`);
 };
 
+/*
 export const getTimetableCourse = async (
 	timetableId: number,
 	enrollId: number,
@@ -162,7 +163,7 @@ export const getTimetableCourse = async (
 	);
 	return toGetCoursesResponse(res.data);
 };
-
+*/
 export const getTimetableCourses = async (
 	timetableId: number,
 ): Promise<GetCoursesResponse[]> => {

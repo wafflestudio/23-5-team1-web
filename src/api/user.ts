@@ -60,9 +60,11 @@ export const addInterestCategories = async (
 	return api.put("/users/me/interest-categories", { items });
 };
 
+/*
 export const removeInterestCategory = async (categoryId: number) => {
 	await api.delete(`/users/me/interest-categories/${categoryId}`);
 };
+*/
 
 // --- Memos ---
 interface MemoDTO {
