@@ -23,7 +23,7 @@ interface UserDataContextType {
 	addMemo: (eventId: number, content: string, tagNames: string[]) => Promise<void>;
 	deleteMemo: (id: number) => Promise<void>;
 	editMemoContent: (id: number, content: string) => Promise<Memo | null>;
-	editMemoTag: (id: number, tagNames: string[]) => Promise<Memo | null>;
+	editMemoTag: (id: number, tags: string[]) => Promise<Memo | null>;
 }
 
 const UserDataContext = createContext<UserDataContextType | undefined>(

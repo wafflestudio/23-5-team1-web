@@ -1,0 +1,180 @@
+import { addBookmark, removeBookmark } from "@api/user";
+import { useEvents } from "@contexts/EventContext";
+import { useEffect, useRef, useState } from "react";
+import styles from "@styles/DetailView.module.css";
+import { formatDateDotParsed } from "@calendarUtil/dateFormatter";
+import { getDDay } from "../../util/Calendar/getDday";
+import { CATEGORY_COLORS, CATEGORY_LIST } from "@constants";
+import { FaAnglesRight } from "react-icons/fa6";
+import type { EventDetail } from "@types";
+import DOMPurify from "isomorphic-dompurify";
+import parse from "html-react-parser";
+
+import { useDetail } from "@/contexts/DetailContext";
+import DetailMemo from "./DetailMemo";
+
+const DetailView = ({
+	eventId,
+}: {
+	eventId: number;
+}) => {
+	const [event, setEvent] = useState<EventDetail>();
+	const { fetchEventById } = useEvents();
+	const { setShowDetail } = useDetail();
+	
+	// for scrolling to top on re-render
+	const scrollRef = useRef<HTMLDivElement>(null);
+
+	const [isMemoExpanded, setIsMemoExpanded] = useState<boolean>(false);
+	const memoWrapperRef = useRef<HTMLDivElement>(null);
+
+	// detect outside clicks
+	useEffect(() => {
+		function handleClickOutside(event: MouseEvent) {
+			if (!memoWrapperRef.current) return;
+
+			const isInside = memoWrapperRef.current.contains(event.target as Node);
+
+			if (isInside) {
+				setIsMemoExpanded(true);
+			} else {
+				setIsMemoExpanded(false);
+			}
+		}
+    
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+	    };
+	}, []);
+
+	// load events
+	useEffect(() => {
+		const loadEvent = async () => {
+			const event = await fetchEventById(eventId);
+			setEvent(event ?? undefined);
+		};
+		loadEvent();
+		// scroll to top of component
+		if (scrollRef.current) {
+			scrollRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+		}
+	}, [eventId, fetchEventById]);
+
+	// 디데이 계산할 기준 날짜
+	const ddayTargetDate = event
+		? event.eventStart
+			? event.eventStart
+			: event.applyEnd
+		: undefined;
+	const [isBookmarked, setIsBookmarked] = useState<boolean>(
+		!!event?.isBookmarked,
+	);
+
+	useEffect(() => {
+		if (event) {
+			setIsBookmarked(event.isBookmarked ? event.isBookmarked : false);
+		}
+	}, [event]);
+
+	if (!event) return null;
+
+	const handleToggleBookmark = async () => {
+		const previousState = isBookmarked;
+
+		// optimistic update
+		setIsBookmarked(!previousState);
+
+		try {
+			if (previousState) {
+				await removeBookmark(event.id);
+			} else {
+				await addBookmark(event.id);
+			}
+		} catch (e) {
+			console.error("Failed to toggle bookmark", e);
+			setIsBookmarked(previousState);
+		}
+	};
+
+
+
+
+	return (
+		<div className={styles.container} ref={scrollRef}>
+			<button type="button" className={styles.foldBtn}>
+				<FaAnglesRight
+					width={18}
+					height={18}
+					color="rgba(171, 171, 171, 1)"
+					onClick={()=>setShowDetail(false)}
+				/>
+			</button>
+
+			<img
+				className={styles.thumbnail}
+				src={event.imageUrl}
+				alt="thumbnail of event"
+			/>
+			<button
+				className={styles.bookmarkBtn}
+				type="button"
+				onClick={handleToggleBookmark}
+			>
+				<img
+					src={
+						isBookmarked
+							? "/assets/Bookmarked.svg"
+							: "/assets/notBookmarked.svg"
+					}
+					alt={isBookmarked ? "Remove bookmark" : "Add bookmark"}
+				/>
+			</button>
+			<h1 className={styles.title}>{event.title}</h1>
+			<span className={styles.date}>
+				{
+					// !event.eventStart : 기간제 행사, yyyy.mm.dd ~ yyyy.mm.dd로 표시
+					event.eventStart && event.eventEnd
+						? // 단발성 행사
+							event.eventStart === event.eventEnd
+							? // yyyy.mm.dd만 표시
+								formatDateDotParsed(event.eventStart)
+							: // yyyy.mm.dd ~ yyyy.mm.dd
+								`${formatDateDotParsed(event.eventStart)} ~ ${formatDateDotParsed(event.eventEnd)}`
+						: // 기간제 행사
+							`${formatDateDotParsed(event.applyStart)} ~ ${formatDateDotParsed(event.applyEnd)}`
+				}
+			</span>
+			<ul className={styles.chipsList}>
+				<li className={styles.deadlineChip}>{getDDay(ddayTargetDate)}</li>
+				<li
+					className={styles.categoryChip}
+					style={{
+						backgroundColor: CATEGORY_COLORS[event.eventTypeId],
+					}}
+				>
+					{CATEGORY_LIST[event.eventTypeId]}
+				</li>
+			</ul>
+			<span className={styles.orgText}>{event.organization}</span>
+			<button
+				type="button"
+				className={styles.applyBtn}
+				onClick={() => window.open(event.applyLink, "_blank")}
+			>
+				지원 링크로 이동하기
+			</button>
+			<div className={`${styles.contentText} html-viewer`}>
+				<hr style={{ borderWidth: "0.5px" }} />
+				{parse(DOMPurify.sanitize(event.detail))}
+			</div>
+
+			{/* ----- Memo & Tag Section ----- */}
+			<div ref={memoWrapperRef}>
+			<DetailMemo eventId={eventId} isMemoExpanded={isMemoExpanded} setIsMemoExpanded={setIsMemoExpanded} />
+			</div>
+		</div>
+	);
+};
+
+export default DetailView;
