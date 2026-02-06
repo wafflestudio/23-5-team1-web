@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import defaultProfile from "/assets/defaultProfile.png";
 import { updateUser } from "@api/auth";
-import styles from "./ProfileSetting.module.css";
+import styles from "@styles/ProfileSetting.module.css";
 
 export default function ProfileSetting() {
 	const name = useRef<HTMLInputElement>(null);
