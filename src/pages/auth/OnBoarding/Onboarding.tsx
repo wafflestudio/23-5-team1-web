@@ -3,29 +3,10 @@ import { useSearchParams } from "react-router-dom";
 import { getCategoryGroups, getOrganizations } from "@api/event";
 import { addInterestCategories } from "@api/user";
 import type { Category } from "@types";
+import styles from "@styles/Onboarding.module.css";
 
 export default function Onboarding() {
 	const [, setSearchParams] = useSearchParams();
-
-	const handleSubmit = async () => {
-		try {
-			const items = selectedPreferences.map((p, index) => ({
-				categoryId: p.id,
-				priority: index + 1,
-			}));
-
-			await addInterestCategories(items);
-
-			setSearchParams((prev) => {
-				const next = new URLSearchParams(prev);
-				next.set("step", "complete");
-				return next;
-			});
-		} catch (e) {
-			console.error(e);
-			alert("저장에 실패했습니다. 잠시 후 다시 시도해주세요.");
-		}
-	};
 
 	const [categories, setCategories] = useState<Category[]>([]);
 	const [selectedPreferences, setSelectedPreferences] = useState<Category[]>(
@@ -74,66 +55,129 @@ export default function Onboarding() {
 			return [...prev, pref];
 		});
 	};
+
+	const handleSubmit = async () => {
+		try {
+			const items = selectedPreferences.map((p, index) => ({
+				categoryId: p.id,
+				priority: index + 1,
+			}));
+
+			await addInterestCategories(items);
+
+			setSearchParams((prev) => {
+				const next = new URLSearchParams(prev);
+				next.set("step", "complete");
+				return next;
+			});
+		} catch (e) {
+			console.error(e);
+			alert("저장에 실패했습니다. 잠시 후 다시 시도해주세요.");
+		}
+	};
+
 	return (
-		<div className="onb-page">
-			<div>
-				<h1>관심사 설정</h1>
-				<p>먼저 보고 싶은 행사의 카테고리 또는 주체기관을 선택해주세요.</p>
+		<div className={styles.onbPage}>
+			<header className={styles.onbHeader}>
+				<h1 className={styles.onbTitle}>관심사 설정</h1>
+				<p className={styles.onbSubtitle}>
+					먼저 보고 싶은 행사의 카테고리 또는 주체기관을 선택해주세요.
+				</p>
+			</header>
+
+			<div className={styles.onbSelectedWrap}>
+				{selectedPreferences.map((preference, index) => (
+					<span
+						key={`${preference.groupId}-${preference.id}`}
+						className={styles.onbRankPill}
+					>
+						<span className={styles.onbRankLabel}>{index + 1}순위:</span>
+						<span>{preference.name}</span>
+					</span>
+				))}
 			</div>
 
-			<div>
-				{selectedPreferences.map((preference) => {
-					return <span key={preference.id}>{preference.name}</span>;
-				})}
-			</div>
+			<main className={styles.onbSections}>
+				<section className={styles.onbSection}>
+					<h2
+						className={`${styles.onbSectionTitle} ${styles.onbSectionTitleCategory}`}
+					>
+						카테고리
+					</h2>
 
-			<section>
-				<h2>카테고리</h2>
-				<div>
-					{categories.map((category) => {
-						const checked = selectedPreferences.some(
-							(p) => p.id === category.id,
-						);
-						const id = `category-${category.id}`;
+					<div className={styles.onbOptions}>
+						{categories.map((category) => {
+							const checked = selectedPreferences.some(
+								(p) => p.id === category.id,
+							);
+							const id = `category-${category.id}`;
 
-						return (
-							<div key={category.id}>
-								<input
-									type="checkbox"
-									id={id}
-									checked={checked}
-									onChange={() => togglePreference(category)}
-								/>
-								<label htmlFor={id}>{category.name}</label>
-							</div>
-						);
-					})}
+							return (
+								<div key={category.id} className={styles.onbOption}>
+									<input
+										className={styles.onbCheckbox}
+										type="checkbox"
+										id={id}
+										checked={checked}
+										onChange={() => togglePreference(category)}
+									/>
+									<label
+										className={`${styles.onbPill} ${styles.onbPillCategory}`}
+										htmlFor={id}
+									>
+										{category.name}
+									</label>
+								</div>
+							);
+						})}
+					</div>
+				</section>
+
+				<section className={styles.onbSection}>
+					<h2
+						className={`${styles.onbSectionTitle} ${styles.onbSectionTitleOrg}`}
+					>
+						주최기관
+					</h2>
+
+					<div className={styles.onbOptions}>
+						{organizations?.map((org) => {
+							const checked = selectedPreferences.some((p) => p.id === org.id);
+							const id = `organization-${org.id}`;
+
+							return (
+								<div key={org.id} className={styles.onbOption}>
+									<input
+										className={styles.onbCheckbox}
+										type="checkbox"
+										id={id}
+										checked={checked}
+										onChange={() => togglePreference(org)}
+									/>
+									<label
+										className={`${styles.onbPill} ${styles.onbPillOrg}`}
+										htmlFor={id}
+									>
+										{org.name}
+									</label>
+								</div>
+							);
+						})}
+
+						{!organizations && <div>로딩 중..</div>}
+					</div>
+				</section>
+
+				<div className={styles.onbActions}>
+					<button
+						className={styles.onbSubmit}
+						type="button"
+						onClick={handleSubmit}
+					>
+						완료
+					</button>
 				</div>
-			</section>
-			<section>
-				<h2>주최 기관</h2>
-				<div>
-					{organizations?.map((org) => {
-						const checked = selectedPreferences.some((p) => p.id === org.id);
-						const id = `organization-${org.id}`;
-						return (
-							<div key={org.id}>
-								<input
-									type="checkbox"
-									id={id}
-									checked={checked}
-									onChange={() => togglePreference(org)}
-								/>
-								<label htmlFor={id}>{org.name}</label>
-							</div>
-						);
-					})}
-					{!organizations && <div>로딩 중..</div>}
-				</div>
-			</section>
-			<button type="button" onClick={handleSubmit}>
-				완료
-			</button>
+			</main>
 		</div>
 	);
 }

@@ -1,7 +1,7 @@
 // Home.tsx
 import { useNavigate } from "react-router-dom";
 import logo from "/assets/logo.png";
-import styles from "./Home.module.css";
+import styles from "@styles/Home.module.css";
 
 const {
 	VITE_KAKAO_REST_API_KEY,
