@@ -1,5 +1,5 @@
 import { useMemo, useCallback } from "react";
-import type { PeriodEvent, Event } from "@/util/types";
+import type { Event, CalendarEvent } from "@/util/types";
 import { clampDate, dayIndexFromWeekStart } from "@/util/weekly_timetable/time";
 import styles from "@styles/PeriodBar.module.css";
 import { CATEGORY_COLORS } from "@/util/constants";
@@ -7,7 +7,7 @@ import type { CSSProperties } from "react";
 
 type Props = {
 	date: Date;
-	items: PeriodEvent[];
+	items: CalendarEvent[];
 	left: number;
 	width: number;
 	laneHeight?: number;
@@ -21,7 +21,7 @@ type Bar = {
 	title: string;
 	startIdx: number;
 	endIdx: number;
-	raw: PeriodEvent;
+	raw: CalendarEvent;
 };
 
 type CSSVarStyle = CSSProperties & {
@@ -91,10 +91,9 @@ export function PeriodBars({
 
 	const barsWithLane = useMemo(() => {
 		const bars: Bar[] = (items ?? [])
-			.filter((ev) => ev?.applyStart && ev?.applyEnd)
 			.map((ev) => {
-				const start = ev.applyStart;
-				const end = ev.applyEnd;
+				const start = ev.start;
+				const end = ev.end;
 
 				const showLeftArrow = start.getTime() >= weekStart.getTime();
 				const showRightArrow = end.getTime() <= weekEnd.getTime();
@@ -106,7 +105,7 @@ export function PeriodBars({
 				const endIdx = dayIndexFromWeekStart(weekStart, clampedEnd);
 
 				return {
-					id: ev.id,
+					id: ev.resource.event.id,
 					title: ev.title,
 					startIdx,
 					endIdx,
@@ -125,8 +124,8 @@ export function PeriodBars({
 	}, [barsWithLane]);
 
 	const handleClick = useCallback(
-		(ev: PeriodEvent) => {
-			onSelectEvent?.(ev);
+		(ev: CalendarEvent) => {
+			onSelectEvent?.(ev.resource.event);
 		},
 		[onSelectEvent],
 	);
@@ -150,7 +149,7 @@ export function PeriodBars({
 
 				const displayTitle = truncate20(b.title);
 
-				const categoryId = b.raw.eventTypeId;
+				const categoryId = b.raw.resource.event.orgId;
 				const color = CATEGORY_COLORS[categoryId] ?? "#999";
 
 				const style: CSSVarStyle = {
