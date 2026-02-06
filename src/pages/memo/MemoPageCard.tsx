@@ -64,7 +64,9 @@ const MemoPageCard = ({
 	const handleSave = () => {
 		setEditMode(false);
 		// if tags are changed
-		if (tagNames !== memo.tags.map((m) => m.name)) {
+		const originalTagNames = memo.tags.map((m) => m.name).slice().sort();
+		const updatedTagNames = [...tagNames].sort();
+		if (JSON.stringify(updatedTagNames) !== JSON.stringify(originalTagNames)) {
 			editMemoTag(memo.id, tagNames);
 		}
 		// if contents are changed
