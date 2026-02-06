@@ -121,8 +121,12 @@
 	white-space: nowrap;
 	user-select: none;
 	cursor: pointer;
-	transition: transform 120ms ease, filter 120ms ease, background 120ms ease,
-		color 120ms ease, box-shadow 120ms ease;
+	transition:
+		transform 120ms ease,
+		filter 120ms ease,
+		background 120ms ease,
+		color 120ms ease,
+		box-shadow 120ms ease;
 	box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
 }
 
@@ -175,7 +179,9 @@
 	background: #16b7ff;
 	color: #fff;
 	box-shadow: 0 10px 18px rgba(22, 183, 255, 0.25);
-	transition: transform 120ms ease, filter 120ms ease;
+	transition:
+		transform 120ms ease,
+		filter 120ms ease;
 }
 
 .onbSubmit:hover {

@@ -15,7 +15,6 @@ import type {
 
 /** ---------- Mapper (DTO <-> Domain) ---------- */
 
-
 interface CreateTimetableRequestDto {
 	/** @minLength 1 */
 	name: string;

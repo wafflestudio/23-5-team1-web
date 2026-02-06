@@ -9,7 +9,9 @@ export default function Onboarding() {
 	const [, setSearchParams] = useSearchParams();
 
 	const [categories, setCategories] = useState<Category[]>([]);
-	const [selectedPreferences, setSelectedPreferences] = useState<Category[]>([]);
+	const [selectedPreferences, setSelectedPreferences] = useState<Category[]>(
+		[],
+	);
 	const [organizations, setOrganizations] = useState<Category[] | null>(null);
 
 	useEffect(() => {
@@ -97,13 +99,17 @@ export default function Onboarding() {
 
 			<main className={styles.onbSections}>
 				<section className={styles.onbSection}>
-					<h2 className={`${styles.onbSectionTitle} ${styles.onbSectionTitleCategory}`}>
+					<h2
+						className={`${styles.onbSectionTitle} ${styles.onbSectionTitleCategory}`}
+					>
 						카테고리
 					</h2>
 
 					<div className={styles.onbOptions}>
 						{categories.map((category) => {
-							const checked = selectedPreferences.some((p) => p.id === category.id);
+							const checked = selectedPreferences.some(
+								(p) => p.id === category.id,
+							);
 							const id = `category-${category.id}`;
 
 							return (
@@ -128,7 +134,9 @@ export default function Onboarding() {
 				</section>
 
 				<section className={styles.onbSection}>
-					<h2 className={`${styles.onbSectionTitle} ${styles.onbSectionTitleOrg}`}>
+					<h2
+						className={`${styles.onbSectionTitle} ${styles.onbSectionTitleOrg}`}
+					>
 						주최기관
 					</h2>
 
@@ -161,7 +169,11 @@ export default function Onboarding() {
 				</section>
 
 				<div className={styles.onbActions}>
-					<button className={styles.onbSubmit} type="button" onClick={handleSubmit}>
+					<button
+						className={styles.onbSubmit}
+						type="button"
+						onClick={handleSubmit}
+					>
 						완료
 					</button>
 				</div>
