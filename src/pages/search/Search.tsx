@@ -139,9 +139,7 @@ const SearchView = () => {
 			</div>
 			{showDetail && clickedEventId !== undefined && (
 				<div className={styles.sidePanel}>
-					<DetailView
-						eventId={clickedEventId}
-					/>
+					<DetailView eventId={clickedEventId} />
 				</div>
 			)}
 		</div>
