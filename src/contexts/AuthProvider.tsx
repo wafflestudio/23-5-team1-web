@@ -39,6 +39,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	 */
 	useEffect(() => {
 		const initAuth = async () => {
+			const hasSessionHint = localStorage.getItem('isLoggedIn') === 'true';
+			
+			if (!hasSessionHint) {
+				setIsLoading(false);
+				return;
+			}
+
 			try {
 				const restoredUser = await auth.refresh();
 
@@ -46,8 +53,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 					setUser(restoredUser);
 					setIsAuthenticated(true);
 				}
-			} catch (e) {
-				console.error(e);
+			} catch {
+				// if refresh cookie doesn't exist handle it silently
+				localStorage.removeItem('isLoggedIn');
 				setUser(null);
 				setIsAuthenticated(false);
 			} finally {
@@ -167,8 +175,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 			await auth.updateUsername(username);
 			if (file) {
 				await auth.uploadProfileImg(file);
-			} else {
-				await auth.clearProfileImg();
 			}
 			const updatedUser = await auth.getUser();
 			setUser(updatedUser);

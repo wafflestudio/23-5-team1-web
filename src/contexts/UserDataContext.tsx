@@ -26,8 +26,10 @@ interface UserDataContextType {
 		tagNames: string[],
 	) => Promise<void>;
 	deleteMemo: (id: number) => Promise<void>;
-	editMemoContent: (id: number, content: string) => Promise<Memo | null>;
-	editMemoTag: (id: number, tags: string[]) => Promise<Memo | null>;
+	updateMemo: (id: number, updates: {
+		content?: string | undefined;
+		tagNames?: string[] | undefined;
+	}) => Promise<Memo | null>
 }
 
 const UserDataContext = createContext<UserDataContextType | undefined>(
@@ -154,29 +156,19 @@ export const UserDataProvider = ({ children }: { children: ReactNode }) => {
 		}
 	};
 
-	const editMemoContent = async (id: number, content: string) => {
+	const updateMemo = async (id: number, updates: { content?: string; tagNames?: string[] }) => {
 		try {
-			const newMemo: Memo = await userService.editMemoContent(id, content);
-			const updatedMemos: Memo[] = await userService.getMemos();
-			setEventMemos(updatedMemos);
-			return newMemo;
-		} catch (error) {
-			console.error("error in editing memo content", error);
-			return null;
-		}
-	};
+			const newMemo: Memo = await userService.editMemo(id, updates);
 
-	const editMemoTag = async (id: number, tagNames: string[]) => {
-		try {
-			const newMemo: Memo = await userService.editMemoTags(id, tagNames);
-			const updatedMemos: Memo[] = await userService.getMemos();
-			setEventMemos(updatedMemos);
+			setEventMemos((prevMemos) => 
+				prevMemos.map((memo) => memo.id === id ? newMemo : memo));
+			
 			return newMemo;
 		} catch (error) {
-			console.error("error in editing memo tag list", error);
-			return null;
-		}
-	};
+        console.error("error in updating memo", error);
+        return null;
+    }
+}
 
 	return (
 		<UserDataContext.Provider
@@ -190,8 +182,7 @@ export const UserDataProvider = ({ children }: { children: ReactNode }) => {
 				getMemoByTag,
 				addMemo,
 				deleteMemo,
-				editMemoContent,
-				editMemoTag,
+				updateMemo,
 				addExcludedKeyword,
 				deleteExcludedKeyword,
 			}}

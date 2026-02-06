@@ -115,19 +115,15 @@ export const deleteMemo = async (id: number) => {
 	await api.delete(`/memos/${id}`);
 };
 
-export const editMemoContent = async (id: number, content: string) => {
-	const newMemoDTO: MemoDTO = await api.patch(`/memos/${id}`, {
-		content,
+export const editMemo = async (
+	id: number,
+	updates: { content?: string | null; tagNames?: string[] },
+) => {
+	const { data: newMemoDTO } = await api.patch<MemoDTO>(`/memos/${id}`, {
+		content: updates.content,
+		tagNames: updates.tagNames,
 	});
-	const newMemo = mapMemoDTO(newMemoDTO);
 
-	return newMemo;
-};
-export const editMemoTags = async (id: number, tagNames: string[]) => {
-	const newMemoDTO: MemoDTO = await api.patch(`/memos/${id}`, {
-		tagNames: tagNames.length === 0 ? null : tagNames,
-	});
 	const newMemo = mapMemoDTO(newMemoDTO);
-
 	return newMemo;
 };

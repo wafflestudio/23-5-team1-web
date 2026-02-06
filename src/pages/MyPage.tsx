@@ -5,13 +5,13 @@ import { BookmarkWidget } from "./bookmark/Bookmark";
 import { MemoWidget } from "./memo/Memo";
 import { useNavigate } from "react-router-dom";
 import { useTimetable } from "@/contexts/TimetableContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { RiPencilFill } from "react-icons/ri";
 import { FaCamera } from "react-icons/fa6";
 import { IoMdDoneAll } from "react-icons/io";
 
 const ProfileCard = () => {
-	const { user, updateUser } = useAuth();
+	const { user, updateUsername, setProfileImg } = useAuth();
 	const { timetables } = useTimetable();
 	const [profilePreviewUrl, setProfilePreviewUrl] = useState<string>(
 		user ? user.profileImageUrl : "/assets/defaultProfile.png",
@@ -38,12 +38,25 @@ const ProfileCard = () => {
 
 	const handleChangesSave = () => {
 		setIsEditmode(false);
-		if (username.trim()) {
-			updateUser(username, imgFile);
-		} else {
-			setUsername(user?.username || "");
-		}
+		// name change
+		if (username.trim() && username !== user?.username) {
+			updateUsername(username);
+		};
+		if (imgFile) {
+			// if file input is null : no changes, don't call functions
+			setProfileImg(imgFile);
+		};
+		setImgFile(null);
 	};
+
+	// profile image preview url cleanup (cleanup callback is executed before next effect / component unmount)
+	useEffect(() => {
+		return () => {
+			if (profilePreviewUrl?.startsWith('blob:')) {
+				URL.revokeObjectURL(profilePreviewUrl);
+			}
+		};
+	}, [profilePreviewUrl])
 
 	return (
 		<div className={styles.profileContainer}>
