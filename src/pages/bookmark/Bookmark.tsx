@@ -45,7 +45,6 @@ const BookmarksPage = () => {
 	const { showDetail, clickedEventId } = useDetail();
 
 	return (
-		<main>
 			<div className={styles.container}>
 				<div className={styles.bookmarksPage}>
 					<Navigationbar />
@@ -78,7 +77,6 @@ const BookmarksPage = () => {
 					</div>
 				)}
 			</div>
-		</main>
 	);
 };
 
