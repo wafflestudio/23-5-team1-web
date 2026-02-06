@@ -39,13 +39,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	 */
 	useEffect(() => {
 		const initAuth = async () => {
-			const hasSessionHint = localStorage.getItem('isLoggedIn') === 'true';
-			
-			if (!hasSessionHint) {
-				setIsLoading(false);
-				return;
-			}
-
 			try {
 				const restoredUser = await auth.refresh();
 
@@ -53,9 +46,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 					setUser(restoredUser);
 					setIsAuthenticated(true);
 				}
-			} catch {
-				// if refresh cookie doesn't exist handle it silently
-				localStorage.removeItem('isLoggedIn');
+			} catch (e) {
+				console.error(e);
 				setUser(null);
 				setIsAuthenticated(false);
 			} finally {
@@ -76,7 +68,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 			setUser(userData);
 			setIsAuthenticated(true);
-			localStorage.setItem('isLoggedIn', 'true');
 		} catch (err) {
 			console.error("Login failed:", err);
 			throw err;
@@ -96,7 +87,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 			const userData = await auth.getUser();
 			setUser(userData);
 			setIsAuthenticated(true);
-			localStorage.setItem('isLoggedIn', 'true');
 		} catch (err) {
 			console.error("Social Login failed:", err);
 			throw err;
@@ -177,7 +167,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 			await auth.updateUsername(username);
 			if (file) {
 				await auth.uploadProfileImg(file);
-			}
+			} 
 			const updatedUser = await auth.getUser();
 			setUser(updatedUser);
 		} catch (error) {

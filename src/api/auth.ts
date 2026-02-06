@@ -28,7 +28,12 @@ export const uploadProfileImg = async (file: File) => {
 	const fd = new FormData();
 	fd.append("file", file);
 
-	await api.post<{ url: string }>("/users/me/profile-image", fd);
+	const { data } = await api.post<{ url: string }>(
+		"/users/me/profile-image",
+		fd,
+	);
+
+	return data;
 };
 
 export const signup = async (email: string, password: string) => {
@@ -78,23 +83,16 @@ export const socialLogin = async (
 
 export const logout = async () => {
 	// delete tokens
-	try {
-		await api.post("/auth/logout");
-	} finally {
-		TokenService.clearTokens();
-	}
+	await api.post("/auth/logout");
+	TokenService.clearTokens();
 };
 
 export const refresh = async () => {
-	try {
-		const res = await api.post<AuthTokens>("/auth/refresh");
-		TokenService.setToken(res.data.accessToken);
-		const user = await getUser();
-		return user;
-	} catch {
-		TokenService.clearTokens();
-		return null;
-	}
+	const res = await api.post<AuthTokens>("/auth/refresh");
+	TokenService.setToken(res.data.accessToken);
+	const user = await getUser();
+
+	return user;
 };
 
 // health check
