@@ -21,7 +21,7 @@ const DetailMemo = ({
 		(m) => m.eventId === eventId,
 	);
 
-    // 메모 관련 상태
+	// 메모 관련 상태
 	const [memoContent, setMemoContent] = useState<string>(
 		CURRENT_MEMO ? CURRENT_MEMO.content : "",
 	);
@@ -33,14 +33,14 @@ const DetailMemo = ({
 	);
 	const [tagInput, setTagInput] = useState<string>("");
 
-    const currentTagNames = CURRENT_MEMO
+	const currentTagNames = CURRENT_MEMO
 		? CURRENT_MEMO.tags.map((t) => t.name)
 		: [];
-    
+
 	const tagsChanged =
 		JSON.stringify(tagNames.sort()) !== JSON.stringify(currentTagNames.sort());
 
-    const isContentChanged = memoContent !== CURRENT_MEMO?.content;
+	const isContentChanged = memoContent !== CURRENT_MEMO?.content;
 
 	const showSaveBtn =
 		(CURRENT_MEMO && (memoContent !== CURRENT_MEMO.content || tagsChanged)) ||
@@ -102,7 +102,7 @@ const DetailMemo = ({
 		if (CURRENT_MEMO) {
 			// EDIT
 			// if tags are changed
-            const updates: {content?: string; tagNames?: string[]} = {};
+			const updates: { content?: string; tagNames?: string[] } = {};
 			if (tagsChanged) {
 				updates.tagNames = tagNames;
 			}
@@ -111,19 +111,18 @@ const DetailMemo = ({
 				updates.content = memoContent;
 			}
 
-            if (tagsChanged || isContentChanged) {
-                await updateMemo(CURRENT_MEMO.id, updates);
-            }
+			if (tagsChanged || isContentChanged) {
+				await updateMemo(CURRENT_MEMO.id, updates);
+			}
 		} else {
 			// ADD
-            if (!CURRENT_MEMO && memoContent.trim().length === 0) return;
+			if (!CURRENT_MEMO && memoContent.trim().length === 0) return;
 			await addMemo(eventId, memoContent, tagNames);
 		}
 
 		setIsSavingMemo(false);
 		setIsMemoExpanded(false);
 	};
-
 
 	return (
 		<div

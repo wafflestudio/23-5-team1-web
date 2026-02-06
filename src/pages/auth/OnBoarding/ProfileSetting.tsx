@@ -36,13 +36,12 @@ export default function ProfileSetting() {
 
 	// profile image preview url cleanup (cleanup callback is executed before next effect / component unmount)
 	useEffect(() => {
-			return () => {
-				if (previewUrl?.startsWith('blob:')) {
-					URL.revokeObjectURL(previewUrl);
-				}
-			};
-	}, [previewUrl])
-	
+		return () => {
+			if (previewUrl?.startsWith("blob:")) {
+				URL.revokeObjectURL(previewUrl);
+			}
+		};
+	}, [previewUrl]);
 
 	return (
 		<div className={styles.page}>

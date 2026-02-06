@@ -20,7 +20,7 @@ const SearchView = () => {
 		fetchSearchResult,
 		searchResults,
 	} = useSearch();
-	const { showDetail, setShowDetail, clickedEventId } = useDetail();
+	const { showDetail, clickedEventId } = useDetail();
 	const [viewMode, setViewMode] = useState<"List" | "Grid">("Grid");
 
 	useEffect(() => {
@@ -139,10 +139,7 @@ const SearchView = () => {
 			</div>
 			{showDetail && clickedEventId !== undefined && (
 				<div className={styles.sidePanel}>
-					<DetailView
-						eventId={clickedEventId}
-						onClose={() => setShowDetail(false)}
-					/>
+					<DetailView eventId={clickedEventId} />
 				</div>
 			)}
 		</div>

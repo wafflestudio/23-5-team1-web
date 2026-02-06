@@ -48,11 +48,15 @@ const Modal = ({
 
 interface ErrorModal {
 	content: string;
-	refresh?: ()=>void;
-	onClose: ()=>void;
-};
+	refresh?: () => void;
+	onClose: () => void;
+}
 
-export const ErrorModal = ({ content, refresh=()=>window.location.reload(), onClose }: ErrorModal) => {
+export const ErrorModal = ({
+	content,
+	refresh = () => window.location.reload(),
+	onClose,
+}: ErrorModal) => {
 	return (
 		<div className={styles.modalContainer} id={styles.error}>
 			<div className={styles.modalWrapper}>
@@ -61,18 +65,13 @@ export const ErrorModal = ({ content, refresh=()=>window.location.reload(), onCl
 				</button>
 				<span className={styles.modalContent}>{content}</span>
 				<div className={styles.buttonsRow}>
-					<button
-						className={styles.leftBtn}
-						type="button"
-						onClick={refresh}
-					>
+					<button className={styles.leftBtn} type="button" onClick={refresh}>
 						다시 시도하기
 					</button>
 				</div>
 			</div>
 		</div>
 	);
-
-}
+};
 
 export default Modal;
