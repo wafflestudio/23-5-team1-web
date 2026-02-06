@@ -4,6 +4,10 @@ export const transformEvent = (dto: EventDTO): Event => {
 	const today = new Date();
 	return {
 		...dto,
+		// handle invalid img
+		imageUrl: dto.imageUrl.includes("extra.snu.ac.kr/comm/cmfile/")
+			? "/assets/DefaultThumbnail.png"
+			: dto.imageUrl,
 		eventTypeId:
 			dto.eventTypeId && dto.eventTypeId <= 9 && dto.eventTypeId >= 4
 				? dto.eventTypeId - 3

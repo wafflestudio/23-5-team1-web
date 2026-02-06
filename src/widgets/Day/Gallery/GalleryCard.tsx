@@ -19,19 +19,31 @@ const GalleryCard = ({ event }: { event: Event }) => {
 			onClick={handleClick}
 			onKeyDown={(e) => e.key === "Enter" && handleClick}
 		>
-			<img
-				alt={`thumbnail of ${event.title}`}
-				src={event.imageUrl}
+			<div
 				style={{
 					width: "100%",
-					height: "auto",
-					aspectRatio: 16 / 9,
-					objectFit: "cover",
+					aspectRatio: "16 / 9",
 					borderRadius: "12px",
 					marginBottom: "16px",
+					overflow: "hidden",
 					border: "1px solid #f0f0f0",
+					backgroundColor: "#f9f9f9",
+					position: "relative",
 				}}
-			/>
+			>
+				<img
+					alt={`thumbnail of ${event.title}`}
+					src={event.imageUrl}
+					style={{
+						width: "100%",
+						height: "100%",
+						objectFit: "cover",
+						position: "absolute",
+						top: 0,
+						left: 0,
+					}}
+				/>
+			</div>
 			<CardView event={event} />
 		</div>
 	);

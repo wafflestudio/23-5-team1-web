@@ -1,28 +1,39 @@
-import axios from "axios";
 import type {
 	AuthTokens,
 	Provider,
 	SocialLoginRequestBody,
 	User,
 } from "@types";
-import api, { API_URL } from "./axios";
+import api from "./axios";
 import { TokenService } from "./tokenService";
 
 export const getUser = async (): Promise<User> => {
 	const res = await api.get<User>("/users/me");
-	console.log(res.data);
 	return res.data;
 };
 
-export const updateUser = async (
-	username?: string,
-	profileImageUrl?: string,
-) => {
-	const response = await api.patch("/users/me", {
+export const updateUsername = async (username: string) => {
+	await api.patch("/users/me", {
 		username,
-		profileImageUrl,
 	});
-	return response.data as User;
+};
+
+export const clearProfileImg = async () => {
+	await api.patch("/users/me", {
+		profileImageUrl: null,
+	});
+};
+
+export const uploadProfileImg = async (file: File) => {
+	const fd = new FormData();
+	fd.append("file", file);
+
+	const { data } = await api.post<{ url: string }>(
+		"/users/me/profile-image",
+		fd,
+	);
+
+	return data;
 };
 
 export const signup = async (email: string, password: string) => {
@@ -31,7 +42,7 @@ export const signup = async (email: string, password: string) => {
 		password,
 	});
 
-	TokenService.setTokens(response.data.accessToken, response.data.refreshToken);
+	TokenService.setToken(response.data.accessToken);
 };
 
 export const login = async (email: string, password: string) => {
@@ -40,7 +51,7 @@ export const login = async (email: string, password: string) => {
 		password,
 	});
 
-	TokenService.setTokens(response.data.accessToken, response.data.refreshToken);
+	TokenService.setToken(response.data.accessToken);
 };
 
 export const socialLogin = async (
@@ -67,48 +78,21 @@ export const socialLogin = async (
 		};
 	}
 	const res = await api.post<AuthTokens>("/auth/login/social", body);
-	TokenService.setTokens(res.data.accessToken, res.data.refreshToken);
+	TokenService.setToken(res.data.accessToken);
 };
 
 export const logout = async () => {
 	// delete tokens
-	try {
-		await api.post("/auth/logout");
-	} finally {
-		TokenService.clearTokens();
-	}
+	await api.post("/auth/logout");
+	TokenService.clearTokens();
 };
 
-// Call on App mount!
-export const checkAuth = async () => {
-	const refreshToken = TokenService.getRefreshToken();
+export const refresh = async () => {
+	const res = await api.post<AuthTokens>("/auth/refresh");
+	TokenService.setToken(res.data.accessToken);
+	const user = await getUser();
 
-	if (!refreshToken) {
-		console.log("no refresh token");
-
-		return null;
-	}
-
-	try {
-		const { data } = await axios.post(
-			`${API_URL}/auth/refresh`,
-			{},
-			{
-				headers: {
-					Authorization: `Bearer ${refreshToken}`,
-				},
-			},
-		);
-
-		TokenService.setTokens(data.accessToken, data.refreshToken);
-
-		const user = await getUser();
-		return user;
-	} catch (error) {
-		console.error("error in authentication with refresh token", error);
-		TokenService.clearTokens();
-		throw error;
-	}
+	return user;
 };
 
 // health check

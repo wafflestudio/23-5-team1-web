@@ -4,17 +4,17 @@ import { FaAngleLeft, FaAngleRight, FaAnglesRight } from "react-icons/fa6";
 import { useEvents } from "@contexts/EventContext";
 import styles from "@styles/MonthSideView.module.css";
 import CardView from "./CardView";
+import { useDetail } from "@/contexts/DetailContext";
 
 const MonthSideView = ({
 	day,
 	onClose,
-	onDetailClick,
 }: {
 	day: Date;
 	onClose: () => void;
-	onDetailClick: () => void;
 }) => {
 	const { fetchDayEvents, dayViewEvents } = useEvents();
+	const { setShowDetail, setClickedEventId } = useDetail();
 	const [date, setDate] = useState<Date>(day);
 
 	useEffect(() => {
@@ -38,6 +38,11 @@ const MonthSideView = ({
 		const nextDate = new Date(date);
 		nextDate.setDate(date.getDate() + 1);
 		setDate(nextDate);
+	};
+
+	const handleDetailClick = (id: number) => {
+		setShowDetail(true);
+		setClickedEventId(id);
 	};
 
 	return (
@@ -66,8 +71,8 @@ const MonthSideView = ({
 						role="button"
 						key={event.id}
 						tabIndex={0}
-						onClick={onDetailClick}
-						onKeyDown={(e) => e.key === "Enter" && onDetailClick()}
+						onClick={() => handleDetailClick(event.id)}
+						onKeyDown={(e) => e.key === "Enter" && handleDetailClick(event.id)}
 						className={styles.cardButton}
 					>
 						<CardView key={event.id} event={event} />

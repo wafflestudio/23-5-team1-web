@@ -7,17 +7,27 @@ import {
 	useState,
 } from "react";
 import * as userService from "@api/user";
-import type { Category, Event } from "@types";
+import type { Category, Event, Memo } from "@types";
 import { useAuth } from "./AuthProvider";
 
 interface UserDataContextType {
 	bookmarkedEvents: Event[];
 	interestCategories: Category[];
 	excludedKeywords: { id: number; keyword: string }[];
+	eventMemos: Memo[];
 	refreshUserData: () => void;
 	addExcludedKeyword: (keyword: string) => Promise<void>;
 	deleteExcludedKeyword: (id: number) => Promise<void>;
 	toggleBookmark: (event: Event) => Promise<void>;
+	getMemoByTag: (tagId: number) => Promise<Memo[]>;
+	addMemo: (
+		eventId: number,
+		content: string,
+		tagNames: string[],
+	) => Promise<void>;
+	deleteMemo: (id: number) => Promise<void>;
+	editMemoContent: (id: number, content: string) => Promise<Memo | null>;
+	editMemoTag: (id: number, tags: string[]) => Promise<Memo | null>;
 }
 
 const UserDataContext = createContext<UserDataContextType | undefined>(
@@ -31,19 +41,23 @@ export const UserDataProvider = ({ children }: { children: ReactNode }) => {
 	>([]);
 	const [bookmarkedEvents, setBookmarkedEvents] = useState<Event[]>([]);
 	const [interestCategories, setInterestCategories] = useState<Category[]>([]);
+	const [eventMemos, setEventMemos] = useState<Memo[]>([]);
 
 	const fetchAll = useCallback(async () => {
 		if (!isAuthenticated) return;
 		try {
 			// Parallel fetch
-			const [excludedData, bookmarksData, interestsData] = await Promise.all([
-				userService.getExcludedKeywords(),
-				userService.getBookmarks(1), // Fetch first page/all
-				userService.getInterestCategories(),
-			]);
+			const [excludedData, bookmarksData, interestsData, memoData] =
+				await Promise.all([
+					userService.getExcludedKeywords(),
+					userService.getBookmarks(1), // Fetch first page/all
+					userService.getInterestCategories(),
+					userService.getMemos(),
+				]);
 			setExcludedKeywords(excludedData);
 			setBookmarkedEvents(bookmarksData);
 			setInterestCategories(interestsData);
+			setEventMemos(memoData);
 		} catch (error) {
 			console.error("Failed to load user data", error);
 		}
@@ -56,6 +70,7 @@ export const UserDataProvider = ({ children }: { children: ReactNode }) => {
 			setExcludedKeywords([]);
 			setBookmarkedEvents([]);
 			setInterestCategories([]);
+			setEventMemos([]);
 		}
 	}, [isAuthenticated, fetchAll]);
 
@@ -107,14 +122,76 @@ export const UserDataProvider = ({ children }: { children: ReactNode }) => {
 		}
 	};
 
+	/* --- Memo --- */
+	const getMemoByTag = async (tagId: number) => {
+		try {
+			const resultMemos: Memo[] = await userService.getMemoByTag(tagId);
+			return resultMemos;
+		} catch (error) {
+			console.error("error in getting memos by Tag", error);
+			return [];
+		}
+	};
+
+	const addMemo = async (eventId: number, content: string, tags: string[]) => {
+		try {
+			await userService.addMemo(eventId, content, tags);
+			// refresh on add
+			const newMemos = await userService.getMemos();
+			setEventMemos(newMemos);
+		} catch (error) {
+			console.error("error in adding memos", error);
+		}
+	};
+
+	const deleteMemo = async (id: number) => {
+		try {
+			await userService.deleteMemo(id);
+			const newMemos = await userService.getMemos();
+			setEventMemos(newMemos);
+		} catch (error) {
+			console.error("error in deleting memos", error);
+		}
+	};
+
+	const editMemoContent = async (id: number, content: string) => {
+		try {
+			const newMemo: Memo = await userService.editMemoContent(id, content);
+			const updatedMemos: Memo[] = await userService.getMemos();
+			setEventMemos(updatedMemos);
+			return newMemo;
+		} catch (error) {
+			console.error("error in editing memo content", error);
+			return null;
+		}
+	};
+
+	const editMemoTag = async (id: number, tagNames: string[]) => {
+		try {
+			const newMemo: Memo = await userService.editMemoTags(id, tagNames);
+			const updatedMemos: Memo[] = await userService.getMemos();
+			setEventMemos(updatedMemos);
+			return newMemo;
+		} catch (error) {
+			console.error("error in editing memo tag list", error);
+			return null;
+		}
+	};
+
 	return (
 		<UserDataContext.Provider
 			value={{
 				excludedKeywords,
 				bookmarkedEvents,
 				interestCategories,
+				eventMemos,
 				refreshUserData: fetchAll,
 				toggleBookmark,
+				getMemoByTag,
+				addMemo,
+				deleteMemo,
+				editMemoContent,
+				editMemoTag,
 				addExcludedKeyword,
 				deleteExcludedKeyword,
 			}}

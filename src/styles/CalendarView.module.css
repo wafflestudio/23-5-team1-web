@@ -41,15 +41,27 @@ body {
 }
 
 .sidePanel {
-	max-width: 50%;
+	position: absolute;
+	right: 0;
+	top: 0;
+
+	max-width: 430px;
 	height: 100%;
 	border-left: 1px solid #e0e0e0;
 	background-color: #ffffff;
 	box-shadow: -4px 0 24px rgba(0, 0, 0, 0.05);
-	z-index: 20;
+	z-index: 10;
 	overflow-y: auto;
 	flex-shrink: 0;
 	animation: slideIn 0.3s ease-out;
+}
+
+.closing {
+	animation: slideOut 0.3s ease-in forwards;
+}
+
+.detailPanel {
+	z-index: 30;
 }
 
 @keyframes slideIn {
@@ -62,8 +74,32 @@ body {
 		opacity: 1;
 	}
 }
+
+@keyframes slideOut {
+	from {
+		transform: translateX(0);
+		opacity: 1;
+	}
+	to {
+		transform: translateX(100%);
+		opacity: 0;
+	}
+}
+
 @media (max-width: 1024px) {
 	.sidePanel {
 		width: 340px;
+	}
+	.detailPanel {
+		width: 340px;
+	}
+}
+
+@media (max-width: 576px) {
+	.sidePanel {
+		width: 300px;
+	}
+	.detailPanel {
+		width: 250px;
 	}
 }

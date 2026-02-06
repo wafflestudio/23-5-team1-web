@@ -1,6 +1,5 @@
 export interface AuthTokens {
 	accessToken: string;
-	refreshToken: string | null;
 }
 
 export interface User {
@@ -14,7 +13,7 @@ export interface User {
 	// memos: Memo[];
 }
 
-export interface EventBase {
+interface EventBase {
 	id: number;
 	title: string;
 	imageUrl: string;
@@ -53,7 +52,7 @@ export interface Event extends EventBase {
 	eventEnd: Date | null; // 활동 끝 날짜일시
 }
 
-export interface EventDetailExtras {
+interface EventDetailExtras {
 	bookmarkCount: number;
 	detail: string;
 }
@@ -104,24 +103,25 @@ export interface OrgsResponse {
 	items: Category[];
 }
 
-export interface InterestCategories {
+export interface MemoTag {
 	id: number;
-	categoryId: number;
-	sortOrder: number;
+	name: string;
 }
 
 export interface Memo {
 	id: number;
 	eventId: number;
+	eventTitle: string;
 	content: string;
-	tags: string[];
+	tags: MemoTag[];
+	createdAt: Date;
 }
 
 // 시간표 전체
 
 export type Semester = "SPRING" | "SUMMER" | "FALL" | "WINTER";
 
-export interface CourseBase {
+interface CourseBase {
 	year: number;
 	semester: Semester;
 	courseTitle: string;
@@ -149,9 +149,9 @@ export interface Timetable extends TimetableBase {
 	id: number;
 }
 
-export interface TimetableWithCourse extends Timetable {
-	courses: Course[];
-}
+// export interface TimetableWithCourse extends Timetable {
+// 	courses: Course[];
+// }
 
 export interface CreateTimetableRequest extends TimetableBase {}
 
@@ -186,13 +186,13 @@ export const DAY_LABELS_KO: Record<Day, string> = {
 	6: "토",
 };
 
-export interface EventFilters {
-	from: string;
-	to: string;
-	statusId?: number;
-	eventTypeId?: number;
-	orgId?: number;
-}
+// interface EventFilters {
+// 	from: string;
+// 	to: string;
+// 	statusId?: number;
+// 	eventTypeId?: number;
+// 	orgId?: number;
+// }
 
 export interface MonthViewResponseDTO {
 	range: {
@@ -288,13 +288,13 @@ export interface ApiErrorResponse {
 
 export type Provider = "GOOGLE" | "KAKAO" | "NAVER";
 
-export type GoogleSocialLoginBody = {
+type GoogleSocialLoginBody = {
 	provider: "GOOGLE";
 	code: string;
 	codeVerifier: string;
 };
 
-export type OtherSocialLoginBody = {
+type OtherSocialLoginBody = {
 	provider: "KAKAO" | "NAVER";
 	code: string;
 };
