@@ -13,20 +13,95 @@ import type {
 	TimeSlot,
 } from "../util/types";
 
-import type {
-	CreateTimetableRequest as CreateTimetableRequestDto,
-	UpdateTimetableRequest as UpdateTimetableRequestDto,
-	TimetableResponse,
-	ListTimetablesResponse,
-	EnrollResponse,
-	ListEnrollsResponse,
-	CourseDto,
-	CourseTimeSlotDto,
-	CreateCustomCourseRequest as CreateCustomCourseRequestDto,
-	JsonNode,
-} from "./generated/api";
-
 /** ---------- Mapper (DTO <-> Domain) ---------- */
+
+interface CreateTimetableRequestDto {
+	/** @minLength 1 */
+	name: string;
+	/** @format int32 */
+	year: number;
+	semester: "SPRING" | "SUMMER" | "FALL" | "WINTER";
+}
+
+interface UpdateTimetableRequestDto {
+	/** @minLength 1 */
+	name: string;
+}
+
+interface TimetableResponse {
+	/** @format int64 */
+	id: number;
+	name: string;
+	/** @format int32 */
+	year: number;
+	semester: "SPRING" | "SUMMER" | "FALL" | "WINTER";
+}
+
+interface ListTimetablesResponse {
+	items: TimetableResponse[];
+}
+
+interface EnrollResponse {
+	/** @format int64 */
+	enrollId: number;
+	course: CourseDto;
+}
+
+interface ListEnrollsResponse {
+	items: EnrollResponse[];
+}
+
+interface CourseDto {
+	/** @format int64 */
+	id: number;
+	/** @format int32 */
+	year: number;
+	semester: "SPRING" | "SUMMER" | "FALL" | "WINTER";
+	courseTitle: string;
+	source: "CRAWLED" | "CUSTOM";
+	timeSlots: CourseTimeSlotDto[];
+	courseNumber?: string;
+	lectureNumber?: string;
+	/** @format int32 */
+	credit?: number;
+	instructor?: string;
+}
+
+interface CourseTimeSlotDto {
+	dayOfWeek: "MON" | "TUE" | "WED" | "THU" | "FRI" | "SAT" | "SUN";
+	/**
+	 * @format int32
+	 * @min 0
+	 * @max 1439
+	 */
+	startAt: number;
+	/**
+	 * @format int32
+	 * @min 1
+	 * @max 1440
+	 */
+	endAt: number;
+}
+
+interface CreateCustomCourseRequestDto {
+	/** @format int32 */
+	year: number;
+	semester: "SPRING" | "SUMMER" | "FALL" | "WINTER";
+	/** @minLength 1 */
+	courseTitle: string;
+	/**
+	 * @maxItems 2147483647
+	 * @minItems 1
+	 */
+	timeSlots: CourseTimeSlotDto[];
+	courseNumber?: string;
+	lectureNumber?: string;
+	/** @format int32 */
+	credit?: number;
+	instructor?: string;
+}
+
+type JsonNode = any;
 
 // Timetable
 const toTimetable = (dto: TimetableResponse): Timetable => ({
