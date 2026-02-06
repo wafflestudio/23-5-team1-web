@@ -1,5 +1,5 @@
 import type React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthProvider";
 import defaultProfile from "/assets/defaultProfile.png";
@@ -33,6 +33,16 @@ export default function ProfileSetting() {
 			return next;
 		});
 	};
+
+	// profile image preview url cleanup (cleanup callback is executed before next effect / component unmount)
+	useEffect(() => {
+			return () => {
+				if (previewUrl?.startsWith('blob:')) {
+					URL.revokeObjectURL(previewUrl);
+				}
+			};
+	}, [previewUrl])
+	
 
 	return (
 		<div className={styles.page}>

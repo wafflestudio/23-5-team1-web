@@ -47,7 +47,12 @@ interface EventContextType {
 	isLoadingDay: boolean;
 	isLoadingSearch: boolean;
 	isLoadingMeta: boolean;
-	error: string | null;
+	isLoadingDetail: boolean;
+
+	calendarError: string | null;
+	detailError: string | null;
+	searchError: string | null;
+	clearError: (error: 'calendar' | 'detail' | 'search')=>void;
 
 	fetchMonthEvents: (params: FetchMonthEventArgs) => Promise<void>;
 	fetchWeekEvents: (params: FetchWeekEventArgs) => Promise<void>;
@@ -82,9 +87,12 @@ export const EventProvider: React.FC<{ children: ReactNode }> = ({
 	const [isLoadingWeek, setIsLoadingWeek] = useState(false);
 	const [isLoadingDay, setIsLoadingDay] = useState(false);
 	const [isLoadingSearch, setIsLoadingSearch] = useState(false);
+	const [isLoadingDetail, setIsLoadingDetail] = useState(false);
 	const [isLoadingMeta, setIsLoadingMeta] = useState(false);
 
-	const [error, setError] = useState<string | null>(null);
+	const [calendarError, setCalendarError] = useState<string | null>(null);
+	const [detailError, setDetailError] = useState<string | null>(null);
+	const [searchError, setSearchError] = useState<string | null>(null);
 
 	// Fetch category & organizations (metadata)
 	const refreshMetadata = useCallback(async () => {
@@ -98,7 +106,7 @@ export const EventProvider: React.FC<{ children: ReactNode }> = ({
 			setOrganizations(orgsData);
 		} catch (err) {
 			console.error("Failed to load metadata", err);
-			setError("Failed to load categories.");
+			setCalendarError("Failed to load categories.");
 		} finally {
 			setIsLoadingMeta(false);
 		}
@@ -129,13 +137,13 @@ export const EventProvider: React.FC<{ children: ReactNode }> = ({
 			};
 
 			setIsLoadingMonth(true);
-			setError(null);
+			setCalendarError(null);
 			try {
 				const data = await getMonthEvents(params);
 				setMonthViewData(data);
 			} catch (err) {
 				console.error(err);
-				setError("failed fo fetch month events");
+				setCalendarError("월별 행사 정보를 가져오는 데에 실패했습니다.");
 			} finally {
 				setIsLoadingMonth(false);
 			}
@@ -153,13 +161,13 @@ export const EventProvider: React.FC<{ children: ReactNode }> = ({
 				orgId,
 			};
 			setIsLoadingWeek(true);
-			setError(null);
+			setCalendarError(null);
 			try {
 				const data = await getMonthEvents(params);
 				setWeekViewData(data);
 			} catch (err) {
 				console.error(err);
-				setError("failed fo fetch week events");
+				setCalendarError("주별 행사 정보를 가져오는 데에 실패했습니다.");
 			} finally {
 				setIsLoadingWeek(false);
 			}
@@ -186,13 +194,13 @@ export const EventProvider: React.FC<{ children: ReactNode }> = ({
 			};
 
 			setIsLoadingDay(true);
-			setError(null);
+			setCalendarError(null);
 			try {
 				const data = await getDayEvents(params);
 				setDayViewEvents(data);
 			} catch (err) {
 				console.error(err);
-				setError("failed to fetch day events.");
+				setCalendarError("일별 행사 정보를 가져오는 데에 실패했습니다.");
 			} finally {
 				setIsLoadingDay(false);
 			}
@@ -202,13 +210,13 @@ export const EventProvider: React.FC<{ children: ReactNode }> = ({
 
 	const searchEvents = useCallback(async (params: SearchParams) => {
 		setIsLoadingSearch(true);
-		setError(null);
+		setSearchError(null);
 		try {
 			const data = await getEventSearch(params);
 			setSearchResults(data);
 		} catch (err) {
 			console.error(err);
-			setError("failed to search events");
+			setSearchError("행사 검색에 실패했습니다.");
 		} finally {
 			setIsLoadingSearch(false);
 		}
@@ -219,13 +227,27 @@ export const EventProvider: React.FC<{ children: ReactNode }> = ({
 	}, []);
 
 	const fetchEventById = useCallback(async (id: number) => {
+		setDetailError(null);
+		setIsLoadingDetail(true);
 		try {
 			const data = await getEventDetail(id);
 			return data;
 		} catch (err) {
 			console.error(err);
-			setError("Failed to fetch event detail.");
+			setDetailError("행사 상세 정보를 가져오는 데에 실패했습니다.");
 			return null;
+		} finally {
+			setIsLoadingDetail(false);
+		}
+	}, []);
+
+	const clearError = useCallback((error: 'calendar'|'detail'|'search') => {
+		if (error==='calendar') {
+			setCalendarError(null);
+		} else if (error==='detail') {
+			setDetailError(null);
+		} else {
+			setSearchError(null);
 		}
 	}, []);
 
@@ -233,17 +255,26 @@ export const EventProvider: React.FC<{ children: ReactNode }> = ({
 		monthViewData,
 		weekViewData,
 		dayViewEvents,
+
 		dayDate,
 		setDayDate,
+		
 		searchResults,
 		categoryGroups,
 		organizations,
+		
 		isLoadingMonth,
 		isLoadingWeek,
 		isLoadingDay,
 		isLoadingSearch,
 		isLoadingMeta,
-		error,
+		isLoadingDetail,
+
+		calendarError,
+		detailError,
+		searchError,
+		clearError,
+
 		fetchMonthEvents,
 		fetchWeekEvents,
 		fetchDayEvents,

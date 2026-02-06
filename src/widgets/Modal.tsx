@@ -46,4 +46,33 @@ const Modal = ({
 	);
 };
 
+interface ErrorModal {
+	content: string;
+	refresh?: ()=>void;
+	onClose: ()=>void;
+};
+
+export const ErrorModal = ({ content, refresh=()=>window.location.reload(), onClose }: ErrorModal) => {
+	return (
+		<div className={styles.modalContainer} id={styles.error}>
+			<div className={styles.modalWrapper}>
+				<button className={styles.closeButton} type="button" onClick={onClose}>
+					<IoIosClose size={25} color="gray" />
+				</button>
+				<span className={styles.modalContent}>{content}</span>
+				<div className={styles.buttonsRow}>
+					<button
+						className={styles.leftBtn}
+						type="button"
+						onClick={refresh}
+					>
+						다시 시도하기
+					</button>
+				</div>
+			</div>
+		</div>
+	);
+
+}
+
 export default Modal;

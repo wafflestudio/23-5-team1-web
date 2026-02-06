@@ -42,11 +42,7 @@ const BookmarksPage = () => {
 	const { bookmarkedEvents } = useUserData();
 	const navigate = useNavigate();
 
-	const { showDetail, setShowDetail, clickedEventId } = useDetail();
-
-	const onDetailClick = () => {
-		setShowDetail(true);
-	};
+	const { showDetail, clickedEventId } = useDetail();
 
 	return (
 		<main>
@@ -69,17 +65,7 @@ const BookmarksPage = () => {
 						{bookmarkedEvents &&
 							bookmarkedEvents.length > 0 &&
 							bookmarkedEvents.map((e) => (
-								// biome-ignore lint/a11y/useSemanticElements: Cannot use button because it contains nested interactive elements
-								<div
-									role="button"
-									key={e.id}
-									tabIndex={0}
-									onClick={onDetailClick}
-									onKeyDown={(e) => e.key === "Enter" && onDetailClick()}
-									className={styles.cardButton}
-								>
 									<GalleryCard key={e.id} event={e} />
-								</div>
 							))}
 					</div>
 					{(!bookmarkedEvents || bookmarkedEvents.length === 0) && (
@@ -92,7 +78,6 @@ const BookmarksPage = () => {
 					<div className={styles.sidePanel}>
 						<DetailView
 							eventId={clickedEventId}
-							onClose={() => setShowDetail(false)}
 						/>
 					</div>
 				)}

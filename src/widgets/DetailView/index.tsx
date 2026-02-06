@@ -12,10 +12,12 @@ import parse from "html-react-parser";
 
 import { useDetail } from "@/contexts/DetailContext";
 import DetailMemo from "./DetailMemo";
+import { ErrorModal } from "../Modal";
+import { ClipLoader } from "react-spinners";
 
 const DetailView = ({ eventId }: { eventId: number }) => {
 	const [event, setEvent] = useState<EventDetail>();
-	const { fetchEventById } = useEvents();
+	const { fetchEventById, detailError, isLoadingDetail, clearError } = useEvents();
 	const { setShowDetail } = useDetail();
 
 	// for scrolling to top on re-render
@@ -73,7 +75,11 @@ const DetailView = ({ eventId }: { eventId: number }) => {
 		}
 	}, [event]);
 
-	if (!event) return null;
+	if (!event) return (
+		<div className={styles.container} ref={scrollRef}>
+			<ClipLoader color="#36d7b7" size={20} />
+		</div>
+	);
 
 	const handleToggleBookmark = async () => {
 		const previousState = isBookmarked;
@@ -95,6 +101,17 @@ const DetailView = ({ eventId }: { eventId: number }) => {
 
 	return (
 		<div className={styles.container} ref={scrollRef}>
+			{detailError && (
+				<ErrorModal 
+					content={detailError}
+					refresh={()=>window.location.reload()}
+					onClose={()=>clearError('detail')}
+				/>
+			)}
+			{isLoadingDetail &&
+				/* Loading spinner */		
+				<ClipLoader color="#36d7b7" size={20} />
+			}
 			<button type="button" className={styles.foldBtn}>
 				<FaAnglesRight
 					width={18}

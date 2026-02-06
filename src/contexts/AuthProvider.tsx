@@ -167,9 +167,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 			await auth.updateUsername(username);
 			if (file) {
 				await auth.uploadProfileImg(file);
-			} else {
-				await auth.clearProfileImg();
-			}
+			} 
 			const updatedUser = await auth.getUser();
 			setUser(updatedUser);
 		} catch (error) {

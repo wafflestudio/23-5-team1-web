@@ -15,13 +15,13 @@ const DetailMemo = ({
 	isMemoExpanded,
 	setIsMemoExpanded,
 }: DetailMemoProps) => {
-	const { eventMemos, addMemo, editMemoTag, editMemoContent } = useUserData();
+	const { eventMemos, addMemo, updateMemo } = useUserData();
 	// events that user has written memos
 	const CURRENT_MEMO: Memo | undefined = eventMemos.find(
 		(m) => m.eventId === eventId,
 	);
 
-	// 메모 관련 상태
+    // 메모 관련 상태
 	const [memoContent, setMemoContent] = useState<string>(
 		CURRENT_MEMO ? CURRENT_MEMO.content : "",
 	);
@@ -32,6 +32,19 @@ const DetailMemo = ({
 		CURRENT_MEMO ? CURRENT_MEMO.tags.map((t) => t.name) : [],
 	);
 	const [tagInput, setTagInput] = useState<string>("");
+
+    const currentTagNames = CURRENT_MEMO
+		? CURRENT_MEMO.tags.map((t) => t.name)
+		: [];
+    
+	const tagsChanged =
+		JSON.stringify(tagNames.sort()) !== JSON.stringify(currentTagNames.sort());
+
+    const isContentChanged = memoContent !== CURRENT_MEMO?.content;
+
+	const showSaveBtn =
+		(CURRENT_MEMO && (memoContent !== CURRENT_MEMO.content || tagsChanged)) ||
+		(!CURRENT_MEMO && memoContent.trim().length > 0);
 
 	// 메모 & 태그 input ref
 	const memoInputRef = useRef<HTMLTextAreaElement | null>(null);
@@ -89,29 +102,28 @@ const DetailMemo = ({
 		if (CURRENT_MEMO) {
 			// EDIT
 			// if tags are changed
-			if (tagNames !== CURRENT_MEMO?.tags.map((m) => m.name)) {
-				await editMemoTag(CURRENT_MEMO?.id, tagNames);
+            const updates: {content?: string; tagNames?: string[]} = {};
+			if (tagsChanged) {
+				updates.tagNames = tagNames;
 			}
 			// if contents are changed
-			if (memoContent !== CURRENT_MEMO.content) {
-				await editMemoContent(CURRENT_MEMO.id, memoContent);
+			if (isContentChanged) {
+				updates.content = memoContent;
 			}
+
+            if (tagsChanged || isContentChanged) {
+                await updateMemo(CURRENT_MEMO.id, updates);
+            }
 		} else {
 			// ADD
+            if (!CURRENT_MEMO && memoContent.trim().length === 0) return;
 			await addMemo(eventId, memoContent, tagNames);
 		}
+
 		setIsSavingMemo(false);
 		setIsMemoExpanded(false);
 	};
 
-	const currentTagNames = CURRENT_MEMO
-		? CURRENT_MEMO.tags.map((t) => t.name)
-		: [];
-	const tagsChanged =
-		JSON.stringify(tagNames.sort()) !== JSON.stringify(currentTagNames.sort());
-	const showSaveBtn =
-		(CURRENT_MEMO && (memoContent !== CURRENT_MEMO.content || tagsChanged)) ||
-		(!CURRENT_MEMO && memoContent.trim().length > 0);
 
 	return (
 		<div
