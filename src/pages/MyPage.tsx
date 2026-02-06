@@ -149,7 +149,7 @@ const MyPage = () => {
 	const { user } = useAuth();
 
 	return (
-		<main>
+		<div className={styles.main}>
 			<Navigationbar />
 			{user ? (
 				<div className={styles.mypageContainer}>
@@ -162,7 +162,7 @@ const MyPage = () => {
 			) : (
 				<div className={styles.notFound}>{/* Login modal */}</div>
 			)}
-		</main>
+		</div>
 	);
 };
 

@@ -2,7 +2,7 @@ import styles from "@styles/DetailMemo.module.css";
 import { useUserData } from "@/contexts/UserDataContext";
 import { useEffect, useRef, useState, type SetStateAction } from "react";
 import { TiPencil } from "react-icons/ti";
-import type { Memo } from "@/util/types";
+import type { Memo, MemoTag } from "@/util/types";
 
 interface DetailMemoProps {
 	eventId: number;
@@ -18,7 +18,7 @@ const DetailMemo = ({
 	const { eventMemos, addMemo, updateMemo } = useUserData();
 	// events that user has written memos
 	const CURRENT_MEMO: Memo | undefined = eventMemos.find(
-		(m) => m.eventId === eventId,
+		(m:Memo) => m.eventId === eventId,
 	);
 
 	// 메모 관련 상태
@@ -51,10 +51,10 @@ const DetailMemo = ({
 	const tagInputRef = useRef<HTMLInputElement | null>(null);
 
 	useEffect(() => {
-		const currentMemo = eventMemos.find((m) => m.eventId === eventId);
+		const currentMemo = eventMemos.find((m: Memo) => m.eventId === eventId);
 		setMemoContent(currentMemo ? currentMemo.content : "");
 		setIsSavingMemo(false);
-		setTagNames(currentMemo ? currentMemo.tags.map((t) => t.name) : []);
+		setTagNames(currentMemo ? currentMemo.tags.map((t: MemoTag) => t.name) : []);
 		setTagInput("");
 	}, [eventId, eventMemos]);
 

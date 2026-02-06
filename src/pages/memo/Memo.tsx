@@ -70,7 +70,7 @@ const MemoPage = () => {
 	};
 
 	return (
-		<main>
+		<div className={styles.main}>
 			<div className={styles.memosPage}>
 				<Navigationbar />
 				<div className={styles.memosHeader}>
@@ -106,7 +106,7 @@ const MemoPage = () => {
 					onClose={() => setDeletingMemoId(null)}
 				/>
 			)}
-		</main>
+		</div>
 	);
 };
 

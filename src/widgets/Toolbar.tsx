@@ -61,6 +61,12 @@ const SearchInput = () => {
 
 export const ProfileButton = ({ user }: { user: User | null }) => {
 	const navigate = useNavigate();
+	const [profilePreviewUrl, setProfilePreviewUrl] = useState<string>(user?.profileImageUrl || '/assets/defaultProfile.png');
+
+	const handleImageError = () => {
+		setProfilePreviewUrl("/assets/defaultProfile.png");
+	};
+
 
 	return (
 		<button
@@ -70,7 +76,8 @@ export const ProfileButton = ({ user }: { user: User | null }) => {
 		>
 			<img
 				alt="user profile"
-				src={user?.profileImageUrl || "/assets/defaultProfile.png"}
+				src={profilePreviewUrl}
+				onError={handleImageError}
 			/>
 		</button>
 	);
@@ -114,12 +121,6 @@ const Toolbar: React.FC<ToolbarProps> = ({
 						일
 					</button>
 				</div>
-				{/* {view === Views.DAY && (
-					<div className={`${styles.profileRow} ${styles.dayView}`}>
-						<SearchInput />
-						<ProfileButton user={user} />
-					</div>
-				)} */}
 			</div>
 
 			{/* 날짜 및 내비게이션 */}
