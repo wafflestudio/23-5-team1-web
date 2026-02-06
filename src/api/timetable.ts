@@ -15,42 +15,6 @@ import type {
 
 /** ---------- Mapper (DTO <-> Domain) ---------- */
 
-interface CreateTimetableRequestDto {
-	/** @minLength 1 */
-	name: string;
-	/** @format int32 */
-	year: number;
-	semester: "SPRING" | "SUMMER" | "FALL" | "WINTER";
-}
-
-interface UpdateTimetableRequestDto {
-	/** @minLength 1 */
-	name: string;
-}
-
-interface TimetableResponse {
-	/** @format int64 */
-	id: number;
-	name: string;
-	/** @format int32 */
-	year: number;
-	semester: "SPRING" | "SUMMER" | "FALL" | "WINTER";
-}
-
-interface ListTimetablesResponse {
-	items: TimetableResponse[];
-}
-
-interface EnrollResponse {
-	/** @format int64 */
-	enrollId: number;
-	course: CourseDto;
-}
-
-interface ListEnrollsResponse {
-	items: EnrollResponse[];
-}
-
 interface CourseDto {
 	/** @format int64 */
 	id: number;
@@ -81,24 +45,6 @@ interface CourseTimeSlotDto {
 	 * @max 1440
 	 */
 	endAt: number;
-}
-
-interface CreateCustomCourseRequestDto {
-	/** @format int32 */
-	year: number;
-	semester: "SPRING" | "SUMMER" | "FALL" | "WINTER";
-	/** @minLength 1 */
-	courseTitle: string;
-	/**
-	 * @maxItems 2147483647
-	 * @minItems 1
-	 */
-	timeSlots: CourseTimeSlotDto[];
-	courseNumber?: string;
-	lectureNumber?: string;
-	/** @format int32 */
-	credit?: number;
-	instructor?: string;
 }
 
 interface CreateTimetableRequestDto {
