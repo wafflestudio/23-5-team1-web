@@ -6,17 +6,22 @@ import { formatDateDotParsed } from "@calendarUtil/dateFormatter";
 import { getDDay } from "../../util/Calendar/getDday";
 import { CATEGORY_COLORS, CATEGORY_LIST } from "@constants";
 import { FaAnglesRight } from "react-icons/fa6";
-import type { EventDetail } from "@types";
+import type { CalendarEvent, EventDetail } from "@types";
 import DOMPurify from "isomorphic-dompurify";
 import parse from "html-react-parser";
 
 import { useDetail } from "@/contexts/DetailContext";
 import DetailMemo from "./DetailMemo";
 import { ErrorModal } from "../Modal";
-import { ClipLoader } from "react-spinners";
+import Loading from "../Loading";
+import calendarEventMapper from "@/util/Calendar/calendarEventMapper";
 
 const DetailView = ({ eventId }: { eventId: number }) => {
 	const [event, setEvent] = useState<EventDetail>();
+	const [calendarEvent, setCalendarEvent] = useState<CalendarEvent | null>(
+		event ? calendarEventMapper(event, 'day') : null
+	);
+
 	const { fetchEventById, detailError, isLoadingDetail, clearError } =
 		useEvents();
 	const { setShowDetail } = useDetail();
@@ -52,6 +57,7 @@ const DetailView = ({ eventId }: { eventId: number }) => {
 		const loadEvent = async () => {
 			const event = await fetchEventById(eventId);
 			setEvent(event ?? undefined);
+			if (event) setCalendarEvent(calendarEventMapper(event, 'day'));
 		};
 		loadEvent();
 		// scroll to top of component
@@ -61,11 +67,7 @@ const DetailView = ({ eventId }: { eventId: number }) => {
 	}, [eventId, fetchEventById]);
 
 	// 디데이 계산할 기준 날짜
-	const ddayTargetDate = event
-		? event.eventStart
-			? event.eventStart
-			: event.applyEnd
-		: undefined;
+	const ddayTargetDate = calendarEvent?.resource.isPeriodEvent ? calendarEvent.end : calendarEvent?.start;
 	const [isBookmarked, setIsBookmarked] = useState<boolean>(
 		!!event?.isBookmarked,
 	);
@@ -78,9 +80,7 @@ const DetailView = ({ eventId }: { eventId: number }) => {
 
 	if (!event)
 		return (
-			<div className={styles.container} ref={scrollRef}>
-				<ClipLoader color="#36d7b7" size={20} />
-			</div>
+			<Loading />
 		);
 
 	const handleToggleBookmark = async () => {
@@ -112,7 +112,7 @@ const DetailView = ({ eventId }: { eventId: number }) => {
 			)}
 			{isLoadingDetail && (
 				/* Loading spinner */
-				<ClipLoader color="#36d7b7" size={20} />
+				<Loading />
 			)}
 			<button type="button" className={styles.foldBtn}>
 				<FaAnglesRight
@@ -144,18 +144,17 @@ const DetailView = ({ eventId }: { eventId: number }) => {
 			</button>
 			<h1 className={styles.title}>{event.title}</h1>
 			<span className={styles.date}>
-				{
+				{calendarEvent && (
 					// !event.eventStart : 기간제 행사, yyyy.mm.dd ~ yyyy.mm.dd로 표시
-					event.eventStart && event.eventEnd
-						? // 단발성 행사
-							event.eventStart === event.eventEnd
+					calendarEvent.resource.isPeriodEvent ? 
+						`${formatDateDotParsed(calendarEvent.start)} ~ ${formatDateDotParsed(calendarEvent.end)}`
+						: // 단발성 행사
+							calendarEvent.start.toDateString() === calendarEvent.end.toDateString()
 							? // yyyy.mm.dd만 표시
-								formatDateDotParsed(event.eventStart)
+								formatDateDotParsed(calendarEvent.start)
 							: // yyyy.mm.dd ~ yyyy.mm.dd
-								`${formatDateDotParsed(event.eventStart)} ~ ${formatDateDotParsed(event.eventEnd)}`
-						: // 기간제 행사
-							`${formatDateDotParsed(event.applyStart)} ~ ${formatDateDotParsed(event.applyEnd)}`
-				}
+								`${formatDateDotParsed(calendarEvent.start)} ~ ${formatDateDotParsed(calendarEvent.end)}`
+				)}
 			</span>
 			<ul className={styles.chipsList}>
 				<li className={styles.deadlineChip}>{getDDay(ddayTargetDate)}</li>

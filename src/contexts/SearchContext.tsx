@@ -20,6 +20,7 @@ interface SearchContextType {
 	setSize: Dispatch<SetStateAction<number>>;
 	fetchSearchResult: (q: string, page: number, size: number) => Promise<void>;
 	searchResults: SearchResult | null;
+	emptySearchResults: ()=>void;
 	// fetchSearchResult: (q: string, page: number, size: number) => Promise<void>;
 	searchLoading: boolean;
 }
@@ -45,11 +46,15 @@ export const SearchProvider = ({ children }: { children: ReactNode }) => {
 				setSearchResults(null);
 				console.error("Error in getting search results", e);
 			} finally {
-				setSearchLoading(true);
+				setSearchLoading(false);
 			}
 		},
 		[],
 	);
+
+	const emptySearchResults = () => {
+		setSearchResults(null);
+	}
 
 	// useEffect(() => {
 	//     fetchSearchResult(query, page, size);
@@ -67,6 +72,7 @@ export const SearchProvider = ({ children }: { children: ReactNode }) => {
 				searchResults,
 				searchLoading,
 				fetchSearchResult,
+				emptySearchResults,
 			}}
 		>
 			{children}

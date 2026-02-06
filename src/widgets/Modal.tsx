@@ -7,7 +7,7 @@ interface ModalProps {
 	rightText: string;
 	onLeftClick: () => void;
 	onRightClick: () => void;
-	onClose: () => void;
+	onClose: (() => void) | null;
 }
 
 const Modal = ({
@@ -21,9 +21,11 @@ const Modal = ({
 	return (
 		<div className={styles.modalContainer}>
 			<div className={styles.modalWrapper}>
+				{onClose && (
 				<button className={styles.closeButton} type="button" onClick={onClose}>
 					<IoIosClose size={25} color="gray" />
 				</button>
+				)}
 				<span className={styles.modalContent}>{content}</span>
 				<div className={styles.buttonsRow}>
 					<button
