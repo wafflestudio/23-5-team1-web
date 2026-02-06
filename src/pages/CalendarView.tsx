@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Views } from "react-big-calendar";
 import { useEvents } from "@contexts/EventContext";
 import { useFilter } from "@contexts/FilterContext";
@@ -9,12 +9,12 @@ import type {
 	FetchMonthEventArgs,
 	FetchWeekEventArgs,
 } from "@types";
-import DetailView from "@widgets/DetailView";
+import DetailView from "@/widgets/DetailView";
 import MonthSideView from "@widgets/Month/MonthSideView/MonthSideView";
 import { MyCalendar } from "@widgets/MyCalendar";
 import { Sidebar } from "@widgets/Sidebar";
 import { useDetail } from "@contexts/DetailContext";
-import { formatDateToYYYYMMDD } from "../util/Calendar/dateFormatter";
+import { formatDateToYYYYMMDD } from "@calendarUtil/dateFormatter";
 
 const CalendarView = () => {
 	const {
@@ -109,6 +109,7 @@ const CalendarView = () => {
 		};
 		loadWeekEvents();
 	}, [currentDate, fetchWeekEvents, globalCategory, globalOrg, globalStatus]);
+
 	useEffect(() => {
 		const loadDayEvents = async () => {
 			const paramDay: FetchDayEventArgs = {
@@ -141,17 +142,32 @@ const CalendarView = () => {
 		setClickedEventId(event.resource.event.id);
 	};
 
-	const onShowDetail = () => {
-		setShowSideMonth(false);
-		setShowDetail(true);
-	};
-
 	const handleCloseSideMonth = () => {
 		setShowSideMonth(false);
 	};
-	const handleCloseDetail = () => {
-		setShowDetail(false);
-	};
+
+	// clicking outside of sideview (that is not event or anything else) created
+	const sidePanelRef = useRef<HTMLDivElement>(null);
+
+	// detect outside clicks
+	useEffect(() => {
+		function handleClickOutside(event: MouseEvent) {
+			if (!sidePanelRef.current) return;
+
+			// Check if click target is inside the side panel
+			const isInside = sidePanelRef.current.contains(event.target as Node);
+			// If clicked OUTSIDE, close both panels
+			if (!isInside) {
+				setShowSideMonth(false);
+				setShowDetail(false);
+			}
+		}
+		document.addEventListener("mousedown", handleClickOutside);
+
+		return () => {
+			document.removeEventListener("mousedown", handleClickOutside);
+		};
+	}, [setShowDetail]);
 
 	return (
 		<div className={styles.container}>
@@ -169,18 +185,17 @@ const CalendarView = () => {
 					/>
 				</div>
 				{showSideMonth && (
-					<div className={styles.sidePanel}>
-						<MonthSideView
-							day={clickedDate}
-							onClose={handleCloseSideMonth}
-							onDetailClick={onShowDetail}
-						/>
+					<div className={styles.sidePanel} ref={sidePanelRef}>
+						<MonthSideView day={clickedDate} onClose={handleCloseSideMonth} />
 					</div>
 				)}
 
 				{showDetail && clickedEventId !== undefined && (
-					<div className={styles.sidePanel}>
-						<DetailView eventId={clickedEventId} onClose={handleCloseDetail} />
+					<div
+						className={`${styles.sidePanel} ${styles.detailPanel}`}
+						ref={sidePanelRef}
+					>
+						<DetailView eventId={clickedEventId} />
 					</div>
 				)}
 			</div>

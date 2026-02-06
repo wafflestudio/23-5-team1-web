@@ -14,6 +14,7 @@ import styles from "@styles/Sidebar.module.css";
 import type { Category } from "@types";
 import { useUserData } from "@/contexts/UserDataContext";
 import { IoIosClose } from "react-icons/io";
+import { CATEGORY_BUTTON_COLORS } from "@/util/constants";
 
 export const Sidebar = () => {
 	type FilterType = "status" | "org" | "category";
@@ -233,13 +234,20 @@ export const Sidebar = () => {
 						{/* toggle list */}
 						{expandedSections[name] && (
 							<div className={styles.toggleListWrapper}>
-								{list.map((option) => {
+								{list.map((option, idx) => {
 									const isChecked = state.some((s) => s.id === option.id);
 
 									return (
 										<button
 											key={option.id}
 											type="button"
+											style={
+												option.groupId === 3
+													? {
+															backgroundColor: CATEGORY_BUTTON_COLORS[idx + 1],
+														}
+													: {}
+											}
 											className={`${styles.toggleItem} ${
 												isChecked ? styles.active : ""
 											}`}
@@ -249,7 +257,7 @@ export const Sidebar = () => {
 												{isChecked ? (
 													<MdCheckBox color="#3b82f6" />
 												) : (
-													<MdCheckBoxOutlineBlank color="#ccc" />
+													<MdCheckBoxOutlineBlank color="#9d9d9dff" />
 												)}
 											</span>
 											<span className={styles.toggleText}>{option.name}</span>
@@ -261,7 +269,7 @@ export const Sidebar = () => {
 					</div>
 				))
 			)}
-			{/* TODO : 제외 로직 */}
+
 			<div className={styles.filterGroup}>
 				<div className={styles.labelRow}>
 					<button
@@ -323,7 +331,11 @@ export const Sidebar = () => {
 			<div className={styles.sectionTitle} style={{ marginTop: "20px" }}>
 				페이지
 			</div>
-			<button className={styles.pageLink} type="button">
+			<button
+				className={styles.pageLink}
+				type="button"
+				onClick={() => navigate("/my/bookmark")}
+			>
 				<img
 					className={styles.icon}
 					src="/assets/bookmark.svg"

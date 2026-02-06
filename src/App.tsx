@@ -7,6 +7,7 @@ import { DetailContextProvider } from "./contexts/DetailContext";
 
 import AppRoutes from "./router/AppRoutes";
 import { SearchProvider } from "./contexts/SearchContext";
+import { TimetableProvider } from "./contexts/TimetableContext";
 
 function App() {
 	return (
@@ -17,7 +18,9 @@ function App() {
 						<SearchProvider>
 							<DayViewContextProvider>
 								<DetailContextProvider>
-									<AppRoutes />
+									<TimetableProvider>
+										<AppRoutes />
+									</TimetableProvider>
 								</DetailContextProvider>
 							</DayViewContextProvider>
 						</SearchProvider>

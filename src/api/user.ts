@@ -1,5 +1,5 @@
 import { transformEvent } from "@calendarUtil/transformEvent";
-import type { Category, EventDTO } from "@types";
+import type { Category, EventDTO, Memo, MemoTag } from "@types";
 import api from "./axios";
 
 // --- Excluded Keywords ---
@@ -60,10 +60,74 @@ export const addInterestCategories = async (
 	return api.put("/users/me/interest-categories", { items });
 };
 
+/*
 export const removeInterestCategory = async (categoryId: number) => {
 	await api.delete(`/users/me/interest-categories/${categoryId}`);
 };
+*/
 
-export const addMemo = async (eventId: number, content: string) => {
-	await api.post(`/users/me/memos`, { eventId, content });
+// --- Memos ---
+interface MemoDTO {
+	id: number;
+	eventId: number;
+	eventTitle: string;
+	content: string;
+	tags: MemoTag[];
+	createdAt: string;
+	updatedAt: string;
+}
+
+// helper mapping func
+const mapMemoDTO = (m: MemoDTO) => {
+	return {
+		id: m.id,
+		eventId: m.eventId,
+		eventTitle: m.eventTitle,
+		content: m.content,
+		tags: m.tags,
+		createdAt: new Date(m.createdAt),
+	};
+};
+
+export const getMemos = async () => {
+	const res = await api.get<{ items: MemoDTO[] }>("/memos");
+	const memos: Memo[] = res.data.items.map(mapMemoDTO);
+
+	return memos;
+};
+
+// 특정 태그를 가진 메모 목록 반환
+export const getMemoByTag = async (id: number) => {
+	const res = await api.get<{ items: MemoDTO[] }>(`/memos/by-tag/${id}`);
+	const memos: Memo[] = res.data.items.map(mapMemoDTO);
+	return memos;
+};
+
+export const addMemo = async (
+	eventId: number,
+	content: string,
+	tagNames: string[],
+) => {
+	await api.post(`/memos`, { eventId, content, tagNames });
+};
+
+export const deleteMemo = async (id: number) => {
+	await api.delete(`/memos/${id}`);
+};
+
+export const editMemoContent = async (id: number, content: string) => {
+	const newMemoDTO: MemoDTO = await api.patch(`/memos/${id}`, {
+		content,
+	});
+	const newMemo = mapMemoDTO(newMemoDTO);
+
+	return newMemo;
+};
+export const editMemoTags = async (id: number, tagNames: string[]) => {
+	const newMemoDTO: MemoDTO = await api.patch(`/memos/${id}`, {
+		tagNames: tagNames.length === 0 ? null : tagNames,
+	});
+	const newMemo = mapMemoDTO(newMemoDTO);
+
+	return newMemo;
 };

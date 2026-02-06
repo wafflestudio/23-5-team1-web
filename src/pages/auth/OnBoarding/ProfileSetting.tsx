@@ -1,27 +1,31 @@
 import type React from "react";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthProvider";
 import defaultProfile from "/assets/defaultProfile.png";
-import { updateUser } from "@api/auth";
 import styles from "./ProfileSetting.module.css";
 
 export default function ProfileSetting() {
-	const name = useRef<HTMLInputElement>(null);
 	const [, setSearchParams] = useSearchParams();
+	const { updateUser } = useAuth();
+
 	const DEFAULT_PROFILE_URL = defaultProfile;
+	const [name, setName] = useState<string>("");
 	const [previewUrl, setPreviewUrl] = useState(DEFAULT_PROFILE_URL);
+	const [imgFile, setImgFile] = useState<File | null>(null);
 	const [, setIsDefaultProfile] = useState(true);
 
 	const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0];
 		if (!file) return;
+		setImgFile(file);
 		setPreviewUrl(URL.createObjectURL(file));
 		setIsDefaultProfile(false);
 	};
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		updateUser(name.current?.value, previewUrl);
+		updateUser(name, imgFile);
 
 		setSearchParams((prev) => {
 			const next = new URLSearchParams(prev);
@@ -47,7 +51,6 @@ export default function ProfileSetting() {
 							alt="프로필 사진 미리보기"
 						/>
 					</label>
-
 					<input
 						id="profile-image"
 						className={styles.file}
@@ -60,7 +63,8 @@ export default function ProfileSetting() {
 						className={styles.input}
 						type="text"
 						placeholder="푱푱한 토끼"
-						ref={name}
+						value={name}
+						onChange={(e) => setName(e.currentTarget.value)}
 					/>
 
 					<button className={styles.submit} type="submit">

@@ -60,8 +60,14 @@ const SearchInput = () => {
 };
 
 export const ProfileButton = ({ user }: { user: User | null }) => {
+	const navigate = useNavigate();
+
 	return (
-		<button type="button" className={styles.profileButton}>
+		<button
+			type="button"
+			className={styles.profileButton}
+			onClick={() => navigate("/my")}
+		>
 			<img
 				alt="user profile"
 				src={user?.profileImageUrl || "/assets/defaultProfile.png"}
@@ -183,7 +189,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
 					)}
 					<div className={styles.profileRow}>
 						<SearchInput />
-						<ProfileButton user={user} />
+						{user && <ProfileButton user={user} />}
 					</div>
 				</div>
 			</div>

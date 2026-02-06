@@ -14,8 +14,7 @@ import { layoutDayBlocksLane } from "../../util/weekly_timetable/layout";
 import { formatAmPmFromMinutes } from "../../util/weekly_timetable/time";
 import { CATEGORY_COLORS } from "@/util/constants";
 import styles from "@styles/WeekGrid.module.css";
-
-export type WeekGridProps = {
+type WeekGridProps = {
 	items: CalendarEvent[];
 	config: GridConfig;
 	toBlocks: (items: CalendarEvent[], config: GridConfig) => WeekGridBlock[];
