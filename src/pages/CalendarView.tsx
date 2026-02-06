@@ -15,6 +15,7 @@ import { MyCalendar } from "@widgets/MyCalendar";
 import { Sidebar } from "@widgets/Sidebar";
 import { useDetail } from "@contexts/DetailContext";
 import { formatDateToYYYYMMDD } from "@calendarUtil/dateFormatter";
+import { useUserData } from "@/contexts/UserDataContext";
 
 const CalendarView = () => {
 	const {
@@ -30,6 +31,7 @@ const CalendarView = () => {
 	// detail 보이는 뷰 조정
 	const { showDetail, setShowDetail, clickedEventId, setClickedEventId } =
 		useDetail();
+	const { excludedKeywords, interestCategories } = useUserData();
 
 	// 현재 기준점이 되는 날짜
 	const [currentDate, setCurrentDate] = useState<Date>(new Date());
@@ -62,6 +64,7 @@ const CalendarView = () => {
 		setCurrentDate(dayDate);
 	}, [dayDate]);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: excludedKeywords and interestCategories change server data although not explicitly used in FE
 	useEffect(() => {
 		const loadMonthEvents = async () => {
 			const paramMonth: FetchMonthEventArgs = {
@@ -76,7 +79,7 @@ const CalendarView = () => {
 			await fetchMonthEvents(paramMonth);
 		};
 		loadMonthEvents();
-	}, [currentDate, fetchMonthEvents, globalCategory, globalOrg, globalStatus]);
+	}, [currentDate, fetchMonthEvents, globalCategory, globalOrg, globalStatus, excludedKeywords, interestCategories]);
 
 	useEffect(() => {
 		const getWeekRangeByDate = (date: Date) => {
