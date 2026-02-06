@@ -15,7 +15,9 @@
 	z-index: 20;
 	pointer-events: none;
 	padding-bottom: env(safe-area-inset-bottom, 0px);
-	overflow: hidden;
+	overflow-y: auto;
+	overflow-x: hidden;
+	max-height: 200px;
 }
 
 .inner {

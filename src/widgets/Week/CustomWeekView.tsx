@@ -6,7 +6,7 @@ import type {
 	ViewStatic,
 } from "react-big-calendar";
 
-import type { Event, CalendarEvent, PeriodEvent } from "../../util/types";
+import type { Event, CalendarEvent } from "../../util/types";
 import {
 	config,
 	flattenEventsToBlocks,
@@ -58,9 +58,9 @@ function useAnchorRect<T extends HTMLElement>(
 	return rect;
 }
 
-function isValidPeriodEvent(ev: Event): ev is PeriodEvent {
-	return ev.applyStart instanceof Date && ev.applyEnd instanceof Date;
-}
+// function isValidPeriodEvent(ev: Event): ev is PeriodEvent {
+// 	return ev.applyStart instanceof Date && ev.applyEnd instanceof Date;
+// }
 
 function CustomWeekView({
 	date,
@@ -110,17 +110,13 @@ function CustomWeekView({
 					ce.allDay === false,
 			);
 
-			const period = src
-				.filter(
-					(
-						ce,
-					): ce is CalendarEvent & {
-						resource: { event: Event; isPeriodEvent: true };
-					} =>
-						Boolean(ce?.resource?.event) && ce.resource.isPeriodEvent === true,
-				)
-				.map((ce) => ce.resource.event)
-				.filter(isValidPeriodEvent);
+			const period = src.filter(
+				(
+					ce,
+				): ce is CalendarEvent & {
+					resource: { event: Event; isPeriodEvent: true };
+				} => Boolean(ce?.resource?.event) && ce.resource.isPeriodEvent === true,
+			);
 			return {
 				allDayCalendarEvents,
 				timetableEvents: timetable,
