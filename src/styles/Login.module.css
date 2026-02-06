@@ -1,10 +1,10 @@
-.login-page,
-.login-page * {
+.loginPage,
+.loginPage * {
 	box-sizing: border-box;
 }
 
 /* 페이지 전체 가운데 정렬 */
-.login-page {
+.loginPage {
 	min-height: 100vh;
 	display: flex;
 	justify-content: center;
@@ -14,7 +14,7 @@
 }
 
 /* 가운데 박스(내용 폭 제한) */
-.login-box {
+.loginBox {
 	width: 100%;
 	max-width: 520px;
 	display: flex;
@@ -23,7 +23,7 @@
 }
 
 /* 타이틀 */
-.login-title {
+.loginTitle {
 	margin: 0 0 28px;
 	font-size: 28px;
 	font-weight: 700;
@@ -33,7 +33,7 @@
 }
 
 /* 폼: 가운데에 세로로 */
-.login-form {
+.loginForm {
 	width: 100%;
 	display: flex;
 	flex-direction: column;
@@ -42,14 +42,14 @@
 }
 
 /* 인풋 영역 폭 */
-.login-field {
+.loginField {
 	width: min(420px, 100%);
 	display: block;
 	margin: 0 auto;
 }
 
 /* 둥근 인풋 */
-.login-input {
+.loginInput {
 	width: 100%;
 	height: 44px;
 	padding: 0 16px;
@@ -62,16 +62,16 @@
 }
 
 /* placeholder 톤 */
-.login-input::placeholder {
+.loginInput::placeholder {
 	color: #828282;
 }
 
-.login-input:focus {
+.loginInput:focus {
 	border-color: #cfcfcf;
 }
 
-/* 에러 문구: 빨강 + 살짝 위 여백(사진 느낌) */
-.login-error {
+/* 에러 문구 */
+.loginError {
 	width: min(420px, 100%);
 	margin: 2px 0 2px;
 	font-size: 14px;
@@ -80,7 +80,7 @@
 }
 
 /* 검정 pill 버튼 */
-.login-button {
+.loginButton {
 	width: min(420px, 100%);
 	height: 46px;
 	margin: 0 auto;
@@ -93,12 +93,12 @@
 	cursor: pointer;
 }
 
-.login-button:active {
+.loginButton:active {
 	transform: translateY(1px);
 }
 
 /* 회원가입 안내 */
-.login-signup {
+.loginSignup {
 	margin-top: 10px;
 	display: flex;
 	gap: 8px;
@@ -106,12 +106,12 @@
 	justify-content: center;
 }
 
-.login-signup-text {
+.loginSignupText {
 	font-size: 12px;
 	color: #777;
 }
 
-.login-signup-link {
+.loginSignupLink {
 	font-size: 12px;
 	font-weight: 600;
 	color: #000;
