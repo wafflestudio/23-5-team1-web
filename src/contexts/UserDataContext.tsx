@@ -26,10 +26,13 @@ interface UserDataContextType {
 		tagNames: string[],
 	) => Promise<void>;
 	deleteMemo: (id: number) => Promise<void>;
-	updateMemo: (id: number, updates: {
-		content?: string | undefined;
-		tagNames?: string[] | undefined;
-	}) => Promise<Memo | null>
+	updateMemo: (
+		id: number,
+		updates: {
+			content?: string | undefined;
+			tagNames?: string[] | undefined;
+		},
+	) => Promise<Memo | null>;
 }
 
 const UserDataContext = createContext<UserDataContextType | undefined>(
@@ -156,19 +159,23 @@ export const UserDataProvider = ({ children }: { children: ReactNode }) => {
 		}
 	};
 
-	const updateMemo = async (id: number, updates: { content?: string; tagNames?: string[] }) => {
+	const updateMemo = async (
+		id: number,
+		updates: { content?: string; tagNames?: string[] },
+	) => {
 		try {
 			const newMemo: Memo = await userService.editMemo(id, updates);
 
-			setEventMemos((prevMemos) => 
-				prevMemos.map((memo) => memo.id === id ? newMemo : memo));
-			
+			setEventMemos((prevMemos) =>
+				prevMemos.map((memo) => (memo.id === id ? newMemo : memo)),
+			);
+
 			return newMemo;
 		} catch (error) {
-        console.error("error in updating memo", error);
-        return null;
-    }
-}
+			console.error("error in updating memo", error);
+			return null;
+		}
+	};
 
 	return (
 		<UserDataContext.Provider

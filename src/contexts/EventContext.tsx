@@ -52,7 +52,7 @@ interface EventContextType {
 	calendarError: string | null;
 	detailError: string | null;
 	searchError: string | null;
-	clearError: (error: 'calendar' | 'detail' | 'search')=>void;
+	clearError: (error: "calendar" | "detail" | "search") => void;
 
 	fetchMonthEvents: (params: FetchMonthEventArgs) => Promise<void>;
 	fetchWeekEvents: (params: FetchWeekEventArgs) => Promise<void>;
@@ -241,10 +241,10 @@ export const EventProvider: React.FC<{ children: ReactNode }> = ({
 		}
 	}, []);
 
-	const clearError = useCallback((error: 'calendar'|'detail'|'search') => {
-		if (error==='calendar') {
+	const clearError = useCallback((error: "calendar" | "detail" | "search") => {
+		if (error === "calendar") {
 			setCalendarError(null);
-		} else if (error==='detail') {
+		} else if (error === "detail") {
 			setDetailError(null);
 		} else {
 			setSearchError(null);
@@ -258,11 +258,11 @@ export const EventProvider: React.FC<{ children: ReactNode }> = ({
 
 		dayDate,
 		setDayDate,
-		
+
 		searchResults,
 		categoryGroups,
 		organizations,
-		
+
 		isLoadingMonth,
 		isLoadingWeek,
 		isLoadingDay,

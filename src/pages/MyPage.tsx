@@ -41,22 +41,22 @@ const ProfileCard = () => {
 		// name change
 		if (username.trim() && username !== user?.username) {
 			updateUsername(username);
-		};
+		}
 		if (imgFile) {
 			// if file input is null : no changes, don't call functions
 			setProfileImg(imgFile);
-		};
+		}
 		setImgFile(null);
 	};
 
 	// profile image preview url cleanup (cleanup callback is executed before next effect / component unmount)
 	useEffect(() => {
 		return () => {
-			if (profilePreviewUrl?.startsWith('blob:')) {
+			if (profilePreviewUrl?.startsWith("blob:")) {
 				URL.revokeObjectURL(profilePreviewUrl);
 			}
 		};
-	}, [profilePreviewUrl])
+	}, [profilePreviewUrl]);
 
 	return (
 		<div className={styles.profileContainer}>

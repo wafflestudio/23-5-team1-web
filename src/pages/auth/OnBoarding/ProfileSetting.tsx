@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthProvider";
 import defaultProfile from "/assets/defaultProfile.png";
-import styles from "@styles/ProfileSetting.module.css";
+import styles from '@styles/ProfileSetting.module.css';
 
 export default function ProfileSetting() {
 	const [, setSearchParams] = useSearchParams();
@@ -36,13 +36,12 @@ export default function ProfileSetting() {
 
 	// profile image preview url cleanup (cleanup callback is executed before next effect / component unmount)
 	useEffect(() => {
-			return () => {
-				if (previewUrl?.startsWith('blob:')) {
-					URL.revokeObjectURL(previewUrl);
-				}
-			};
-	}, [previewUrl])
-	
+		return () => {
+			if (previewUrl?.startsWith("blob:")) {
+				URL.revokeObjectURL(previewUrl);
+			}
+		};
+	}, [previewUrl]);
 
 	return (
 		<div className={styles.page}>

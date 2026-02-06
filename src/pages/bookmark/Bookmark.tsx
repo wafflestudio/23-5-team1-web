@@ -64,9 +64,7 @@ const BookmarksPage = () => {
 					<div className={styles.cardsColumn}>
 						{bookmarkedEvents &&
 							bookmarkedEvents.length > 0 &&
-							bookmarkedEvents.map((e) => (
-									<GalleryCard key={e.id} event={e} />
-							))}
+							bookmarkedEvents.map((e) => <GalleryCard key={e.id} event={e} />)}
 					</div>
 					{(!bookmarkedEvents || bookmarkedEvents.length === 0) && (
 						<span
@@ -76,9 +74,7 @@ const BookmarksPage = () => {
 				</div>
 				{showDetail && clickedEventId !== undefined && (
 					<div className={styles.sidePanel}>
-						<DetailView
-							eventId={clickedEventId}
-						/>
+						<DetailView eventId={clickedEventId} />
 					</div>
 				)}
 			</div>

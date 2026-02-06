@@ -43,11 +43,11 @@ const MemoPageCard = ({
 		}
 	}, [isAddingTag]);
 
-    const tagsChanged =
-		JSON.stringify(tagNames.sort()) !== JSON.stringify(memo.tags.map(m=>m.name).sort());
+	const tagsChanged =
+		JSON.stringify(tagNames.sort()) !==
+		JSON.stringify(memo.tags.map((m) => m.name).sort());
 
-    const isContentChanged = content !== memo.content;
-
+	const isContentChanged = content !== memo.content;
 
 	const handleDeleteTag = (tagName: string) => {
 		setTagNames((prev) => prev.filter((t) => t !== tagName));
@@ -69,19 +69,19 @@ const MemoPageCard = ({
 
 	const handleSave = async () => {
 		setEditMode(false);
-        
-        const updates: {content?: string; tagNames?: string[]} = {};
-        if (tagsChanged) {
-            updates.tagNames = tagNames;
-        }
-        // if contents are changed
-        if (isContentChanged) {
-            updates.content = content;
-        }
 
-        if (tagsChanged || isContentChanged) {
-            await updateMemo(memo.id, updates);
-        }
+		const updates: { content?: string; tagNames?: string[] } = {};
+		if (tagsChanged) {
+			updates.tagNames = tagNames;
+		}
+		// if contents are changed
+		if (isContentChanged) {
+			updates.content = content;
+		}
+
+		if (tagsChanged || isContentChanged) {
+			await updateMemo(memo.id, updates);
+		}
 	};
 
 	return (
