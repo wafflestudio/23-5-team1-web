@@ -50,8 +50,13 @@ export const removeBookmark = async (eventId: number) => {
 
 // --- Interests ---
 export const getInterestCategories = async () => {
-	const res = await api.get<Category[]>("/users/me/interest-categories");
-	return res.data;
+	const res = await api.get<{
+		items: { category: Category; priority: number }[];
+	}>("/users/me/interest-categories");
+	const sortedCategories = res.data.items
+		.sort((a, b) => a.priority - b.priority)
+		.map((item) => item.category);
+	return sortedCategories;
 };
 
 export const addInterestCategories = async (
