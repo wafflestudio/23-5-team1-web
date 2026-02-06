@@ -76,6 +76,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 			setUser(userData);
 			setIsAuthenticated(true);
+			localStorage.setItem('isLoggedIn', 'true');
 		} catch (err) {
 			console.error("Login failed:", err);
 			throw err;
@@ -95,6 +96,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 			const userData = await auth.getUser();
 			setUser(userData);
 			setIsAuthenticated(true);
+			localStorage.setItem('isLoggedIn', 'true');
 		} catch (err) {
 			console.error("Social Login failed:", err);
 			throw err;

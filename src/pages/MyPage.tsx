@@ -126,7 +126,7 @@ const ProfileCard = () => {
 				className={styles.timeTableBtn}
 				onClick={() => navigate("/timetable")}
 			>
-				{timetables && timetables.length > 0 ? (
+				{timetables && timetables.length === 0 ? (
 					<>
 						<img src="/assets/radio.svg" alt="a plus button" />
 						<span>내 시간표 등록하기</span>

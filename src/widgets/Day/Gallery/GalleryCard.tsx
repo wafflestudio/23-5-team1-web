@@ -17,7 +17,7 @@ const GalleryCard = ({ event }: { event: Event }) => {
 			key={event.id}
 			tabIndex={0}
 			onClick={handleClick}
-			onKeyDown={(e) => e.key === "Enter" && handleClick}
+			onKeyDown={(e) => e.key === "Enter" && handleClick()}
 		>
 			<div
 				style={{

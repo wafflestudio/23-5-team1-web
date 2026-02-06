@@ -1,6 +1,16 @@
-export const isLongerThan = (start: Date, end: Date, day: number): boolean => {
-	const diffInMs = end.getTime() - start.getTime();
+export const isLongerThan = (
+	start: Date,
+	end: Date,
+	daysThreshold: number,
+): boolean => {
+	const utcStart = Date.UTC(
+		start.getFullYear(),
+		start.getMonth(),
+		start.getDate(),
+	);
+	const utcEnd = Date.UTC(end.getFullYear(), end.getMonth(), end.getDate());
 	const MS_PER_DAY = 1000 * 60 * 60 * 24;
-	const diffInDays = diffInMs / MS_PER_DAY;
-	return diffInDays > day;
+
+	const diffInDays = (utcEnd - utcStart) / MS_PER_DAY;
+	return diffInDays > daysThreshold;
 };

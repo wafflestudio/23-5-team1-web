@@ -28,7 +28,7 @@ const MemoPageCard = ({
 	);
 	const [isAddingTag, setIsAddingTag] = useState<boolean>(false);
 	const [newTag, setNewTag] = useState<string>("");
-	const { editMemoContent, editMemoTag } = useUserData();
+	const { updateMemo } = useUserData();
 	const inputRef = useRef<HTMLInputElement>(null);
 
 	useEffect(() => {
@@ -42,6 +42,12 @@ const MemoPageCard = ({
 			inputRef.current.focus();
 		}
 	}, [isAddingTag]);
+
+    const tagsChanged =
+		JSON.stringify(tagNames.sort()) !== JSON.stringify(memo.tags.map(m=>m.name).sort());
+
+    const isContentChanged = content !== memo.content;
+
 
 	const handleDeleteTag = (tagName: string) => {
 		setTagNames((prev) => prev.filter((t) => t !== tagName));
@@ -61,18 +67,21 @@ const MemoPageCard = ({
 		setIsAddingTag(false);
 	};
 
-	const handleSave = () => {
+	const handleSave = async () => {
 		setEditMode(false);
-		// if tags are changed
-		const originalTagNames = memo.tags.map((m) => m.name).slice().sort();
-		const updatedTagNames = [...tagNames].sort();
-		if (JSON.stringify(updatedTagNames) !== JSON.stringify(originalTagNames)) {
-			editMemoTag(memo.id, tagNames);
-		}
-		// if contents are changed
-		if (content !== memo.content) {
-			editMemoContent(memo.id, content);
-		}
+        
+        const updates: {content?: string; tagNames?: string[]} = {};
+        if (tagsChanged) {
+            updates.tagNames = tagNames;
+        }
+        // if contents are changed
+        if (isContentChanged) {
+            updates.content = content;
+        }
+
+        if (tagsChanged || isContentChanged) {
+            await updateMemo(memo.id, updates);
+        }
 	};
 
 	return (
