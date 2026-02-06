@@ -101,8 +101,6 @@ interface CreateCustomCourseRequestDto {
 	instructor?: string;
 }
 
-type JsonNode = any;
-
 interface CreateTimetableRequestDto {
 	/** @minLength 1 */
 	name: string;
