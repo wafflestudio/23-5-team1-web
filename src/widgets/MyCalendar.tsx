@@ -46,7 +46,6 @@ export const MyCalendar = ({
 		switch (currentView) {
 			case Views.MONTH:
 				return monthEvents;
-			/* TODO : make week data */
 			case Views.WEEK:
 				return weekEvents;
 			case Views.DAY:
@@ -64,7 +63,7 @@ export const MyCalendar = ({
 				isPeriodEvent = true;
 			} else if (
 				event.title.includes("공모전") ||
-				event.title.includes("인턴십")
+				event.title.includes("인턴십") 
 			) {
 				// 인턴십, 공모전 : 신청형 기간제 행사임에도 eventStart, eventEnd 데이터가 들어있는 경우 있음
 				// -> 일괄적으로 기간제 행사 처리
@@ -77,8 +76,8 @@ export const MyCalendar = ({
 				isPeriodEvent = false;
 			}
 
-			const startDate = event.eventStart || event.applyStart;
-			const endDate = event.eventEnd || event.applyEnd;
+			const startDate = (isPeriodEvent ? event.applyStart  : event.eventStart) || event.eventStart || event.applyStart;
+			const endDate = (isPeriodEvent ? event.applyEnd  : event.eventEnd) || event.eventEnd || event.applyEnd;
 			const isAllDay = currentView === Views.MONTH ? true : isPeriodEvent;
 
 			return {
