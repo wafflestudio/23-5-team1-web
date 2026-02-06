@@ -7,11 +7,16 @@ import { useNavigate } from "react-router-dom";
 import { useTimetable } from "@/contexts/TimetableContext";
 import { useEffect, useState } from "react";
 import { RiPencilFill } from "react-icons/ri";
-import { FaCamera } from "react-icons/fa6";
+import { FaCamera, FaStar } from "react-icons/fa6";
 import { IoMdDoneAll } from "react-icons/io";
+import { useUserData } from "@/contexts/UserDataContext";
+import Onboarding from "./auth/OnBoarding/Onboarding";
+import Modal from "@/widgets/Modal";
+import Loading from "@/widgets/Loading";
 
-const ProfileCard = () => {
+const ProfileCard = ({ onClickInterest } : { onClickInterest: () => void }) => {
 	const { user, updateUsername, setProfileImg } = useAuth();
+	const { interestCategories } = useUserData();
 	const { timetables } = useTimetable();
 	const [profilePreviewUrl, setProfilePreviewUrl] = useState<string>(
 		user ? user.profileImageUrl : "/assets/defaultProfile.png",
@@ -24,10 +29,10 @@ const ProfileCard = () => {
 	const [isEditmode, setIsEditmode] = useState<boolean>(false);
 	const navigate = useNavigate();
 
-	const handleImageError = () => {
-		setProfilePreviewUrl("/assets/defaultProfile.png");
-	};
-
+const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    console.log("Failed to load image:", e.currentTarget.src); // See what URL is breaking
+    setProfilePreviewUrl("/assets/defaultProfile.png");
+};
 	const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0];
 		if (!file) return;
@@ -48,6 +53,12 @@ const ProfileCard = () => {
 		}
 		setImgFile(null);
 	};
+
+	useEffect(() => {
+        if (user?.profileImageUrl) {
+            setProfilePreviewUrl(user.profileImageUrl);
+        }
+    }, [user?.profileImageUrl]);
 
 	// profile image preview url cleanup (cleanup callback is executed before next effect / component unmount)
 	useEffect(() => {
@@ -121,6 +132,26 @@ const ProfileCard = () => {
 					/>
 				)}
 			</div>
+			<button className={styles.preferenceCol} type='button' onClick={onClickInterest}>
+				<div className={styles.preferenceHeader}>
+					<FaStar size={24} color="#828282" style={{ marginRight: 12 }}/>
+					<span>행사 보기 우선순위</span>
+				</div>
+					{(interestCategories && interestCategories.length > 0) ? (
+					<div>
+						<ul className={styles.preferenceChips}>
+					{interestCategories.map((cat, idx) => (
+						<li className={`${styles.preferenceChip} ${cat.groupId === 3 && styles.category} ${cat.groupId === 2 && styles.organization}`} key={cat.id}>
+							{`${idx+1}순위: ${cat.name}`}
+						</li>
+					))}
+					</ul>
+				</div>
+				) : (
+					<span className={styles.notYetText}>클릭해서 우선순위로 확인할 행사를 설정해보세요!</span>
+				)
+				}
+			</button>
 			<button
 				type="button"
 				className={styles.timeTableBtn}
@@ -146,21 +177,42 @@ const ProfileCard = () => {
 };
 
 const MyPage = () => {
-	const { user } = useAuth();
+	const { user, isLoading } = useAuth();
+	const [isEditingInterest, setIsEditingInterest] = useState<boolean>(false);
+	const navigate = useNavigate();
 
 	return (
 		<div className={styles.main}>
 			<Navigationbar />
-			{user ? (
-				<div className={styles.mypageContainer}>
-					<ProfileCard />
-					<div className={styles.widgetsWrapper}>
-						<BookmarkWidget />
-						<MemoWidget />
-					</div>
-				</div>
+			{isLoading ?
+			(
+			<Loading />
+			)
+			: (
+			isEditingInterest ? (
+				<Onboarding isEditing={true} onFinishEdit={()=>setIsEditingInterest(false)} />
 			) : (
-				<div className={styles.notFound}>{/* Login modal */}</div>
+				user ? (
+					<div className={styles.mypageContainer}>
+						<ProfileCard onClickInterest={() => setIsEditingInterest(()=>true)}/>
+						<div className={styles.widgetsWrapper}>
+							<BookmarkWidget />
+							<MemoWidget />
+						</div>
+					</div>
+				) : (
+					<div className={styles.notFound}>
+						<Modal
+							content="마이페이지 이용을 위해서는 로그인을 해주세요."
+							leftText="로그인"
+							rightText="회원가입"
+							onLeftClick={()=>navigate('/auth/login')}
+							onRightClick={()=>navigate('/auth/signup')}
+							onClose={null}
+						/>
+					</div>
+				)
+			)
 			)}
 		</div>
 	);

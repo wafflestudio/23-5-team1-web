@@ -48,6 +48,7 @@ const SearchInput = () => {
 				className={`${styles.searchInput} ${active ? styles.active : ""}`}
 				placeholder="검색어를 입력하세요"
 				value={searchText}
+				onKeyDown={(e)=>{if (e.key === 'Enter' && !e.nativeEvent.isComposing) handleSearch()}}
 				onChange={(e) => setSearchText(e.currentTarget.value)}
 			/>
 			<IoIosSearch

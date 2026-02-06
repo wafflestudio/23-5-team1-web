@@ -179,13 +179,22 @@ export const Sidebar = () => {
 	return (
 		<div className={styles.sidebarContainer} ref={ref}>
 			<div className={styles.headerRow}>
-				<button
-					type="button"
-					onClick={handleHeaderClick}
-					className={styles.header}
-				>
-					{user ? `${user?.username}의 캘린더` : "로그인하고 이용하기"}
-				</button>
+				<div className={styles.topButtons}>
+					<button
+						type="button"
+						onClick={()=>navigate("/main")}
+						className={styles.header}
+					>
+						<img src='/assets/logo.png' alt="calendar with sha on it, app logo" />
+					</button>
+					<button
+						type="button"
+						onClick={handleHeaderClick}
+						className={styles.header}
+					>
+						{user ? `${user?.username}의 캘린더` : "로그인하고 이용하기"}
+					</button>
+				</div>
 				<button
 					className={styles.collapseBtn}
 					type="button"

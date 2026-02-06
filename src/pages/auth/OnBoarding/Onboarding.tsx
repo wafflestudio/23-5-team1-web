@@ -4,13 +4,16 @@ import { getCategoryGroups, getOrganizations } from "@api/event";
 import { addInterestCategories } from "@api/user";
 import type { Category } from "@types";
 import styles from "@styles/Onboarding.module.css";
+import { useUserData } from "@/contexts/UserDataContext";
 
-export default function Onboarding() {
+export default function Onboarding({ isEditing=false, onFinishEdit } : { isEditing?: boolean; onFinishEdit?: () => void }) {
+	const { refreshUserData, interestCategories } = useUserData();
+
 	const [, setSearchParams] = useSearchParams();
 
 	const [categories, setCategories] = useState<Category[]>([]);
 	const [selectedPreferences, setSelectedPreferences] = useState<Category[]>(
-		[],
+		interestCategories || [],
 	);
 	const [organizations, setOrganizations] = useState<Category[] | null>(null);
 
@@ -65,6 +68,10 @@ export default function Onboarding() {
 
 			await addInterestCategories(items);
 
+			if (isEditing && onFinishEdit) {
+				refreshUserData();
+				onFinishEdit();
+			}
 			setSearchParams((prev) => {
 				const next = new URLSearchParams(prev);
 				next.set("step", "complete");
@@ -77,7 +84,7 @@ export default function Onboarding() {
 	};
 
 	return (
-		<div className={styles.onbPage}>
+		<div className={`${styles.onbPage} ${isEditing ? styles.inMypage : ''}`}>
 			<header className={styles.onbHeader}>
 				<h1 className={styles.onbTitle}>관심사 설정</h1>
 				<p className={styles.onbSubtitle}>

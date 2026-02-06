@@ -23,7 +23,7 @@ const SearchToolbar = ({ viewMode, setViewMode }: SearchToolbarProps) => {
 		<div className={styles.toolbarContainer}>
 			<div className={styles.headerRow}>
 				<h2 className={styles.search}>
-					{query ? `'${query}' 검색 결과` : "검색"}
+					{query.trim() ? `'${query}' 검색 결과` : "검색"}
 				</h2>
 				<div className={styles.btnGroup}>
 					<button type="button" className={styles.calendarBtn}>
@@ -33,8 +33,7 @@ const SearchToolbar = ({ viewMode, setViewMode }: SearchToolbarProps) => {
 							color="rgba(130, 130, 130, 1)"
 						/>
 					</button>
-					{/* TODO : click profile button & go to mypage */}
-					<ProfileButton user={user} />
+					{user && <ProfileButton user={user} />}
 				</div>
 			</div>
 			<div className={styles.searchRow}>
