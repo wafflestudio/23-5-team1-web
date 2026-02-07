@@ -18,9 +18,7 @@ const ProfileCard = ({ onClickInterest } : { onClickInterest: () => void }) => {
 	const { user, updateUsername, setProfileImg } = useAuth();
 	const { interestCategories } = useUserData();
 	const { timetables } = useTimetable();
-	const [profilePreviewUrl, setProfilePreviewUrl] = useState<string>(
-		user ? user.profileImageUrl : "/assets/defaultProfile.png",
-	);
+	const [profilePreviewUrl, setProfilePreviewUrl] = useState<string>(user?.profileImageUrl || '/assets/defaultProfile.png');
 	const [imgFile, setImgFile] = useState<File | null>(null);
 	const [, setIsDefaultProfile] = useState<boolean>(false);
 	const [username, setUsername] = useState<string>(
@@ -29,10 +27,10 @@ const ProfileCard = ({ onClickInterest } : { onClickInterest: () => void }) => {
 	const [isEditmode, setIsEditmode] = useState<boolean>(false);
 	const navigate = useNavigate();
 
-const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    console.log("Failed to load image:", e.currentTarget.src); // See what URL is breaking
-    setProfilePreviewUrl("/assets/defaultProfile.png");
-};
+	const handleImageError = () => {
+		setProfilePreviewUrl("/assets/defaultProfile.png");
+	};
+	
 	const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0];
 		if (!file) return;
