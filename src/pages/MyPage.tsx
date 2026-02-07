@@ -58,6 +58,15 @@ const ProfileCard = ({ onClickInterest } : { onClickInterest: () => void }) => {
         }
     }, [user?.profileImageUrl]);
 
+	// profile image preview url cleanup (cleanup callback is executed before next effect / component unmount)
+	useEffect(() => {
+		return () => {
+			if (profilePreviewUrl?.startsWith("blob:")) {
+				URL.revokeObjectURL(profilePreviewUrl);
+			}
+		};
+	}, [profilePreviewUrl]);
+
 	return (
 		<div className={styles.profileContainer}>
 			<div className={styles.profileRow}>
