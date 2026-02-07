@@ -30,7 +30,7 @@ const ProfileCard = ({ onClickInterest } : { onClickInterest: () => void }) => {
 	const handleImageError = () => {
 		setProfilePreviewUrl("/assets/defaultProfile.png");
 	};
-	
+
 	const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0];
 		if (!file) return;
@@ -58,22 +58,13 @@ const ProfileCard = ({ onClickInterest } : { onClickInterest: () => void }) => {
         }
     }, [user?.profileImageUrl]);
 
-	// profile image preview url cleanup (cleanup callback is executed before next effect / component unmount)
-	useEffect(() => {
-		return () => {
-			if (profilePreviewUrl?.startsWith("blob:")) {
-				URL.revokeObjectURL(profilePreviewUrl);
-			}
-		};
-	}, [profilePreviewUrl]);
-
 	return (
 		<div className={styles.profileContainer}>
 			<div className={styles.profileRow}>
 				<div className={styles.profileImgWrapper}>
 					<img
-						src={profilePreviewUrl}
 						alt="profile img"
+						src={profilePreviewUrl}
 						onError={handleImageError}
 					/>
 					{isEditmode && (
