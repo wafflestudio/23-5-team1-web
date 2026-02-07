@@ -13,12 +13,17 @@ import { useUserData } from "@/contexts/UserDataContext";
 import Onboarding from "./auth/OnBoarding/Onboarding";
 import Modal from "@/widgets/Modal";
 import Loading from "@/widgets/Loading";
+import defaultProfile from "/assets/defaultProfile.png";
 
 const ProfileCard = ({ onClickInterest } : { onClickInterest: () => void }) => {
 	const { user, updateUsername, setProfileImg } = useAuth();
 	const { interestCategories } = useUserData();
 	const { timetables } = useTimetable();
-	const [profilePreviewUrl, setProfilePreviewUrl] = useState<string>(user?.profileImageUrl || '/assets/defaultProfile.png');
+	const [profilePreviewUrl, setProfilePreviewUrl] = useState<string>(
+        (user?.profileImageUrl && user.profileImageUrl !== "") 
+            ? user.profileImageUrl 
+            : defaultProfile
+    );	
 	const [imgFile, setImgFile] = useState<File | null>(null);
 	const [, setIsDefaultProfile] = useState<boolean>(false);
 	const [username, setUsername] = useState<string>(
@@ -28,7 +33,7 @@ const ProfileCard = ({ onClickInterest } : { onClickInterest: () => void }) => {
 	const navigate = useNavigate();
 
 	const handleImageError = () => {
-		setProfilePreviewUrl("/assets/defaultProfile.png");
+		setProfilePreviewUrl(defaultProfile);
 	};
 
 	const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,11 +58,12 @@ const ProfileCard = ({ onClickInterest } : { onClickInterest: () => void }) => {
 	};
 
 	useEffect(() => {
-        if (user?.profileImageUrl) {
+        if (user?.profileImageUrl && user.profileImageUrl.trim() !== "") {
             setProfilePreviewUrl(user.profileImageUrl);
+        } else {
+            setProfilePreviewUrl(defaultProfile);
         }
     }, [user?.profileImageUrl]);
-
 	// profile image preview url cleanup (cleanup callback is executed before next effect / component unmount)
 	useEffect(() => {
 		return () => {
