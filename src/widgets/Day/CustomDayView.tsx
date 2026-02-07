@@ -30,29 +30,27 @@ const CustomDayView = ({
 		return CustomDayView.range(date);
 	}, [date]);
 
-	const { minTime, maxTime } = useMemo(() => {
-		const defaultMin = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0);
-		const defaultMax = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59);
+	const minTime = useMemo(() => {
+		return new Date(
+			date.getFullYear(),
+			date.getMonth(),
+			date.getDate(),
+			0,
+			0,
+			0,
+		);
+	}, [date]);
 
-		if (!events || events.length === 0) {
-			return { minTime: defaultMin, maxTime: defaultMax };
-		}
-
-		const startTimes = events.map(e => new Date(e.start).getTime());
-		const endTimes = events.map(e => new Date(e.end).getTime());
-
-		const earliest = new Date(Math.min(...startTimes));
-		const latest = new Date(Math.max(...endTimes));
-
-		const paddedMin = new Date(earliest.setHours(earliest.getHours() - 1));
-		const paddedMax = new Date(latest.setHours(latest.getHours() + 1));
-
-		return { 
-			minTime: paddedMin, 
-			maxTime: paddedMax 
-		};
-	}, [date, events]);
-
+	const maxTime = useMemo(() => {
+		return new Date(
+			date.getFullYear(),
+			date.getMonth(),
+			date.getDate(),
+			23,
+			59,
+			59,
+		);
+	}, [date]);
 
 	return (
 		<div className={styles.dayViewWrapper}>
