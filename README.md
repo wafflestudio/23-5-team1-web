@@ -1,17 +1,46 @@
-# 행샤 (HaengSha) — Collaborative Calendar & Timetable Platform
+# 행샤(Hangsha): 교내 행사 캘린더 서비스
 
-A web application for managing events, calendars, and timetables — built by [Waffle Studio](https://github.com/wafflestudio) 23.5 Team 1.
+[<img width="250" height="115" alt="image" src="https://github.com/user-attachments/assets/046b4994-764e-40fd-9684-3d7d9dc11d76" />
+](https://hangsha.site/
+)
 
-## What It Does
+## 기획 의도
+[서울대 비교과관리시스템](https://extra.snu.ac.kr/)에 대해 알고 계셨나요?  
+교내 곳곳에서 열리는 특강, 공연, 공모전, 토론회 등 각종 비교과 행사 정보를 볼 수 있는 사이트입니다.  
+그러나 정보 접근을 위해 서울대 로그인 및 인증이 필요하며, 사용성이 떨어짐에 따라 실제 서울대 학생들의 이용 정도 또한 낮다는 한계가 있습니다.
 
-행샤 (HaengSha) is a collaborative calendar platform that helps users organize events and timetables in one place. It provides:
+이에 따라 저희는 **행샤**를 통해, **직관적인 캘린더 UI**로 **개인화**된 행사 확인 서비스를 제공하고자 합니다.
 
-- **Multiple calendar views** — month, week, and day layouts powered by [react-big-calendar](https://github.com/jquense/react-big-calendar)
-- **Timetable management** — create and manage weekly timetables alongside your calendar
-- **Event search & filtering** — find events by keyword, category, or organization
-- **Bookmarks & memos** — save events and attach personal notes
-- **Social authentication** — sign in with Kakao, Google, or Naver (plus email signup)
-- **User profiles** — customize your profile with display name and image
+## 핵심 기능
+### 1. 캘린더
+- 보다 더 직관적인 월/주/일 별 캘린더 UI
+- 행사 상세 정보 조회 및 실제 신청 링크 이동
+- 제목 및 다양한 조건 필터링을 통한 검색
+
+### 2. 개인화
+- 소셜 로그인 + 아이디/비밀번호 로그인
+- 회원가입 온보딩 시 관심 행사 카테고리 설정
+- 제외 키워드 설정 (해당 키워드 포함 행사는 캘린더에서 숨김)
+- 관심 행사 북마크 및 마이페이지에서 북마크 모아보기
+
+### 3. 시간표
+- 내 시간표 생성 및 저장
+- 주별 뷰에서 시간표와 겹치지 않는 행사 확인 가능
+- (확장 가능성) SNUTT 연동으로 시간표 자동 불러오기
+
+### 4. 후기
+- 행사별 개인 후기(메모) 작성 가능
+- 태그로 작성한 메모 분류 가능
+
+## 팀원
+| 이름 | Github ID | 분야 |
+|-|-|-|
+| 허서연(PM) | @h-seo-n | Frontend, UI/UX Design |
+| 김하람 | @haram831 | Frontend, UI/UX Design |
+| 김도향 | @D-hyang | Backend |
+| 이승현 | @subir-sh | Backend, Data Scraping |
+| 정혜인 | @aystoe | Backend |
+
 
 ## Tech Stack
 
@@ -25,6 +54,9 @@ A web application for managing events, calendars, and timetables — built by [W
 | Linting & Formatting | Biome |
 | Unused Code Detection | Knip |
 | Deployment | AWS S3 + CloudFront |
+
+<br />
+<hr />
 
 ## Getting Started
 
