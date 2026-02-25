@@ -35,7 +35,7 @@
 ## 팀원
 | 이름 | Github ID | 분야 |
 |-|-|-|
-| 허서연(PM) | @h-seo-n | Frontend, UI/UX Design |
+| 허서연(PM) | @h-seo-n | Frontend, PM, UI/UX Design |
 | 김하람 | @haram831 | Frontend, UI/UX Design |
 | 김도향 | @D-hyang | Backend |
 | 이승현 | @subir-sh | Backend, Data Scraping |
