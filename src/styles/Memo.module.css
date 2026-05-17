@@ -197,6 +197,8 @@ body {
 
   -ms-overflow-style: none;
   scrollbar-width: none;
+
+  pointer-events: none;
 }
 
 .cardsRow::-webkit-scrollbar {
