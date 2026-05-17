@@ -16,9 +16,11 @@ import { FilterButton } from "@/widgets/Toolbar";
 const MonthSideView = ({
 	day,
 	onClose,
+	onLoginPrompt,
 }: {
 	day: Date;
 	onClose: () => void;
+	onLoginPrompt: () => void;
 }) => {
 	const { setShowDetail, setClickedEventId } = useDetail();
 	const [date, setDate] = useState<Date>(day);
@@ -110,7 +112,7 @@ const MonthSideView = ({
 						onKeyDown={(e) => e.key === "Enter" && handleDetailClick(event.id)}
 						className={styles.cardButton}
 					>
-						<CardView key={event.id} event={event} />
+						<CardView key={event.id} event={event} onLoginPrompt={onLoginPrompt} />
 					</div>
 				))}
 			</div>

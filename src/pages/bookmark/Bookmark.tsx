@@ -53,7 +53,7 @@ const BookmarksPage = () => {
 						className={styles.backBtn}
 						color="ABABAB"
 						size={18}
-						onClick={() => navigate("/my")}
+						onClick={() => (window.history.length > 1 ? navigate(-1) : navigate("/my"))}
 					/>
 					<div className={styles.row}>
 						<span>내 찜 목록</span>

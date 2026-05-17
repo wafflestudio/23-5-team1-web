@@ -5,6 +5,7 @@ import { CATEGORY_COLORS, CATEGORY_LIST } from "@constants";
 import type { Event } from "@types";
 import { useUserData } from "@/contexts/UserDataContext";
 import { StartDate } from "@/widgets/EventDate";
+import { useAuth } from "@/contexts/AuthProvider";
 
 const MobileChipsList = ({ event }: { event: Event }) => {
 	const ddayTargetDate = event.applyEnd;
@@ -55,8 +56,9 @@ const MobileChipsList = ({ event }: { event: Event }) => {
 	)
 }
 
-const CardView = ({ event }: { event: Event }) => {
+const CardView = ({ event, onLoginPrompt }: { event: Event; onLoginPrompt: () => void; }) => {
 	const ddayTargetDate = event.applyEnd;
+	const {user} = useAuth();
 
 	const [isBookmarked, setIsBookmarked] = useState<boolean>(
 		event.isBookmarked || false,
@@ -68,6 +70,11 @@ const CardView = ({ event }: { event: Event }) => {
 	) => {
 		const previousState = isBookmarked;
 		e.stopPropagation();
+
+		if (!user) {	
+			onLoginPrompt();
+			return;
+		}
 
 		// optimistic update
 		setIsBookmarked(!previousState);

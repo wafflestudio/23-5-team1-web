@@ -77,11 +77,9 @@ const MemoPage = () => {
 		return (<div className={styles.notFound}>
 			<Navigationbar />
 			<Modal
-				content="메모 이용을 위해서는 로그인을 해주세요."
-				leftText="로그인"
-				rightText="회원가입"
-				onLeftClick={() => navigate("/auth/login")}
-				onRightClick={() => navigate("/auth/signup")}
+				content={"메모 이용을 위해서는\n로그인이 필요해요."}
+				leftText="로그인 ·회원가입 페이지로 이동"
+				onLeftClick={() => navigate("/")}
 				onClose={null}
 			/>
 			<BottomNav />
