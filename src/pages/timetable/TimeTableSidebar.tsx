@@ -109,6 +109,7 @@ export const TimeTableSidebar = ({
 						<span className={styles.plus} aria-hidden="true">
 							+
 						</span>
+						<span className={styles.toggleText}>새 시간표 추가</span>
 					</button>
 				</div>
 
