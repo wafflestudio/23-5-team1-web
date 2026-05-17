@@ -27,7 +27,7 @@ export default function Login() {
 		try {
 			await login(email, password);
 			setCheck(true);
-			navigate("/auth/complete");
+			navigate("/main");
 		} catch {
 			setCheck(false);
 		}
