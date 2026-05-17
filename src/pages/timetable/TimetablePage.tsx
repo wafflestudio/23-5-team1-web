@@ -255,11 +255,9 @@ export default function TimetablePage() {
 			{!user &&
 				<div className={styles.notFound}>
 					<Modal
-						content="시간표 페이지 이용을 위해서는 로그인을 해주세요."
-						leftText="로그인"
-						rightText="회원가입"
-						onLeftClick={() => navigate("/auth/login")}
-						onRightClick={() => navigate("/auth/signup")}
+						content={"시간표 페이지 이용을 위해서는\n로그인이 필요해요."}
+						leftText="로그인 ·회원가입 페이지로 이동"
+						onLeftClick={() => navigate("/")}
 						onClose={null}
 					/>
 				</div>
