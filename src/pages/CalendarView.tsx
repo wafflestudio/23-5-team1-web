@@ -20,6 +20,7 @@ import { useUserData } from "@/contexts/UserDataContext";
 import BottomNav from "@/widgets/BottomNav";
 import { FilterSheet } from "@/widgets/FilterSheet/FilterSheet";
 import { useMonthEvents, useWeekEvents, useDayEvents } from "@/contexts/useCalendarEvents";
+import Modal from "@/widgets/Modal";
 
 const CalendarView = () => {
 	// EventContext
@@ -46,6 +47,9 @@ const CalendarView = () => {
 	// 월별 뷰 - 날짜 사이드 뷰
 	const [showSideMonth, setShowSideMonth] = useState<boolean>(false);
 	const [clickedDate, setClickedDate] = useState<Date>(new Date());
+
+	// 로그인 모달
+	const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
 	/** ----------------------  FETCH MONTH / WEEK / DAY data -------------------- */ 
 
@@ -187,7 +191,7 @@ const CalendarView = () => {
 				</div>
 				{showSideMonth && (
 					<div className={styles.sidePanel} ref={sidePanelRef}>
-						<MonthSideView day={clickedDate} onClose={handleCloseSideMonth} />
+						<MonthSideView day={clickedDate} onClose={handleCloseSideMonth} onLoginPrompt={()=>setIsLoginModalOpen(true)}/>
 					</div>
 				)}
 
@@ -199,6 +203,18 @@ const CalendarView = () => {
 						<DetailView eventId={clickedEventId} />
 					</div>
 				)}
+
+				{isLoginModalOpen && (
+					<Modal
+						content="로그인 이후 이용해주세요"
+						leftText="로그인"
+						rightText="닫기"
+						onLeftClick={() => navigate("/")}
+						onRightClick={() => setIsLoginModalOpen(false)}
+						onClose={() => setIsLoginModalOpen(false)}
+					/>
+				)}
+
 			</div>
 			<FilterSheet />
 			<BottomNav />
