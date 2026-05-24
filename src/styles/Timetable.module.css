@@ -123,6 +123,10 @@
   padding: 16px;
 }
 
+.addClassPanelDim {
+  display: none;
+}
+
 .panelTitle {
   margin: 8px 0 16px;
   font-size: 22px;
@@ -484,6 +488,17 @@
     top: auto;
     bottom: calc(124px + env(safe-area-inset-bottom));
     transform: none;
+  }
+
+  .addClassPanelDim {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 1190;
+    border: none;
+    padding: 0;
+    background: none;
+    cursor: pointer;
   }
 
   .panel {
