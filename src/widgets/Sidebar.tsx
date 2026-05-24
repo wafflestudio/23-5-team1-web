@@ -62,6 +62,10 @@ export const Sidebar = () => {
 
 	const ref = useRef<HTMLDivElement>(null);
 
+	// IME(한글 등) 조합 상태 추적용 - 조합 중 누른 Enter는 조합 확정에만 사용 & 키워드 추가는 조합이 끝난 직후(compositionEnd)에 처리
+	const isComposingRef = useRef(false);
+	const commitOnComposeEndRef = useRef(false);
+
 	// 모집중, 등
 	const STATUS_LIST =
 		categoryGroups.find((g) => g.group.id === 1)?.categories || [];
@@ -146,16 +150,33 @@ export const Sidebar = () => {
 		}
 	};
 
-	const handleAddKeyword = (e: React.KeyboardEvent | React.MouseEvent) => {
-		if (!excludeInput.trim()) return;
-
-		if ("key" in e) {
-			if (e.key !== "Enter" || e.nativeEvent.isComposing) return;
-			e.stopPropagation();
-			e.preventDefault();
-		}
-		addExcludedKeyword(excludeInput);
+	const commitKeyword = (raw: string) => {
+		const value = raw.trim();
+		if (!value) return;
+		addExcludedKeyword(value);
 		setExcludeInput("");
+	};
+
+	const handleKeywordKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+		if (e.key !== "Enter") return;
+		// 한글 등 IME 조합 중 Enter는 조합을 확정하는 데 쓰이므로 여기서 추가하지 않고 조합이 끝난 직후(compositionEnd)에 추가하도록 표시만 해둠
+		if (e.nativeEvent.isComposing || isComposingRef.current) {
+			commitOnComposeEndRef.current = true;
+			return;
+		}
+		e.stopPropagation();
+		e.preventDefault();
+		commitKeyword(e.currentTarget.value);
+	};
+
+	const handleKeywordCompositionEnd = (
+		e: React.CompositionEvent<HTMLInputElement>,
+	) => {
+		isComposingRef.current = false;
+		if (commitOnComposeEndRef.current) {
+			commitOnComposeEndRef.current = false;
+			commitKeyword(e.currentTarget.value);
+		}
 	};
 
 	const handleTimetableClick = () => {
@@ -306,14 +327,18 @@ export const Sidebar = () => {
 							<input
 								type="text"
 								className={styles.excludeInput}
-								onKeyDown={handleAddKeyword}
+								onKeyDown={handleKeywordKeyDown}
+								onCompositionStart={() => {
+									isComposingRef.current = true;
+								}}
+								onCompositionEnd={handleKeywordCompositionEnd}
 								value={excludeInput}
 								onChange={(e) => setExcludeInput(e.currentTarget.value)}
 							/>
 							<button
 								type="button"
 								className={styles.applyBtn}
-								onClick={handleAddKeyword}
+								onClick={() => commitKeyword(excludeInput)}
 								disabled={excludedKeywordLoading}
 							>
 								적용
