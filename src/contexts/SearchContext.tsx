@@ -52,9 +52,9 @@ export const SearchProvider = ({ children }: { children: ReactNode }) => {
 		[],
 	);
 
-	const emptySearchResults = () => {
+	const emptySearchResults = useCallback(() => {
 		setSearchResults(null);
-	};
+	}, []);
 
 	// useEffect(() => {
 	//     fetchSearchResult(query, page, size);

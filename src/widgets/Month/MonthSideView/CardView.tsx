@@ -56,7 +56,7 @@ const MobileChipsList = ({ event }: { event: Event }) => {
 	)
 }
 
-const CardView = ({ event, onLoginPrompt }: { event: Event; onLoginPrompt?: () => void; }) => {
+const CardView = ({ event, onLoginPrompt, fullWidth = false }: { event: Event; onLoginPrompt?: () => void; fullWidth?: boolean; }) => {
 	const ddayTargetDate = event.applyEnd;
 	const {user} = useAuth();
 
@@ -88,7 +88,7 @@ const CardView = ({ event, onLoginPrompt }: { event: Event; onLoginPrompt?: () =
 	};
 
 	return (
-		<div className={styles.cardWrapper}>
+		<div className={`${styles.cardWrapper} ${fullWidth ? styles.fullWidth : ""}`}>
 			<div className={styles.mobileRow}>
 				<MobileChipsList event={event} />
 				<button type="button" className={styles.bookmarkBtn} onClick={handleToggleBookmark}>

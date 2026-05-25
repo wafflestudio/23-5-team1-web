@@ -13,6 +13,11 @@
     Roboto, "Noto Sans KR", sans-serif;
   text-align: left;
 }
+
+/* fullWidth prop이 켜지면 340px 제한 해제 */
+.cardWrapper.fullWidth {
+  max-width: none;
+}
 .mobileDateOrg,
 .mobileRow {
   padding: 0px;
