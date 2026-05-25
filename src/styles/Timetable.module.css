@@ -404,6 +404,15 @@
   opacity: 0.85;
 }
 
+.eventBlockLocation {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11px;
+  color: #333;
+  opacity: 0.85;
+}
+
 .notFound {
   display: none;
   justify-content: center;
