@@ -379,7 +379,6 @@
   padding: 8px;
   border: none;
   border-radius: 0;
-  color: #ffffff;
   text-align: left;
   cursor: pointer;
   overflow: hidden;
@@ -394,15 +393,15 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 550;
   line-height: 1.25;
 }
 
 .eventBlockTime {
   margin-top: 4px;
   font-size: 11px;
-  color: inherit;
-  opacity: 0.9;
+  color: #333;
+  opacity: 0.85;
 }
 
 .notFound {
