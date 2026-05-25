@@ -47,10 +47,22 @@
 	background-color: white;
 	transform: translateY(3px);
 	max-width: 80%;
-	left: 20px;
 	overflow: hidden;
 	border-radius: 999px;
 	transition: font-size 0.2s ease;
+}
+
+.labelLeft {
+	left: 20px;
+}
+
+.labelCenter {
+	left: 50%;
+	transform: translate(-50%, 3px);
+}
+
+.labelRight {
+	right: 20px;
 }
 
 .bar:hover .label {

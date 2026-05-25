@@ -167,6 +167,13 @@ export function PeriodBars({
 					"--period-text": textColor,
 				};
 
+				const labelAlignment =
+					b.startIdx <= 1
+						? styles.labelLeft
+						: b.startIdx >= 5
+							? styles.labelRight
+							: styles.labelCenter;
+
 				return (
 					<button
 						key={String(b.id)}
@@ -178,7 +185,7 @@ export function PeriodBars({
 					>
 						<div className={styles.line} />
 
-						<div className={styles.label}>
+						<div className={`${styles.label} ${labelAlignment}`}>
 							<span className={styles.title}>{b.title}</span>
 						</div>
 					</button>
