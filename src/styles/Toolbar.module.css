@@ -448,3 +448,209 @@
     display: flex;
   }
 }
+
+/* 넓은 화면(>=1400px): 툴바 요소를 비율 유지하며 1.2배 확대 */
+@media (min-width: 1400px) {
+  .toolbarContainer {
+    margin-bottom: 1.8rem;
+  }
+  .centerControl {
+    margin-bottom: 1.2rem;
+  }
+  .viewToggleGroup {
+    padding: 0.3rem;
+    gap: 0.3rem;
+  }
+  .toggleBtn {
+    font-size: 1.05rem;
+  }
+  .rightGroup .toggleBtn {
+    border-radius: 16px;
+  }
+  .rightGroup .toggleBtn > img {
+    width: 24px;
+  }
+  .rightGroup {
+    gap: 8px;
+  }
+  .rightGroup svg {
+    width: 24px;
+    height: 24px;
+  }
+  .searchIconButton svg {
+    width: 24px;
+    height: 24px;
+  }
+  .searchContainer {
+    height: 48px;
+  }
+  .searchInput.active {
+    max-width: 240px;
+    padding: 10px;
+    border-radius: 18px;
+  }
+  .leftGroup {
+    gap: 0.6rem;
+  }
+  .dateTitle {
+    font-size: 1.8rem;
+  }
+  .navBtnGroup {
+    gap: 0.3rem;
+  }
+  .todayBtn {
+    padding: 0.3rem 0.9rem;
+    font-size: 1.05rem;
+  }
+  .navIconBtn {
+    padding: 0.3rem 0.6rem;
+    font-size: 1.44rem;
+  }
+  .profileRow {
+    gap: 0.9rem;
+  }
+  .profileButton {
+    width: 42px;
+    height: 42px;
+  }
+  /* 시간표 툴바 전용 요소 */
+  .selectGroup {
+    gap: 30px;
+  }
+  .semesterSelectGroup {
+    gap: 10px;
+  }
+  .timetableToggleGroup {
+    gap: 5px;
+  }
+  .timetableToggleLabel {
+    font-size: 14px;
+  }
+  .timetableToggle {
+    width: 50px;
+    height: 28px;
+  }
+  .timetableToggleThumb {
+    top: 3px;
+    left: 3px;
+    width: 22px;
+    height: 22px;
+  }
+  .timetableToggleOn .timetableToggleThumb {
+    transform: translateX(22px);
+  }
+  .select {
+    height: 43px;
+    padding: 0 40px 0 14px;
+    font-size: 17px;
+    border-radius: 14px;
+  }
+  .selectWrap::after {
+    right: 14px;
+    width: 10px;
+    height: 10px;
+  }
+}
+
+/* 초광폭 화면(>=2000px): 툴바 요소를 비율 유지하며 1.5배 확대 */
+@media (min-width: 2000px) {
+  .toolbarContainer {
+    margin-bottom: 2.25rem;
+  }
+  .centerControl {
+    margin-bottom: 1.5rem;
+  }
+  .viewToggleGroup {
+    padding: 0.375rem;
+    gap: 0.375rem;
+  }
+  .toggleBtn {
+    font-size: 1.3125rem;
+  }
+  .rightGroup .toggleBtn {
+    border-radius: 20px;
+  }
+  .rightGroup .toggleBtn > img {
+    width: 30px;
+  }
+  .rightGroup {
+    gap: 9px;
+  }
+  .rightGroup svg {
+    width: 30px;
+    height: 30px;
+  }
+  .searchIconButton svg {
+    width: 30px;
+    height: 30px;
+  }
+  .searchContainer {
+    height: 60px;
+  }
+  .searchInput.active {
+    max-width: 300px;
+    padding: 12px;
+    border-radius: 22px;
+  }
+  .leftGroup {
+    gap: 0.75rem;
+  }
+  .dateTitle {
+    font-size: 2.25rem;
+  }
+  .navBtnGroup {
+    gap: 0.375rem;
+  }
+  .todayBtn {
+    padding: 0.375rem 1.125rem;
+    font-size: 1.3125rem;
+  }
+  .navIconBtn {
+    padding: 0.375rem 0.75rem;
+    font-size: 1.8rem;
+  }
+  .profileRow {
+    gap: 1.125rem;
+  }
+  .profileButton {
+    width: 52px;
+    height: 52px;
+  }
+  /* 시간표 툴바 전용 요소 */
+  .selectGroup {
+    gap: 37px;
+  }
+  .semesterSelectGroup {
+    gap: 12px;
+  }
+  .timetableToggleGroup {
+    gap: 6px;
+  }
+  .timetableToggleLabel {
+    font-size: 18px;
+  }
+  .timetableToggle {
+    width: 64px;
+    height: 36px;
+  }
+  .timetableToggleThumb {
+    top: 4px;
+    left: 4px;
+    width: 28px;
+    height: 28px;
+  }
+  .timetableToggleOn .timetableToggleThumb {
+    transform: translateX(28px);
+  }
+  .select {
+    height: 54px;
+    padding: 0 50px 0 18px;
+    font-size: 21px;
+    border-radius: 18px;
+  }
+  .selectWrap::after {
+    right: 18px;
+    width: 12px;
+    height: 12px;
+  }
+}

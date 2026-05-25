@@ -44,6 +44,7 @@ const SearchToolbar = ({ viewMode, setViewMode }: SearchToolbarProps) => {
 					<div className={styles.inputWrapper}>
 						<input
 							type="text"
+							maxLength={50}
 							className={styles.searchInput}
 							placeholder="검색어를 입력해주세요"
 							value={queryState}

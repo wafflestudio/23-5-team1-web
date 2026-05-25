@@ -127,7 +127,12 @@ const MonthSideView = ({
 							onKeyDown={(e) => e.key === "Enter" && handleDetailClick(event.id)}
 							className={styles.cardButton}
 						>
-							<CardView key={event.id} event={event} onLoginPrompt={() => setIsLoginModalOpen(true)} />
+							<CardView
+								key={event.id}
+								event={event}
+								fullWidth
+								onLoginPrompt={() => setIsLoginModalOpen(true)}
+							/>
 						</div>
 					))
 				)}
