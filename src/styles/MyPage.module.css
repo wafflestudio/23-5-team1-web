@@ -387,6 +387,39 @@
 	font-weight: 700;
 }
 
+.nameInputWrapper {
+	display: flex;
+	flex-direction: column;
+}
+
+.nameHintRow {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	margin: 0 4px 4px;
+}
+
+.nameHint {
+	font-size: 12px;
+	font-weight: 400;
+	color: #8f8f8f;
+	line-height: 1.2;
+}
+
+.nameCounter {
+	flex-shrink: 0;
+	font-size: 12px;
+	font-weight: 500;
+	color: #8f8f8f;
+	line-height: 1.2;
+	font-variant-numeric: tabular-nums;
+}
+
+.nameHintMax {
+	color: #d33b3b;
+}
+
 .timeTableBtn,
 .preferenceCol {
 	display: flex;

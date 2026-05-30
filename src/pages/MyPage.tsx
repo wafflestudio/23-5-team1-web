@@ -23,6 +23,26 @@ import Loading from "@/widgets/Loading";
 import defaultProfile from "/assets/defaultProfile.png";
 import BottomNav from "@/widgets/BottomNav";
 
+// 이름 길이 제한: 한글 1자 = 2, 그 외 1자 = 1 → 상한 20 (한글 10자 / 영어 20자)
+const MAX_NAME_WEIGHT = 20;
+
+const isKoreanChar = (char: string) => /[ㄱ-ㅎㅏ-ㅣ가-힣]/.test(char);
+
+const getNameWeight = (value: string) =>
+	[...value].reduce((acc, char) => acc + (isKoreanChar(char) ? 2 : 1), 0);
+
+// 가중치 상한을 넘지 않도록 문자열을 잘라낸다
+const truncateToWeight = (value: string, max: number) => {
+	let weight = 0;
+	let result = "";
+	for (const char of value) {
+		weight += isKoreanChar(char) ? 2 : 1;
+		if (weight > max) break;
+		result += char;
+	}
+	return result;
+};
+
 const ProfileCard = ({ onClickInterest }: { onClickInterest: () => void }) => {
 	const { user, updateUsername, setProfileImg } = useAuth();
 	const { interestCategories } = useUserData();
@@ -39,6 +59,9 @@ const ProfileCard = ({ onClickInterest }: { onClickInterest: () => void }) => {
 	);
 	const [isEditmode, setIsEditmode] = useState<boolean>(false);
 	const navigate = useNavigate();
+
+	const nameWeight = getNameWeight(username);
+	const isNameMax = nameWeight >= MAX_NAME_WEIGHT;
 
 	const handleImageError = () => {
 		setProfilePreviewUrl(defaultProfile);
@@ -105,20 +128,38 @@ const ProfileCard = ({ onClickInterest }: { onClickInterest: () => void }) => {
 				</div>
 				<div className={styles.nameEmailCol}>
 					{isEditmode ? (
-						<input
-							className={styles.nameInput}
-							type="text"
-							value={username}
-							placeholder="이름을 입력하세요"
-							onChange={(e) => setUsername(e.currentTarget.value)}
-							onKeyDown={(e: React.KeyboardEvent) => {
-								if (e.key === "Enter" && !e.nativeEvent.isComposing) {
-									e.stopPropagation();
-									e.preventDefault();
-									handleChangesSave();
+						<div className={styles.nameInputWrapper}>
+							<input
+								className={styles.nameInput}
+								type="text"
+								value={username}
+								placeholder="이름을 입력하세요"
+								onChange={(e) =>
+									setUsername(
+										truncateToWeight(e.currentTarget.value, MAX_NAME_WEIGHT),
+									)
 								}
-							}}
-						/>
+								onKeyDown={(e: React.KeyboardEvent) => {
+									if (e.key === "Enter" && !e.nativeEvent.isComposing) {
+										e.stopPropagation();
+										e.preventDefault();
+										handleChangesSave();
+									}
+								}}
+							/>
+							<div className={styles.nameHintRow}>
+								<span
+									className={`${styles.nameHint} ${isNameMax ? styles.nameHintMax : ""}`}
+								>
+									한글 10자 · 영어 20자 이내로 입력해주세요
+								</span>
+								<span
+									className={`${styles.nameCounter} ${isNameMax ? styles.nameHintMax : ""}`}
+								>
+									{nameWeight}/{MAX_NAME_WEIGHT}
+								</span>
+							</div>
+						</div>
 					) : (
 						<span className={styles.nameText}>{user?.username}</span>
 					)}

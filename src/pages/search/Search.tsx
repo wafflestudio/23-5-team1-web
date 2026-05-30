@@ -28,6 +28,7 @@ const SearchView = () => {
 		setPage,
 		setSize,
 		fetchSearchResult,
+		emptySearchResults,
 		searchResults,
 		searchLoading,
 	} = useSearch();
@@ -56,10 +57,13 @@ const SearchView = () => {
 		const fetchData = async () => {
 			if (query.trim()) {
 				await fetchSearchResult(query, page, size);
+			} else {
+				// 빈 검색어로 들어오면 이전 검색 결과를 비움
+				emptySearchResults();
 			}
 		};
 		fetchData();
-	}, [fetchSearchResult, query, page, size]);
+	}, [fetchSearchResult, emptySearchResults, query, page, size]);
 
 	useEffect(() => {
 		const mq = window.matchMedia("(max-width: 576px)");
